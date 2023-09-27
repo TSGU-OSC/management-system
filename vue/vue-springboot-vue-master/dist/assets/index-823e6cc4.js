@@ -1,1 +1,0 @@
-import{a1 as r,a,c as n,a4 as e,w as s}from"./index-6e278e4c.js";import{E as c}from"./el-alert-595dc5df.js";import{_}from"./_plugin-vue_export-helper-c27b6911.js";const l={},i={style:{padding:"30px"}};function m(p,d){const t=r("router-view"),o=c;return a(),n("div",i,[e(o,{closable:!1,title:"菜单一级"},{default:s(()=>[e(t)]),_:1})])}const v=_(l,[["render",m]]);export{v as default};
