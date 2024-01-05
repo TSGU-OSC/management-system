@@ -1,0 +1,10 @@
+# \uFFFD\uFFFD\uFFFD\uFFFD\u02FF\u06BA\uFFFD
+server.port=8088
+# \uFFFD\uFFFD\uFFFD\u077F\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://localhost:3306/osc?characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=GMT%2B8
+spring.datasource.username=root
+spring.datasource.password=123456
+# mybatis-plus
+mybatis-plus.mapper-locations=classpath:cn/osc/mapper/*.xml
+mybatis-plus.type-aliases-package=cn.osc.entity
