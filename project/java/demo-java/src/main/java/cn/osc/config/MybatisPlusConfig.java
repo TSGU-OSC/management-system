@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @Author fsq
- * @Date 2021/1/23
+ * @Date 2024/1/6
  * @Description MP分页设置
  */
 @Configuration

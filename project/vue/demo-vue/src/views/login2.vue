@@ -7,6 +7,7 @@
           type="text"
           v-model="loginForm.username"
           auto-complete="off"
+
           placeholder="姓名"
         ></el-input>
       </el-form-item>
@@ -31,7 +32,6 @@
           <div class="login-code">
             <img :src="codeUrl" class="login-code-img" @click="getCode">
           </div>
-          <p style="text-align: center;font-size: 12px;">验证码有效期为30秒，请及时刷新！</p>
         </el-form-item>   
       <el-form-item style="width: 100%">
         <el-button
@@ -46,10 +46,8 @@
           style="width: 40%; border: none;float: right;"
           @click="register"
           icon="el-icon-user-solid"
-          disabled
           >注册</el-button
         >
-
      
        
           </el-form-item>
@@ -106,11 +104,10 @@ export default {
           var path = this.$route.query.redirect
           this.$router.replace({path: path === '/' || path === undefined ? '/' : path})
         }else{
-          this.$message.error(resp.data.message);
-          console.log(resp)
+          this.$message.error("登录失败");
         }
       }).catch((err) => {
-          this.$message.error(resp.message)
+          this.$message.error("登录异常！")
           console.log(err);
         });
     },

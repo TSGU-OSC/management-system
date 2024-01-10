@@ -68,9 +68,9 @@ public class Constants
     public static final String REPEAT_SUBMIT_KEY = "repeat_submit:";
 
     /**
-     * 验证码有效期（分钟）
+     * 验证码有效期（秒）
      */
-    public static final Integer CAPTCHA_EXPIRATION = 120;
+    public static final Integer CAPTCHA_EXPIRATION = 30;
 
     /**
      * 令牌

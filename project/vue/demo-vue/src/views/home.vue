@@ -8,15 +8,20 @@
       <span class="head-title">开源鸿蒙社团成员管理系统</span>
 
 
-      
 
-<div style="float: right;">
-        <el-tooltip class="item" effect="dark" content="退出登录" placement="bottom">
-          <el-button type="danger" style="color: #222; float: right" icon="el-icon-switch-button" @click="logout"
-            circle></el-button>
-        </el-tooltip>
-  当前登录用户：{{ this.$store.state.user.username }}
-</div>
+
+      <div style="float: right;border: 2px ;">
+        <div>  
+          <div>{{ this.$store.state.user.username }}</div>
+          <el-tooltip class="item" effect="dark" content="退出登录" placement="bottom">
+            <el-button type="danger" style="color: #222; float: right" size="mini" icon="el-icon-switch-button" @click="logout"
+              ></el-button>
+          </el-tooltip>
+        
+        </div>
+
+
+      </div>
 
     </el-header>
     <!-- 主体 -->

@@ -279,6 +279,7 @@ export default {
     getUserList() {
       userList(this.queryInfo)
         .then((res) => {
+          console.log(res);
           if (res.data.code === 200) {
             //用户列表
             this.userList = res.data.data.records;
@@ -309,6 +310,10 @@ export default {
     addUser() {
       userAdd(this.userForm)
         .then((res) => {
+          if( this.$store.state.user.isAdmin!=1 ){
+            this.$message.error("权限不足！");
+            return;
+          }
           if (res.data.code === 200) {
             this.addDialogVisible = false;
             this.getUserList();
@@ -345,6 +350,10 @@ export default {
     editUser() {
       userUpdate(this.editForm)
         .then((res) => {
+          if( this.$store.state.user.isAdmin!=1 ){
+            this.$message.error("权限不足！");
+            return;
+          }
           if (res.data.code === 200) {
             this.editDialogVisible = false;
             this.getUserList();
@@ -380,6 +389,10 @@ export default {
         //删除用户
         userDelete(id)
           .then((res) => {
+            if( this.$store.state.user.isAdmin!=1 ){
+            this.$message.error("权限不足！");
+            return;
+          }
             if (res.data.code === 200) {
               this.getUserList();
               this.$message({
@@ -424,6 +437,10 @@ export default {
         //批量删除用户
         userBatchDelete(this.ids)
           .then((res) => {
+            if( this.$store.state.user.isAdmin!=1 ){
+            this.$message.error("权限不足！");
+            return;
+          }
             if (res.data.code === 200) {
               this.$message({
                 message: "批量删除用户成功",

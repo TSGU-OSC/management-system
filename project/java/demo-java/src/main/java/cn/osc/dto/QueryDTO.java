@@ -4,7 +4,7 @@ import lombok.Data;
 
 /**
  * @Author fsq
- * @Date 2021/1/23
+ * @Date 2024/1/6
  * @Description 查询业务实体
  * 这里仅仅定义了三个参数，在实际应用中可以定义多个参数
  */
