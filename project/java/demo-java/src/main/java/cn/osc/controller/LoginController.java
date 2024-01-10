@@ -18,6 +18,7 @@ import java.util.HashMap;
  * @Description: TODO
  **/
 @Api(tags = "登录接口")
+@CrossOrigin
 @RestController()
 public class LoginController {
     @Autowired
@@ -28,6 +29,8 @@ public class LoginController {
 
         return loginService.login(loginDTO.getUsername(), loginDTO.getPassword(), loginDTO.getCode(),
                 loginDTO.getUuid());
+
+//        return loginService.login(loginDTO);
     }
 
     @PostMapping(value = "/api/register")

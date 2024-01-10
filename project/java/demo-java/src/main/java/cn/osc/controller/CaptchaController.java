@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.util.FastByteArrayOutputStream;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +33,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Api(tags = "验证码")
 @Slf4j
+@CrossOrigin
 @RestController
 public class CaptchaController {
     @Resource(name = "captchaProducer")
@@ -73,7 +75,7 @@ public class CaptchaController {
             image = captchaProducer.createImage(capStr);
         }
 
-        redisCache.setCacheObject(verifyKey, code, Constants.CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
+        redisCache.setCacheObject(verifyKey, code, Constants.CAPTCHA_EXPIRATION, TimeUnit.SECONDS);
         // 转换流信息写出
         FastByteArrayOutputStream os = new FastByteArrayOutputStream();
         try
@@ -89,7 +91,7 @@ public class CaptchaController {
         map.put("uuid", uuid);
         map.put("img", Base64.encode(os.toByteArray()));
         Result result = Result.success("",map);
-        log.info("验证码已发出：{}",map);
+        log.info("验证码已发出");
         return result;
     }
 }

@@ -12,14 +12,13 @@ import java.io.IOException;
 
 /**
  * @Author: fsq
- * @Date: 2021/1/18
+ * @Date: 2024/1/18
  * @Description: 用户登录拦截器
  **/
 
 public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
-
         if(         request.getRequestURI().contains("/api/login")
                 ||request.getRequestURI().contains("/api/register")
                 ||request.getRequestURI().contains("/api/getCode")

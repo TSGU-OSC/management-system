@@ -9,7 +9,7 @@ import org.springframework.web.filter.CorsFilter;
 
 /**
  * @Author fsq
- * @Date 2021/1/25
+ * @Date 2024/1/25
  * @Description 跨域配置
  */
 @Configuration

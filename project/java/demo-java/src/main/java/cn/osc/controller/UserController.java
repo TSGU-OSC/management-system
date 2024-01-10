@@ -1,31 +1,34 @@
 package cn.osc.controller;
 
+import cn.osc.config.BaseContext;
 import cn.osc.dto.QueryDTO;
 import cn.osc.dto.UserDTO;
 import cn.osc.entity.User;
+import cn.osc.mapper.UserMapper;
 import cn.osc.result.Result;
 import cn.osc.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
 
 /**
  * @Author fsq
- * @Date 2021/1/23
+ * @Date 2024/1/6
  * @Description 用户管理
  */
 @Api(tags = "用户管理")
+@CrossOrigin
 @RestController
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * 分页查询
@@ -34,6 +37,7 @@ public class UserController {
      */
     @PostMapping("/api/user/list")
     public Result userList(@RequestBody QueryDTO queryDTO){
+
         return new Result(200,"",userService.selectUserPage(queryDTO));
     }
 
@@ -43,9 +47,14 @@ public class UserController {
      * @return
      */
     @PostMapping("/api/user/add")
-    public Result addUser(@RequestBody @Valid User user){
-        return new Result(200,"",userService.addUser(user));
+    public Result addUser(@RequestBody @Valid User user,HttpSession session){
+//        if(isAdmin(session)){
+            return new Result(200,"",userService.addUser(user));
+//        }else{
+//            return new Result(400,"没有权限","");
+//        }
     }
+
 
     /**
      * 更新
@@ -53,8 +62,12 @@ public class UserController {
      * @return
      */
     @PostMapping("/api/user/update")
-    public Result updateUser(@RequestBody User user){
-        return new Result(200,"",userService.updateUser(user));
+    public Result updateUser(@RequestBody @Valid User user,HttpSession session){
+//        if(isAdmin(session)) {
+            return new Result(200, "", userService.updateUser(user));
+//        }else{
+//            return new Result(400,"没有权限","");
+//        }
     }
 
     /**
@@ -86,4 +99,16 @@ public class UserController {
         return new Result(200,"",userService.count());
     }
 
+
+//    private boolean isAdmin(HttpSession session) {
+//        String userId = (String) session.getAttribute("userId");
+//        User user = userMapper.selectById(userId);
+//        if(user==null){
+//            return false;
+//        }
+//        if(user.getIsAdmin() == 1){
+//            return true ;
+//        }
+//        return false;
+//    }
 }
