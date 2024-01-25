@@ -16,7 +16,6 @@ import com.wf.captcha.base.Captcha;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
@@ -38,6 +37,7 @@ public class UserServiceImpl extends ServiceImpl<NewUserMapper, User> implements
 
     @Resource
     private RedisCache redisCache;
+
     /**
      * 对密码进行加盐加密（加盐就是让密码加密后更复杂）
      */
