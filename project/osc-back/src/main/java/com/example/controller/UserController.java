@@ -78,7 +78,7 @@ public class UserController {
      */
     @PostMapping("/verify")
     @Operation(description = "获取验证码")
-    public BaseResponse<VerifyCodeEntity> getVerifyCode(){
+    public BaseResponse<VerifyCodeEntity> getVerifyCode() {
         VerifyCodeEntity verifyCode = userService.generateVerifyCode();
         return ResultUtils.success(verifyCode);
     }
@@ -207,8 +207,8 @@ public class UserController {
         Long currentUserId = BaseContext.getCurrentId();
         User currentUser = userService.getById(currentUserId);
         // 学号不能修改
-        if(!Objects.equals(user.getCode(), userService.getById(user.getId()).getCode())){
-            throw new BusinessException(ErrorCode.NO_AUTH,"学号不可修改");
+        if (!Objects.equals(user.getCode(), userService.getById(user.getId()).getCode())) {
+            throw new BusinessException(ErrorCode.NO_AUTH, "学号不可修改");
         }
         // 如果是修改自己的信息
         if (currentUserId.equals(user.getId())) {
@@ -225,13 +225,13 @@ public class UserController {
             if (currentUser.getRole() != SUPER_ADMIN_USER &&
                     currentUser.getRole() <=
                             (Math.max(user.getRole(), userService.getById(user.getId()).getRole()))) {
-                throw new BusinessException(ErrorCode.NO_AUTH,"权限不足");
+                throw new BusinessException(ErrorCode.NO_AUTH, "权限不足");
             }
         }
         // 权限足够，可以修改
         boolean result = userService.updateById(user);
-        if(!result){
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR,"修改失败");
+        if (!result) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "修改失败");
         }
         return ResultUtils.success(userService.getById(user.getId()));
     }

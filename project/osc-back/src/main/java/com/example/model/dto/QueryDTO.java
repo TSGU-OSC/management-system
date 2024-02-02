@@ -13,6 +13,7 @@ import java.io.Serializable;
 public class QueryDTO implements Serializable {
 
     private static final long serialVersionUID = 5231231861777401881L;
+
     /**
      * 学号
      */
