@@ -7,14 +7,17 @@ spring:
     username: root
     password: 2469
   session:
-    timeout: 86400
+    timeout: 864000000
+  servlet:
+    multipart:
+      max-file-size: 5000GB  # 最大文件大小
   data:
     redis:
       port: 6379
       host: 127.0.0.1
       database: 2
       # 连接超时时间
-      timeout: 10s
+      timeout: 10000000s
       lettuce:
         pool:
           # 连接池中的最小空闲连接
@@ -31,12 +34,11 @@ minio: # MinIO连接信息
   # 上传的 Bucket
   bucket: data
   # Access Key
-  access-key: qpOxDTgSUDyWk1sUOiHO
+  accessKey: qpOxDTgSUDyWk1sUOiHO
   # Secret Key
-  secret-key: A02ZMIWO9OKe57EcbMNcSC5kmO6gAu7sL9Yl55aJ
-
+  secretKey: A02ZMIWO9OKe57EcbMNcSC5kmO6gAu7sL9Yl55aJ
 server:
-  port: 8080
+  port: 8080  # 端口号
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
