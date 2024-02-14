@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -83,6 +84,7 @@ public class Announcement implements Serializable {
     @Schema(description = "是否删除(0未删除 1已删除)")
     private Integer isDeleted;
 
+    @Serial
     @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3252207553356908448L;
 }

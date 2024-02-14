@@ -1,5 +1,6 @@
-package com.example.common;
+package com.example.model.vo;
 
+import com.example.enums.ErrorCodeEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -12,7 +13,7 @@ import java.io.Serializable;
  * @author Uncommon
  */
 @Data
-public class BaseResponse<T> implements Serializable {
+public class ResponseVO<T> implements Serializable {
     // 返回码
     @Schema(description = "返回码")
     private int code;
@@ -29,23 +30,23 @@ public class BaseResponse<T> implements Serializable {
     @Schema(description = "返回详细描述")
     private String description;
 
-    public BaseResponse(int code, T data, String message, String description) {
+    public ResponseVO(int code, T data, String message, String description) {
         this.code = code;
         this.message = message;
         this.data = data;
         this.description = description;
     }
 
-    public BaseResponse(int code, T data, String message) {
+    public ResponseVO(int code, T data, String message) {
         this(code, data, message, "");
     }
 
-    public BaseResponse(int code, T data) {
+    public ResponseVO(int code, T data) {
         this(code, data, "", "");
     }
 
-    public BaseResponse(ErrorCode errorCode) {
-        this(errorCode.getCode(), null, errorCode.getMessage(), errorCode.getDescription());
+    public ResponseVO(ErrorCodeEnum errorCodeEnum) {
+        this(errorCodeEnum.getCode(), null, errorCodeEnum.getMessage(), errorCodeEnum.getDescription());
     }
 
 }

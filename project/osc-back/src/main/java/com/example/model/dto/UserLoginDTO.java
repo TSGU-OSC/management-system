@@ -1,4 +1,4 @@
-package com.example.model.vo;
+package com.example.model.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 @Schema(description = "用户登录请求参数")
 @Data
-public class UserLoginVO implements Serializable {
+public class UserLoginDTO implements Serializable {
     private static final long serialVersionUID = -7188479473325271448L;
 
     @Schema(description = "学号（非空）")

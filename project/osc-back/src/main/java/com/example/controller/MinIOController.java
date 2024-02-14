@@ -1,11 +1,11 @@
 package com.example.controller;
 
-import com.example.common.BaseResponse;
-import com.example.common.ErrorCode;
 import com.example.common.ResultUtils;
+import com.example.config.MinIOProperty;
+import com.example.enums.ErrorCodeEnum;
 import com.example.exception.BusinessException;
-import com.example.model.entity.MinIOProperty;
 import com.example.model.entity.User;
+import com.example.model.vo.ResponseVO;
 import com.example.service.UserService;
 import com.example.utils.MinioUtil;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
@@ -43,15 +43,15 @@ public class MinIOController {
      */
     @Operation(description = "上传文件")
     @PostMapping("/upload")
-    public BaseResponse<String> uploadFile(@RequestBody MultipartFile file, Long id) {
+    public ResponseVO<String> uploadFile(@RequestBody MultipartFile file, Long id) {
         if (file == null || id == null) {
-            throw new BusinessException(ErrorCode.NULL_ERROR, "参数为空");
+            throw new BusinessException(ErrorCodeEnum.NULL_ERROR, "参数为空");
         }
         String fileName = minioUtil.minioUpload(file, minioProperty.getBucket());
         //同时将头像文件名存储到数据库中
         User user = userService.getById(id);
         user.setAvator(fileName);
-        userService.updateById(user);
+        userService.updateUser(user);
 
         return ResultUtils.success(fileName);
     }
@@ -61,9 +61,9 @@ public class MinIOController {
      */
     @Operation(description = "下载文件")
     @PostMapping("/download")
-    public BaseResponse<InputStream> downloadFile(@RequestParam String fileName, HttpServletResponse response) {
+    public ResponseVO<InputStream> downloadFile(@RequestParam String fileName, HttpServletResponse response) {
         if (StringUtils.isBlank(fileName)) {
-            throw new BusinessException(ErrorCode.NULL_ERROR, "参数为空");
+            throw new BusinessException(ErrorCodeEnum.NULL_ERROR, "参数为空");
         }
         InputStream inputStream = minioUtil.downloadFile(minioProperty.getBucket(), fileName, response);
         return ResultUtils.success(inputStream);
@@ -74,14 +74,14 @@ public class MinIOController {
      */
     @Operation(description = "删除文件")
     @PostMapping("/delete")
-    public BaseResponse<String> deleteFile(String fileName, @RequestBody User user) {
+    public ResponseVO<String> deleteFile(String fileName, @RequestBody User user) {
         if (StringUtils.isBlank(fileName) || user == null) {
-            throw new BusinessException(ErrorCode.NULL_ERROR, "参数为空");
+            throw new BusinessException(ErrorCodeEnum.NULL_ERROR, "参数为空");
         }
         minioUtil.deleteFile(minioProperty.getBucket(), fileName);
         // 同时删除数据库中的用户头像
         user.setAvator(null);
-        userService.updateById(user);
+        userService.updateUser(user);
 
         return ResultUtils.success(fileName);
     }

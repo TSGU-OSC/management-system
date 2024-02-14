@@ -20,13 +20,11 @@ public class MyWebMvcConfiguration implements WebMvcConfigurer {
 
     /**
      * 配置拦截器
-     *
-     * @param registry
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //拦截所有/user/请求，放行/user/login登录/user/verify获取验证码请求
-        registry.addInterceptor(this.interceptor).addPathPatterns("/user/**","/file/**").excludePathPatterns("/user/login", "/user/verify");
+        registry.addInterceptor(this.interceptor).addPathPatterns("/user/**", "/file/**").excludePathPatterns("/user/login", "/user/verify");
 
     }
 

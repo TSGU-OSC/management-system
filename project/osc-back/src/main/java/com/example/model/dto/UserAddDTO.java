@@ -1,4 +1,4 @@
-package com.example.model.vo;
+package com.example.model.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -15,7 +15,7 @@ import java.io.Serializable;
  */
 @Schema(description = "添加用户请求体")
 @Data
-public class UserAddVO implements Serializable {
+public class UserAddDTO implements Serializable {
     private static final long serialVersionUID = 504966900305465423L;
 
     // 姓名

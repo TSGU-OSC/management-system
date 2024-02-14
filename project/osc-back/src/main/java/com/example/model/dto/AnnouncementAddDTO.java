@@ -1,4 +1,4 @@
-package com.example.model.vo;
+package com.example.model.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Schema(description = "添加公告请求体")
 @Data
-public class AnnouncementAddVO implements Serializable {
+public class AnnouncementAddDTO implements Serializable {
     private static final long serialVersionUID = -5001088178101658884L;
 
     /**

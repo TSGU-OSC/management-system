@@ -1,13 +1,20 @@
 package com.example.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.common.ErrorCode;
-import com.example.exception.BusinessException;
+import com.example.common.BaseContext;
 import com.example.mapper.AnnouncementMapper;
+import com.example.model.dto.AnnouncementAddDTO;
 import com.example.model.entity.Announcement;
-import com.example.model.vo.AnnouncementAddVO;
 import com.example.service.AnnouncementService;
+import com.example.service.UserService;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.example.constant.UserConstant.DEFAULT_USER;
 
 /**
  * 针对表【announcement】的数据库操作Service实现
@@ -18,26 +25,22 @@ import org.springframework.stereotype.Service;
 public class AnnouncementServiceImpl extends ServiceImpl<AnnouncementMapper, Announcement>
         implements AnnouncementService {
 
+    @Resource
+    UserService userService;
+
     /**
      * 添加公告
      *
-     * @param announcementAddVO 添加公告请求体
+     * @param announcementAddDTO 添加公告请求体
      * @return 公告ID
      */
     @Override
-    public long addAnnouncement(AnnouncementAddVO announcementAddVO) {
-        if (announcementAddVO == null) {
-            throw new BusinessException(ErrorCode.NULL_ERROR, "参数为空");
-        }
+    public Long addAnnouncement(AnnouncementAddDTO announcementAddDTO) {
         Announcement announcement = new Announcement();
-        announcement.setTitle(announcementAddVO.getTitle());
-        announcement.setContent(announcementAddVO.getContent());
-        // 尝试存储公告
-        boolean save = this.save(announcement);
-        // 存储公告失败
-        if (!save) {
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "公告存储失败");
-        }
+        announcement.setTitle(announcementAddDTO.getTitle());
+        announcement.setContent(announcementAddDTO.getContent());
+        // 存储公告
+        this.save(announcement);
         return announcement.getId();
     }
 
@@ -56,6 +59,21 @@ public class AnnouncementServiceImpl extends ServiceImpl<AnnouncementMapper, Ann
         newAnnouncement.setUpdateTime(announcement.getUpdateTime());
 
         return newAnnouncement;
+    }
+
+    @Override
+    public List<Announcement> listAnnouncements(String title) {
+        // 模糊匹配
+        LambdaQueryWrapper<Announcement> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(Announcement::getTitle, title);
+
+        List<Announcement> list = this.list(queryWrapper);
+        // 如果用户权限低，对查询到的公告进行脱敏
+        Long currentId = BaseContext.getCurrentId();
+        if (userService.getById(currentId).getRole() <= DEFAULT_USER) {
+            list = list.stream().map(this::getSafetyAnnouncement).collect(Collectors.toList());
+        }
+        return list;
     }
 }
 

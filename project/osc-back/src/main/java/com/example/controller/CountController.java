@@ -1,9 +1,10 @@
 package com.example.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.common.BaseResponse;
 import com.example.common.ResultUtils;
 import com.example.model.entity.User;
+import com.example.model.vo.ResponseVO;
 import com.example.service.UserService;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,7 +37,7 @@ public class CountController {
      */
     @GetMapping("/sum")
     @Operation(description = "统计总人数")
-    public BaseResponse<Long> CountSum() {
+    public ResponseVO<Long> countSum() {
         long count = userService.count();
         return ResultUtils.success(count);
     }
@@ -46,9 +47,9 @@ public class CountController {
      */
     @GetMapping("/gender")
     @Operation(description = "统计男/女人数 1-男 0-女")
-    public BaseResponse<Long> CountGender(int gender) {
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("gender", gender);
+    public ResponseVO<Long> countGender(int gender) {
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(User::getGender, gender);
         long count = userService.count(queryWrapper);
         return ResultUtils.success(count);
     }
@@ -58,7 +59,7 @@ public class CountController {
      */
     @GetMapping("/province")
     @Operation(description = "统计各省人数")
-    public BaseResponse<List> CountProvince() {
+    public ResponseVO<List<Map<String, Object>>> countProvince() {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.select("count(*) as count,province").groupBy("province");
         List<Map<String, Object>> maps = userService.listMaps(queryWrapper);
