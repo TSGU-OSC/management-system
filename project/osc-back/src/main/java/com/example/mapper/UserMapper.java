@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
 * @Entity com.example.model.entity.NewUser
 */
 @Mapper
-public interface NewUserMapper extends BaseMapper<User> {
+public interface UserMapper extends BaseMapper<User> {
 
 }
 

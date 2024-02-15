@@ -3,12 +3,10 @@ package com.example.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.model.dto.QueryDTO;
 import com.example.model.dto.UserAddDTO;
-import com.example.model.dto.UserLoginDTO;
-import com.example.model.dto.VerifyCodeDTO;
 import com.example.model.entity.User;
-import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -26,17 +24,6 @@ public interface UserService extends IService<User> {
      */
     long addUser(UserAddDTO userAddDTO);
 
-    /**
-     * 用户登录
-     *
-     * @return 脱敏后的用户信息
-     */
-    User userLogin(UserLoginDTO userLoginDTO, HttpServletRequest request);
-
-    /**
-     * 用户登出
-     */
-    void userLogout(HttpServletRequest request);
 
     /**
      * 查询用户
@@ -62,17 +49,19 @@ public interface UserService extends IService<User> {
      */
     User getSafetyUser(User originUser);
 
-    /**
-     * 获取验证码
-     *
-     * @return 验证码DTO类
-     */
-    VerifyCodeDTO generateVerifyCode();
 
     /**
-     * 检验验证码
+     * 统计男/女人数
      *
-     * @param userLoginDTO 用户登录DTO类
+     * @param gender 男-1/女-0
+     * @return 男/女总人数
      */
-    void verifyVerifyCode(UserLoginDTO userLoginDTO);
+    long countGender(int gender);
+
+    /**
+     * 统计各省人数
+     *
+     * @return 各省人数列表
+     */
+    List<Map<String, Object>> countProvince();
 }

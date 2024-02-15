@@ -6,8 +6,6 @@ import com.example.enums.ErrorCodeEnum;
 import com.example.exception.BusinessException;
 import com.example.model.dto.QueryDTO;
 import com.example.model.dto.UserAddDTO;
-import com.example.model.dto.UserLoginDTO;
-import com.example.model.dto.VerifyCodeDTO;
 import com.example.model.entity.User;
 import com.example.model.vo.ResponseVO;
 import com.example.service.UserService;
@@ -15,12 +13,12 @@ import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户服务控制类
@@ -62,44 +60,6 @@ public class UserController {
         }
         long newUserId = userService.addUser(userAddDTO);
         return ResultUtils.success(newUserId);
-    }
-
-    /**
-     * 获取验证码
-     *
-     * @return 验证码DTO类
-     */
-    @PostMapping("/verify")
-    @Operation(description = "获取验证码")
-    public ResponseVO<VerifyCodeDTO> getVerifyCode() {
-        VerifyCodeDTO verifyCode = userService.generateVerifyCode();
-        return ResultUtils.success(verifyCode);
-    }
-
-    /**
-     * 登录
-     *
-     * @param userLoginDTO 用户登录DTO类
-     * @return 用户信息
-     */
-    @PostMapping("/login")
-    @Operation(description = "用户登录")  // 接口信息描述
-    public ResponseVO<User> login(@RequestBody @Validated UserLoginDTO userLoginDTO, HttpServletRequest request) {
-        if (userLoginDTO == null) {
-            throw new BusinessException(ErrorCodeEnum.NULL_ERROR, "参数为空");
-        }
-        User user = userService.userLogin(userLoginDTO, request);
-        return ResultUtils.success(user);
-    }
-
-    /**
-     * 用户登出
-     */
-    @PostMapping("/logout")
-    @Operation(description = "用户退出")  // 接口信息描述
-    public ResponseVO<String> logout(HttpServletRequest request) {
-        userService.userLogout(request);
-        return ResultUtils.success("登出成功");
     }
 
     /**
@@ -171,5 +131,35 @@ public class UserController {
     @Operation(description = "更新/修改用户")  // 接口信息描述
     public ResponseVO<User> updateUser(@RequestBody User user) {
         return ResultUtils.success(userService.updateUser(user));
+    }
+
+    /**
+     * 统计总人数
+     */
+    @GetMapping("/count/sum")
+    @Operation(description = "统计总人数")
+    public ResponseVO<Long> countSum() {
+        long count = userService.count();
+        return ResultUtils.success(count);
+    }
+
+    /**
+     * 统计男/女人数
+     */
+    @GetMapping("/count/gender")
+    @Operation(description = "统计男/女人数 1-男 0-女")
+    public ResponseVO<Long> countGender(int gender) {
+        long count = userService.countGender(gender);
+        return ResultUtils.success(count);
+    }
+
+    /**
+     * 统计各省人数
+     */
+    @GetMapping("/count/province")
+    @Operation(description = "统计各省人数")
+    public ResponseVO<List<Map<String, Object>>> countProvince() {
+        List<Map<String, Object>> maps = userService.countProvince();
+        return ResultUtils.success(maps);
     }
 }

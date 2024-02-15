@@ -1,13 +1,11 @@
 package com.example.controller;
 
 import com.example.common.ResultUtils;
-import com.example.config.MinIOProperty;
 import com.example.enums.ErrorCodeEnum;
 import com.example.exception.BusinessException;
 import com.example.model.entity.User;
 import com.example.model.vo.ResponseVO;
-import com.example.service.UserService;
-import com.example.utils.MinioUtil;
+import com.example.service.FileService;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,14 +27,10 @@ import java.io.InputStream;
 @CrossOrigin
 @RestController
 @RequestMapping("/file")
-public class MinIOController {
+public class FileController {
 
     @Resource
-    MinIOProperty minioProperty = new MinIOProperty();
-    @Resource
-    MinioUtil minioUtil = new MinioUtil();
-    @Resource
-    UserService userService;
+    FileService fileService;
 
     /**
      * 上传文件
@@ -47,12 +41,7 @@ public class MinIOController {
         if (file == null || id == null) {
             throw new BusinessException(ErrorCodeEnum.NULL_ERROR, "参数为空");
         }
-        String fileName = minioUtil.minioUpload(file, minioProperty.getBucket());
-        //同时将头像文件名存储到数据库中
-        User user = userService.getById(id);
-        user.setAvator(fileName);
-        userService.updateUser(user);
-
+        String fileName = fileService.uploadFile(file, id);
         return ResultUtils.success(fileName);
     }
 
@@ -65,7 +54,7 @@ public class MinIOController {
         if (StringUtils.isBlank(fileName)) {
             throw new BusinessException(ErrorCodeEnum.NULL_ERROR, "参数为空");
         }
-        InputStream inputStream = minioUtil.downloadFile(minioProperty.getBucket(), fileName, response);
+        InputStream inputStream = fileService.downloadFile(fileName, response);
         return ResultUtils.success(inputStream);
     }
 
@@ -78,11 +67,7 @@ public class MinIOController {
         if (StringUtils.isBlank(fileName) || user == null) {
             throw new BusinessException(ErrorCodeEnum.NULL_ERROR, "参数为空");
         }
-        minioUtil.deleteFile(minioProperty.getBucket(), fileName);
-        // 同时删除数据库中的用户头像
-        user.setAvator(null);
-        userService.updateUser(user);
-
+        fileService.deleteFile(fileName, user);
         return ResultUtils.success(fileName);
     }
 
