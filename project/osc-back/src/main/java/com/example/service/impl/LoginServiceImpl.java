@@ -96,16 +96,12 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
     public VerifyCodeDTO generateVerifyCode() {
         // 创建验证码对象
         Captcha captcha = new ArithmeticCaptcha();
-
         // 生成验证码编号
         String verifyCodeKey = UUID.randomUUID().toString();
         String verifyCode = captcha.text();
-
         // 获取验证码图片，构造响应结果
         VerifyCodeDTO verifyCodeDTO = new VerifyCodeDTO(verifyCodeKey, captcha.toBase64(), verifyCode);
-
         // 存入Redis，设置120s过期
-
         redisCache.setCacheObject(verifyCodeKey, verifyCode, 120, TimeUnit.SECONDS);
 
         return verifyCodeDTO;
@@ -127,7 +123,6 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
         // 从redis读取验证码并删除缓存
         String expect = redisCache.getCacheObject(userLoginDTO.getVerifyCodeKey());
         redisCache.deleteCacheObject(userLoginDTO.getVerifyCodeKey());
-
         // 比较用户输入的验证码和缓存中的验证码是否一致，不一致则抛错
         if (!StringUtils.hasText(expect) || !StringUtils.hasText(actual) || !actual.equalsIgnoreCase(expect)) {
             throw new BusinessException(ErrorCodeEnum.PARAMS_ERROR, "验证码错误");

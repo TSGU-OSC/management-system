@@ -42,12 +42,27 @@ public interface UserService extends IService<User> {
     User updateUser(User user);
 
     /**
+     * 删除用户
+     *
+     * @param id 待删除用户id
+     * @return 已删除用户的id
+     */
+    Long deleteUser(Long id);
+
+    /**
      * 用户脱敏
      *
      * @param originUser 脱敏前的用户
      * @return 脱敏后用户信息
      */
     User getSafetyUser(User originUser);
+
+    /**
+     * 获取当前登录用户
+     *
+     * @return 当前登录用户
+     */
+    User getCurrentUser();
 
 
     /**

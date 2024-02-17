@@ -11,6 +11,7 @@ import com.example.model.dto.QueryDTO;
 import com.example.model.dto.UserAddDTO;
 import com.example.model.entity.User;
 import com.example.service.UserService;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -37,7 +38,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return 添加的用户id
      */
     @Override
-    public long addUser(UserAddDTO userAddDTO) {
+    public long addUser(@NotNull UserAddDTO userAddDTO) {
+        // 获取当前线程用户
+        Long currentId = BaseContext.getCurrentId();
+        User currentUser = this.getById(currentId);
+        // 权限需要高于被创建用户的权限
+        if (currentUser.getRole() <= userAddDTO.getRole()) {
+            throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
+        }
         // 学号不可重复
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("code", userAddDTO.getCode());
@@ -135,6 +143,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     /**
+     * 删除用户
+     *
+     * @param id 待删除用户id
+     * @return 已删除用户的id
+     */
+    @Override
+    public Long deleteUser(Long id) {
+        // 获取当前登录用户
+        Long currentId = BaseContext.getCurrentId();
+        User user = this.getById(currentId);
+        // 只能删除权限低于自己的用户
+        if (user.getRole() <= this.getById(id).getRole()) {
+            throw new BusinessException(ErrorCodeEnum.NO_AUTH, "用户权限不足");
+        }
+        // 删除用户
+        this.removeById(id);
+        return user.getId();
+    }
+
+    /**
      * 用户脱敏
      *
      * @param originUser 脱敏前的用户
@@ -158,6 +186,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         safetyUser.setIntroduction(originUser.getIntroduction());
 
         return safetyUser;
+    }
+
+    /**
+     * 获取当前登录用户
+     *
+     * @return 当前登录用户
+     */
+    @Override
+    public User getCurrentUser() {
+        // 获取当前登录用户
+        Long currentId = BaseContext.getCurrentId();
+        User currentUser = this.getById(currentId);
+        return this.getSafetyUser(currentUser);
     }
 
     /**

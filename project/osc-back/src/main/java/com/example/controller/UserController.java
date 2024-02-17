@@ -1,9 +1,6 @@
 package com.example.controller;
 
-import com.example.common.BaseContext;
 import com.example.common.ResultUtils;
-import com.example.enums.ErrorCodeEnum;
-import com.example.exception.BusinessException;
 import com.example.model.dto.QueryDTO;
 import com.example.model.dto.UserAddDTO;
 import com.example.model.entity.User;
@@ -13,6 +10,7 @@ import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -45,19 +43,6 @@ public class UserController {
     @PostMapping("/add")
     @Operation(description = "添加新用户")  // 接口信息描述
     public ResponseVO<Long> addUser(@RequestBody @Validated UserAddDTO userAddDTO) {
-        if (userAddDTO == null) {
-            throw new BusinessException(ErrorCodeEnum.NULL_ERROR, "参数为空");
-        }
-        // 获取当前线程用户
-        Long currentId = BaseContext.getCurrentId();
-        if (currentId == null) {
-            throw new BusinessException(ErrorCodeEnum.NULL_ERROR, "用户未登录");
-        }
-        User currentUser = userService.getById(currentId);
-        // 权限需要高于被创建用户的权限
-        if (currentUser.getRole() <= userAddDTO.getRole()) {
-            throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
-        }
         long newUserId = userService.addUser(userAddDTO);
         return ResultUtils.success(newUserId);
     }
@@ -70,17 +55,8 @@ public class UserController {
     @GetMapping("/current")
     @Operation(description = "获取当前登录用户")  // 接口信息描述
     public ResponseVO<User> getCurrentUser() {
-        // 获取当前登录用户
-        Long currentId = BaseContext.getCurrentId();
-        if (currentId == null) {
-            throw new BusinessException(ErrorCodeEnum.NOT_LOGIN, "用户未登录");
-        }
-        User currentUser = userService.getById(currentId);
-        if (currentUser == null) {
-            throw new BusinessException(ErrorCodeEnum.NOT_LOGIN, "用户不存在");
-        }
-        User safetyUser = userService.getSafetyUser(currentUser);
-        return ResultUtils.success(safetyUser);
+        User currentUser = userService.getCurrentUser();
+        return ResultUtils.success(currentUser);
     }
 
     /**
@@ -104,21 +80,9 @@ public class UserController {
      */
     @PostMapping("/delete")
     @Operation(description = "删除用户")  // 接口信息描述
-    public ResponseVO<Long> deleteUser(Long id) {
-        if (id == null || id <= 0) {
-            throw new BusinessException(ErrorCodeEnum.PARAMS_ERROR, "参数错误");
-        }
-        // 获取当前登录用户
-        Long currentId = BaseContext.getCurrentId();
-        User user = userService.getById(currentId);
-        // 只能删除权限低于自己的用户
-        if (user.getRole() <= userService.getById(id).getRole()) {
-            throw new BusinessException(ErrorCodeEnum.NO_AUTH, "用户权限不足");
-        }
-        // 删除用户
-        userService.removeById(id);
-        // 删除成功
-        return ResultUtils.success(id);
+    public ResponseVO<Long> deleteUser(@NotNull Long id) {
+        Long userId = userService.deleteUser(id);
+        return ResultUtils.success(userId);
     }
 
     /**

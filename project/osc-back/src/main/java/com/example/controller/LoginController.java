@@ -42,9 +42,6 @@ public class LoginController {
     @PostMapping("/login")
     @Operation(description = "用户登录")  // 接口信息描述
     public ResponseVO<User> login(@RequestBody @Validated UserLoginDTO userLoginDTO, HttpServletRequest request) {
-        if (userLoginDTO == null) {
-            throw new BusinessException(ErrorCodeEnum.NULL_ERROR, "参数为空");
-        }
         User user = loginService.userLogin(userLoginDTO, request);
         return ResultUtils.success(user);
     }

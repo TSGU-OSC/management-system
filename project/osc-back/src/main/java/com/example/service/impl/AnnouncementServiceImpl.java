@@ -41,9 +41,6 @@ public class AnnouncementServiceImpl extends ServiceImpl<AnnouncementMapper, Ann
     public Long addAnnouncement(AnnouncementAddDTO announcementAddDTO) {
         // 获取当前线程用户
         Long currentId = BaseContext.getCurrentId();
-        if (currentId == null) {
-            throw new BusinessException(ErrorCodeEnum.NULL_ERROR, "用户未登录");
-        }
         User currentUser = userService.getById(currentId);
         // 鉴权
         if (currentUser.getRole() <= DEFAULT_USER) {
