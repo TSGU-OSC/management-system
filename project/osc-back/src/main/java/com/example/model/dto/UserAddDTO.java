@@ -25,7 +25,7 @@ public class UserAddDTO implements Serializable {
 
     // 姓别
     @Schema(description = "姓别（1-男 0-女）")
-    @NotBlank(message = "姓别不能为空")
+    @NotNull(message = "姓别不能为空")
     private int gender;
 
     // 学号

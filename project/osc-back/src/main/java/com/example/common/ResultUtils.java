@@ -14,7 +14,7 @@ public class ResultUtils {
      * 成功
      */
     public static <T> ResponseVO<T> success(T data) {
-        return new ResponseVO<>(0,data,"OK");
+        return new ResponseVO<>(200,data,"OK");
     }
 
     /**

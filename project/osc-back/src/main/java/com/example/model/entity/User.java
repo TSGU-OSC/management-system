@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  *
  * @author lwy
  */
-@TableName(value = "new_user")
+@TableName(value = "user")
 @Data
 public class User implements Serializable {
     /**

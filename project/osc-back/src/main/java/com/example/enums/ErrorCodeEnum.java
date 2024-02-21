@@ -6,7 +6,7 @@ package com.example.enums;
  * @author lwy
  */
 public enum ErrorCodeEnum {
-    SUCCESS(0, "OK", ""),
+    SUCCESS(200, "OK", ""),
     PARAMS_ERROR(40000, "请求参数错误", ""),
     NULL_ERROR(40001, "请求参数为空", ""),
     NOT_LOGIN(40100, "未登录", ""),

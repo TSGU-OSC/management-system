@@ -1,4 +1,4 @@
-create table osc.new_user
+create table osc.user
 (
     id           bigint auto_increment comment '用户id'
         primary key,

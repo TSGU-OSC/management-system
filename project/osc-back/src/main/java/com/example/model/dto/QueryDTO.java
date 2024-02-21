@@ -30,7 +30,7 @@ public class QueryDTO implements Serializable {
      * 姓别
      */
     @Schema(description = "姓别")
-    private int gender;
+    private Integer gender;
 
     /**
      * 手机号

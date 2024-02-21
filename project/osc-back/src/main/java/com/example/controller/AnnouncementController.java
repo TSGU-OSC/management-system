@@ -25,7 +25,7 @@ import java.util.List;
 @Tag(name = "公告管理接口")   // 接口分组名
 @Slf4j  // 日志
 @RestController
-@CrossOrigin  // 支持跨域
+// @CrossOrigin  // 支持跨域
 @RequestMapping("/announce")
 public class AnnouncementController {
 

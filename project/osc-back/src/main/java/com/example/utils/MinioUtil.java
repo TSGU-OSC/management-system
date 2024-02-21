@@ -70,6 +70,7 @@ public class MinioUtil {
             response.setHeader("Content-Disposition", "attachment;filename=" +
                     URLEncoder.encode(fileName.substring(fileName.lastIndexOf("/") + 1), "UTF-8"));
             response.setContentType("application/octet-stream");
+//            response.setContentType("img/jpg");
             response.setCharacterEncoding("UTF-8");
             ServletOutputStream servletOutputStream = response.getOutputStream();
             int len;
@@ -83,6 +84,7 @@ public class MinioUtil {
             return file;
         } catch (Exception e) {
             log.error("下载文件时出现异常: " + e);
+            log.error(fileName);
             throw new BusinessException(ErrorCodeEnum.SYSTEM_ERROR, "下载文件时出现异常");
         }
     }

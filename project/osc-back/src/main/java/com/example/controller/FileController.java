@@ -23,7 +23,7 @@ import java.io.InputStream;
  */
 @ApiSupport(author = "lwy") // 接口作者
 @Tag(name = "MinIO管理接口")   // 接口分组名
-@CrossOrigin
+// @CrossOrigin
 @RestController
 @RequestMapping("/file")
 public class FileController {
@@ -45,8 +45,8 @@ public class FileController {
      * 下载文件
      */
     @Operation(description = "下载文件")
-    @PostMapping("/download")
-    public ResponseVO<InputStream> downloadFile(@RequestParam @NotBlank String fileName, HttpServletResponse response) {
+    @GetMapping("/download")
+    public ResponseVO<InputStream> downloadFile(@NotBlank String fileName, HttpServletResponse response) {
         InputStream inputStream = fileService.downloadFile(fileName, response);
         return ResultUtils.success(inputStream);
     }

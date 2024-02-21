@@ -24,6 +24,7 @@ public class MyInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) {
+        log.info("收到请求");
         Object id = request.getSession().getAttribute("USER_LOGIN_STATE");
         if (id == null) {
             throw new BusinessException(ErrorCodeEnum.NOT_LOGIN, "未登录");
@@ -32,6 +33,7 @@ public class MyInterceptor implements HandlerInterceptor {
         BaseContext.setCurrentId((Long) id);
         return true;
     }
+
 
     /**
      * 接口访问结束后，从ThreadLocal中删除用户信息

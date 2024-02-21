@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "用户登录接口")   // 接口分组名
 @Slf4j  // 日志
 @RestController
-@CrossOrigin  // 支持跨域
+// @CrossOrigin  // 支持跨域
 @RequestMapping("/user")
 public class LoginController {
 

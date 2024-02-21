@@ -13,6 +13,7 @@ import com.example.model.entity.User;
 import com.example.service.UserService;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
@@ -82,13 +83,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public List<User> listUsers(QueryDTO queryDTO) {
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         // 非空查询
-        lambdaQueryWrapper.like(org.apache.commons.lang3.StringUtils.isNotEmpty(queryDTO.getCode()), User::getCode, queryDTO.getCode())
-                .like(org.apache.commons.lang3.StringUtils.isNotEmpty(queryDTO.getMajor()), User::getMajor, queryDTO.getMajor())
-                .like(org.apache.commons.lang3.StringUtils.isNotEmpty(queryDTO.getName()), User::getName, queryDTO.getName())
-                .like(org.apache.commons.lang3.StringUtils.isNotEmpty(queryDTO.getCity()), User::getCity, queryDTO.getCity())
-                .like(org.apache.commons.lang3.StringUtils.isNotEmpty(queryDTO.getAcademy()), User::getAcademy, queryDTO.getAcademy())
-                .like(org.apache.commons.lang3.StringUtils.isNotEmpty(queryDTO.getPhone()), User::getPhone, queryDTO.getPhone())
-                .like(org.apache.commons.lang3.StringUtils.isNotEmpty(queryDTO.getProvince()), User::getProvince, queryDTO.getProvince())
+        lambdaQueryWrapper.like(StringUtils.isNotEmpty(queryDTO.getCode()), User::getCode, queryDTO.getCode())
+                .like(StringUtils.isNotEmpty(queryDTO.getMajor()), User::getMajor, queryDTO.getMajor())
+                .like(StringUtils.isNotEmpty(queryDTO.getName()), User::getName, queryDTO.getName())
+                .like(StringUtils.isNotEmpty(queryDTO.getCity()), User::getCity, queryDTO.getCity())
+                .like(StringUtils.isNotEmpty(queryDTO.getAcademy()), User::getAcademy, queryDTO.getAcademy())
+                .like(StringUtils.isNotEmpty(queryDTO.getPhone()), User::getPhone, queryDTO.getPhone())
+                .like(StringUtils.isNotEmpty(queryDTO.getProvince()), User::getProvince, queryDTO.getProvince())
+                .like(queryDTO.getGender() != null, User::getGender, queryDTO.getGender())
                 .like(queryDTO.getDuty() != null, User::getDuty, queryDTO.getDuty())
                 .like(queryDTO.getClazz() != null, User::getClazz, queryDTO.getClazz())
                 .like(queryDTO.getStatus() != null, User::getStatus, queryDTO.getStatus())
@@ -115,7 +117,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Long currentUserId = BaseContext.getCurrentId();
         User currentUser = this.getById(currentUserId);
         // 学号不能修改
-        if (!Objects.equals(user.getCode(), this.getById(user.getId()).getCode())) {
+        if (user.getCode() != null && !Objects.equals(user.getCode(), this.getById(user.getId()).getCode())) {
             throw new BusinessException(ErrorCodeEnum.NO_AUTH, "学号不可修改");
         }
         // 如果是修改自己的信息
@@ -183,7 +185,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         safetyUser.setMajor(originUser.getMajor());
         safetyUser.setAcademy(originUser.getAcademy());
         safetyUser.setDuty(originUser.getDuty());
+        safetyUser.setRole(originUser.getRole());
         safetyUser.setIntroduction(originUser.getIntroduction());
+        safetyUser.setStatus(originUser.getStatus());
 
         return safetyUser;
     }
