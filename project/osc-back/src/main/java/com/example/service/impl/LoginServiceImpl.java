@@ -101,8 +101,8 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
         String verifyCode = captcha.text();
         // 获取验证码图片，构造响应结果
         VerifyCodeDTO verifyCodeDTO = new VerifyCodeDTO(verifyCodeKey, captcha.toBase64(), verifyCode);
-        // 存入Redis，设置120s过期
-        redisCache.setCacheObject(verifyCodeKey, verifyCode, 120, TimeUnit.SECONDS);
+        // 存入Redis，设置30s过期
+        redisCache.setCacheObject(verifyCodeKey, verifyCode, 30, TimeUnit.SECONDS);
 
         return verifyCodeDTO;
     }

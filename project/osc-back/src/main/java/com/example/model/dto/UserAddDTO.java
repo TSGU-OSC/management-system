@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -16,6 +17,7 @@ import java.io.Serializable;
 @Schema(description = "添加用户请求体")
 @Data
 public class UserAddDTO implements Serializable {
+    @Serial
     private static final long serialVersionUID = 504966900305465423L;
 
     // 姓名

@@ -60,7 +60,7 @@ public class MinioUtil {
     /**
      * 下载文件
      */
-    public InputStream downloadFile(String bucketName, String fileName, HttpServletResponse response) {
+    public void downloadFile(String bucketName, String fileName, HttpServletResponse response) {
         if (StringUtils.isBlank(fileName)) {
             throw new BusinessException(ErrorCodeEnum.NULL_ERROR, "参数为空");
         }
@@ -81,7 +81,6 @@ public class MinioUtil {
             servletOutputStream.flush();
             file.close();
             servletOutputStream.close();
-            return file;
         } catch (Exception e) {
             log.error("下载文件时出现异常: " + e);
             log.error(fileName);

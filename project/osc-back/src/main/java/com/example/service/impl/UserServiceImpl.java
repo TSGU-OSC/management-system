@@ -11,6 +11,8 @@ import com.example.model.dto.QueryDTO;
 import com.example.model.dto.UserAddDTO;
 import com.example.model.entity.User;
 import com.example.service.UserService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -76,13 +78,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     /**
      * 查询用户
      *
-     * @param queryDTO 查询用户DTO类
+     * @param queryDTO   查询用户DTO类
+     * @param pageNumber 页码
+     * @param pageSize   每页数目
      * @return 用户列表
      */
     @Override
-    public List<User> listUsers(QueryDTO queryDTO) {
-        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+    public PageInfo<User> listUsers(QueryDTO queryDTO,Integer pageNumber,Integer pageSize) {
+        // 开始分页查询
+        PageHelper.startPage(pageNumber, pageSize);
         // 非空查询
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(StringUtils.isNotEmpty(queryDTO.getCode()), User::getCode, queryDTO.getCode())
                 .like(StringUtils.isNotEmpty(queryDTO.getMajor()), User::getMajor, queryDTO.getMajor())
                 .like(StringUtils.isNotEmpty(queryDTO.getName()), User::getName, queryDTO.getName())
@@ -102,7 +108,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (this.getById(currentId).getRole() == DEFAULT_USER) {
             list = list.stream().map(this::getSafetyUser).toList();
         }
-        return list;
+        return new PageInfo<>(list);
     }
 
     /**

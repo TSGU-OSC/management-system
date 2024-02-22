@@ -38,6 +38,6 @@ public class GlobalExceptionHandler {
             resut = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
         }
         log.error("MethodArgumentNotValidException:", e);
-        return ResultUtils.error(ErrorCodeEnum.PARAMS_ERROR, resut, "请求参数错误");
+        return ResultUtils.error(ErrorCodeEnum.PARAMS_ERROR, "请求参数错误", resut);
     }
 }

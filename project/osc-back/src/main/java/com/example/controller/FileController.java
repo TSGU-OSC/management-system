@@ -46,9 +46,8 @@ public class FileController {
      */
     @Operation(description = "下载文件")
     @GetMapping("/download")
-    public ResponseVO<InputStream> downloadFile(@NotBlank String fileName, HttpServletResponse response) {
-        InputStream inputStream = fileService.downloadFile(fileName, response);
-        return ResultUtils.success(inputStream);
+    public void downloadFile(@NotBlank String fileName, HttpServletResponse response) {
+        fileService.downloadFile(fileName, response);
     }
 
     /**

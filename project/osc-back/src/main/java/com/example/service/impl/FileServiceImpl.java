@@ -50,11 +50,10 @@ public class FileServiceImpl extends ServiceImpl<UserMapper, User> implements Fi
      *
      * @param fileName 文件名
      * @param response HttpServletResponse
-     * @return InputStream
      */
     @Override
-    public InputStream downloadFile(String fileName, HttpServletResponse response) {
-        return minioUtil.downloadFile(minioProperty.getBucket(), fileName, response);
+    public void downloadFile(String fileName, HttpServletResponse response) {
+        minioUtil.downloadFile(minioProperty.getBucket(), fileName, response);
     }
 
     /**

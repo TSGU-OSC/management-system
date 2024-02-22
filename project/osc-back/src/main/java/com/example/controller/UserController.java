@@ -6,6 +6,7 @@ import com.example.model.dto.UserAddDTO;
 import com.example.model.entity.User;
 import com.example.model.vo.ResponseVO;
 import com.example.service.UserService;
+import com.github.pagehelper.PageInfo;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -62,13 +63,15 @@ public class UserController {
     /**
      * 查询用户
      *
-     * @param queryDTO 查询用户DTO类
+     * @param queryDTO   查询用户DTO类
+     * @param pageNumber 页码
+     * @param pageSize   每页数目
      * @return 用户列表
      */
     @PostMapping("/search")
     @Operation(description = "查询用户信息")  // 接口信息描述
-    public ResponseVO<List<User>> listUsers(@RequestBody QueryDTO queryDTO) {
-        List<User> userList = userService.listUsers(queryDTO);
+    public ResponseVO<PageInfo<User>> listUsers(@RequestBody QueryDTO queryDTO,Integer pageNumber,Integer pageSize) {
+        PageInfo<User> userList = userService.listUsers(queryDTO, pageNumber, pageSize);
         return ResultUtils.success(userList);
     }
 

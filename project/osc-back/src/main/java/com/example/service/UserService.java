@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.model.dto.QueryDTO;
 import com.example.model.dto.UserAddDTO;
 import com.example.model.entity.User;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -28,10 +29,12 @@ public interface UserService extends IService<User> {
     /**
      * 查询用户
      *
-     * @param queryDTO 查询用户DTO类
+     * @param queryDTO   查询用户DTO类
+     * @param pageNumber 页码
+     * @param pageSize   每页数目
      * @return 用户列表
      */
-    List<User> listUsers(QueryDTO queryDTO);
+    PageInfo<User> listUsers(QueryDTO queryDTO, Integer pageNumber, Integer pageSize);
 
     /**
      * 更改用户

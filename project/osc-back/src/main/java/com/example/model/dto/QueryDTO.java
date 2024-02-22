@@ -1,19 +1,23 @@
 package com.example.model.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
  * 查询用户DTO类
+ *
+ * @author lwy
  */
 @Schema(description = "查询用户请求体")
 @Data
 public class QueryDTO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 5231231861777401881L;
-
     /**
      * 学号
      */

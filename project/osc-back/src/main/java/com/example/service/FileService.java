@@ -27,9 +27,8 @@ public interface FileService extends IService<User> {
      *
      * @param fileName 文件名
      * @param response HttpServletResponse
-     * @return InputStream
      */
-    InputStream downloadFile(String fileName, HttpServletResponse response);
+    void downloadFile(String fileName, HttpServletResponse response);
 
     /**
      * 删除文件
