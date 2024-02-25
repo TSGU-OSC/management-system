@@ -70,7 +70,6 @@ public class MinioUtil {
             response.setHeader("Content-Disposition", "attachment;filename=" +
                     URLEncoder.encode(fileName.substring(fileName.lastIndexOf("/") + 1), "UTF-8"));
             response.setContentType("application/octet-stream");
-//            response.setContentType("img/jpg");
             response.setCharacterEncoding("UTF-8");
             ServletOutputStream servletOutputStream = response.getOutputStream();
             int len;
