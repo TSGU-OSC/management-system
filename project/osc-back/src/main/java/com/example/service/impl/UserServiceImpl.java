@@ -56,6 +56,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         if (count > 0) {
             throw new BusinessException(ErrorCodeEnum.PARAMS_ERROR, "学号重复");
         }
+        // 设置默认密码
+        if(StringUtils.isBlank(userAddDTO.getPassword())){
+            userAddDTO.setPassword("12345678");
+        }
         // 加密密码
         String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userAddDTO.getPassword()).getBytes());
         // 建立用户实体

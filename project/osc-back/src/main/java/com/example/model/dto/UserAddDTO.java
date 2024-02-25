@@ -36,9 +36,7 @@ public class UserAddDTO implements Serializable {
     private String code;
 
     // 密码
-    @Schema(description = "密码（不能为空或空字符，长度大于6）")
-    @NotBlank(message = "密码不能为空字符")
-    @Length(min = 6, message = "密码需大于六位")
+    @Schema(description = "密码（默认12345678）")
     private String password;
 
     // 班级
