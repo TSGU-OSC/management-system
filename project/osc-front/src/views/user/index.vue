@@ -53,6 +53,12 @@
             </el-select>
           </el-col>
           <el-col :span="5">
+            <el-select v-model="queryInfo.department" placeholder="请选择部门">
+              <el-option v-for="item in optionsDepartment" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="5">
             <el-select v-model="queryInfo.role" placeholder="请选择角色">
               <el-option v-for="item in optionsRole" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
@@ -114,6 +120,13 @@
               <span  v-else-if="scope.row.duty === 4">社长</span>
             </template>
           </el-table-column>
+          <el-table-column prop="department" label="部门">
+            <template v-slot:default="scope">
+              <span v-if="scope.row.department === 0">运营部</span>
+              <span  v-else-if="scope.row.department === 1">技术部</span>
+              <span  v-else-if="scope.row.department === 2">宣传部</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="role" label="角色">
             <template v-slot:default="scope">
               <span v-if="scope.row.role === 0">普通成员</span>
@@ -166,7 +179,7 @@
           <el-input v-model="userForm.name"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="userForm.password" show-password></el-input>
+          <el-input v-model="userForm.password" show-password placeholder="默认为 12345678"	></el-input>
         </el-form-item>
         <el-form-item label="性别" prop="gender">
           <el-radio v-model="userForm.gender" label="1">男</el-radio>
@@ -187,6 +200,12 @@
         <el-form-item label="职位" prop="duty">
           <el-select v-model="userForm.duty" placeholder="请选择职位">
             <el-option v-for="item in optionsDuty" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="部门" prop="department">
+          <el-select v-model="userForm.department" placeholder="请选择部门">
+            <el-option v-for="item in optionsDepartment" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
@@ -240,6 +259,12 @@
         <el-form-item label="职位" prop="duty">
           <el-select v-model="editForm.duty" placeholder="请选择职位">
             <el-option v-for="item in optionsDuty" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="部门" prop="department">
+          <el-select v-model="editForm.department" placeholder="请选择部门">
+            <el-option v-for="item in optionsDepartment" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
@@ -298,6 +323,21 @@ export default {
         label: '社长'
       }
       ],
+      // 部门选项
+      optionsDepartment: [{
+        value: '0',
+        label: '运营部'
+      }, {
+        value: '1',
+        label: '技术部'
+      }, {
+        value: '2',
+        label: '宣传部'
+      },{
+        value: null,
+        label: '无'
+      }
+      ],
       // 角色选项
       optionsRole: [{
         value: '0',
@@ -337,6 +377,7 @@ export default {
         major: "",
         academy: "",
         duty: "",
+        department: "",
         status: "",
         role: ""
       },
@@ -351,6 +392,7 @@ export default {
         major: "",
         academy: "",
         duty: "",
+        department: "",
         role: "",
       },
       editDialogVisible: false, // 控制修改用户信息对话框是否显示
@@ -368,6 +410,7 @@ export default {
         province: "",
         city: "",
         duty: "",
+        department: "",
         role: "",
         status: "",
       },
@@ -384,6 +427,7 @@ export default {
         province: "",
         city: "",
         duty: "",
+        department: "",
         role: "",
         status: "",
       },
