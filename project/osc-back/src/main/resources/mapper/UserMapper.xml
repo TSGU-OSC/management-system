@@ -18,6 +18,7 @@
         <result property="major" column="major" jdbcType="VARCHAR"/>
         <result property="academy" column="academy" jdbcType="VARCHAR"/>
         <result property="duty" column="duty" jdbcType="TINYINT"/>
+        <result property="department" column="department" jdbcType="TINYINT"/>
         <result property="introduction" column="introduction" jdbcType="VARCHAR"/>
         <result property="idCard" column="ID_card" jdbcType="VARCHAR"/>
         <result property="status" column="status" jdbcType="TINYINT"/>
@@ -33,7 +34,7 @@
         id,`code`,`password`,
         avator,`name`,gender,phone,
         province,city,clazz,
-        major,academy,duty,
+        major,academy,duty,department,
         introduction,ID_card,`status`,
         is_deleted,create_time,update_time,
         create_user,update_user,`role`

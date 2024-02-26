@@ -122,6 +122,13 @@ public class User implements Serializable {
     private Integer duty;
 
     /**
+     * 部门（0-运营部，1-技术部，2-宣传部）
+     */
+    @Schema(description = " 部门（0-运营部，1-技术部，2-宣传部）")
+    @TableField(value = "department")
+    private Integer department;
+
+    /**
      * 个人介绍
      */
     @Schema(description = "个人介绍")
