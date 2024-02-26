@@ -1,7 +1,6 @@
 package com.example.model.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.io.Serial;
@@ -77,6 +76,12 @@ public class QueryDTO implements Serializable {
      */
     @Schema(description = "职位 （0成员 1副部长 2 部长 3副社长 4社长）")
     private Integer duty;
+
+    /**
+     * 部门（0-运营部，1-技术部，2-宣传部）
+     */
+    @Schema(description = " 部门（0-运营部，1-技术部，2-宣传部）")
+    private Integer department;
 
     /**
      * 状态（0正常 1封号）

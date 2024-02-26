@@ -13,6 +13,7 @@ create table user
     major        varchar(10)                                                                         not null comment '专业',
     academy      varchar(15)                                                                         not null comment '学院',
     duty         tinyint      default 0                                                              not null comment '职位（0成员 1副部长 2 部长 3副社长 4社长）',
+    department   tinyint                                                                             null comment '部门（0-运营部，1-技术部，2-宣传部）',
     introduction text                                                                                null comment '个人介绍',
     ID_card      varchar(18)                                                                         null comment '身份证号码',
     status       tinyint(1)   default 0                                                              not null comment '状态（0正常 1封号）',

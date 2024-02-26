@@ -5,8 +5,6 @@ import com.example.model.entity.User;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.InputStream;
-
 /**
  * 文件服务类
  *

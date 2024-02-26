@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static com.example.constant.UserConstant.*;
+
 /**
  * 用户服务实现类
  *
@@ -56,7 +57,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new BusinessException(ErrorCodeEnum.PARAMS_ERROR, "学号重复");
         }
         // 设置默认密码
-        if(StringUtils.isBlank(userAddDTO.getPassword())){
+        if (StringUtils.isBlank(userAddDTO.getPassword())) {
             userAddDTO.setPassword("12345678");
         }
         // 加密密码
@@ -71,6 +72,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         user.setMajor(userAddDTO.getMajor());
         user.setAcademy(userAddDTO.getAcademy());
         user.setDuty(userAddDTO.getDuty());
+        user.setDepartment(userAddDTO.getDepartment());
         user.setRole(userAddDTO.getRole());
         // 存储用户信息
         this.save(user);
@@ -87,7 +89,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return 用户列表
      */
     @Override
-    public PageInfo<User> listUsers(QueryDTO queryDTO,Integer pageNumber,Integer pageSize) {
+    public PageInfo<User> listUsers(QueryDTO queryDTO, Integer pageNumber, Integer pageSize) {
         // 开始分页查询
         PageHelper.startPage(pageNumber, pageSize);
         // 非空查询
@@ -101,6 +103,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .like(StringUtils.isNotEmpty(queryDTO.getProvince()), User::getProvince, queryDTO.getProvince())
                 .like(queryDTO.getGender() != null, User::getGender, queryDTO.getGender())
                 .like(queryDTO.getDuty() != null, User::getDuty, queryDTO.getDuty())
+                .like(queryDTO.getDepartment() != null, User::getDepartment, queryDTO.getDepartment())
                 .like(queryDTO.getClazz() != null, User::getClazz, queryDTO.getClazz())
                 .like(queryDTO.getStatus() != null, User::getStatus, queryDTO.getStatus())
                 .like(queryDTO.getRole() != null, User::getRole, queryDTO.getRole());
@@ -131,15 +134,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         // 如果是修改自己的信息
         if (currentUserId.equals(user.getId())) {
-            // 超级管理员才能修改自己的 role status duty
+            // 超级管理员才能修改自己的 role status duty department
             if (currentUser.getRole() != SUPER_ADMIN_USER &&
                     (!currentUser.getRole().equals(user.getRole()) ||
                             !currentUser.getStatus().equals(user.getStatus()) ||
-                            !currentUser.getDuty().equals(user.getDuty()))) {
+                            !currentUser.getDuty().equals(user.getDuty()) ||
+                            !currentUser.getDepartment().equals(user.getDepartment()))) {
                 throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
             }
         } else {  // 如果不是修改自己的信息
-            // 超管才能修改他人的 role status duty ，除非修改者的权限高于被修改者，
+            // 超管才能修改他人的 role status duty department ，除非修改者的权限高于被修改者，
             // 并且修改者不能将被修改者的权限改至高于等于修改者的权限
             if (currentUser.getRole() != SUPER_ADMIN_USER &&
                     currentUser.getRole() <=
@@ -194,6 +198,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         safetyUser.setMajor(originUser.getMajor());
         safetyUser.setAcademy(originUser.getAcademy());
         safetyUser.setDuty(originUser.getDuty());
+        safetyUser.setDepartment(originUser.getDepartment());
         safetyUser.setRole(originUser.getRole());
         safetyUser.setIntroduction(originUser.getIntroduction());
         safetyUser.setStatus(originUser.getStatus());
