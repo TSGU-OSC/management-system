@@ -146,6 +146,7 @@
               <span v-if="scope.row.department === 0">运营部</span>
               <span  v-else-if="scope.row.department === 1">技术部</span>
               <span  v-else-if="scope.row.department === 2">宣传部</span>
+              <span  v-else-if="scope.row.department === 3">其它</span>
             </template>
           </el-table-column>
           <el-table-column prop="role" label="角色">
@@ -308,6 +309,7 @@
 <script>
 import {outputExcel, userAdd, userDelete, userList, userUpdate} from "@/api/user";
 import row from "element-ui/packages/row";
+import defaultAvatar from "@/assets/img/avator.jpg";
 
 export default {
   computed: {
@@ -355,8 +357,8 @@ export default {
         value: '2',
         label: '宣传部'
       },{
-        value: null,
-        label: '无'
+        value: '3',
+        label: '其它'
       }
       ],
       // 角色选项
@@ -481,7 +483,7 @@ export default {
             this.userList = res.data.data.list;
             this.userList.forEach(item => {
               let fileName = item.avator;
-              item.avator = "/file/download?fileName=" + fileName
+              item.avator = fileName===''?defaultAvatar:"/file/download?fileName=" + fileName
             })
           } else {
             this.$message.error(res.data.description);

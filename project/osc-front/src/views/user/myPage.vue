@@ -71,28 +71,28 @@
               </el-descriptions-item>
               <el-descriptions-item>
                 <template slot="label">
-                  <i class="el-icon-mobile-phone"></i>
+                  <i class="el-icon-s-home"></i>
                   学院
                 </template>
                 {{ user.academy }}
               </el-descriptions-item>
               <el-descriptions-item>
                 <template slot="label">
-                  <i class="el-icon-mobile-phone"></i>
+                  <i class="el-icon-s-management"></i>
                   专业
                 </template>
                 {{ user.major }}
               </el-descriptions-item>
               <el-descriptions-item>
                 <template slot="label">
-                  <i class="el-icon-mobile-phone"></i>
+                  <i class="el-icon-reading"></i>
                   班级
                 </template>
                 {{ user.clazz }}
               </el-descriptions-item>
               <el-descriptions-item>
                 <template slot="label">
-                  <i class="el-icon-office-building"></i>
+                  <i class="el-icon-suitcase-1"></i>
                   职位
                 </template>
                 {{ user.duty===0?'成员':user.duty===1?'副部长':user.duty===2?'部长':user.duty===3?'副社长':'社长' }}
@@ -102,18 +102,18 @@
                   <i class="el-icon-office-building"></i>
                   部门
                 </template>
-                {{ user.department===0?'运营部':user.department===1?'技术部':'宣传部' }}
+                {{ user.department===0?'运营部':user.department===1?'技术部':user.department===2?'宣传部':'其它' }}
               </el-descriptions-item>
               <el-descriptions-item>
                 <template slot="label">
-                  <i class="el-icon-office-building"></i>
+                  <i class="el-icon-s-custom"></i>
                   角色
                 </template>
                 {{ user.role===0?'0普通成员':user.role===1?'管理员':'超管' }}
               </el-descriptions-item>
               <el-descriptions-item>
                 <template slot="label">
-                  <i class="el-icon-magic-stick"></i>
+                  <i class="el-icon-collection-tag"></i>
                   个人介绍
                 </template>
                 {{ user.introduction }}
@@ -189,11 +189,12 @@
 <script>
 
 import {currentUser, userUpdate} from "@/api/user";
+import defaultAvatar from "@/assets/img/avator.jpg";
 
 export default {
   data() {
     return {
-      avatorUrl: "/file/download?fileName=" + this.$store.state.user.avator,
+      avatorUrl: this.$store.state.user.avator===''?defaultAvatar:"/file/download?fileName=" + this.$store.state.user.avator,
       user: this.$store.state.user,
       editDialogVisible: false, // 控制修改用户信息对话框是否显示
       // 性别选项

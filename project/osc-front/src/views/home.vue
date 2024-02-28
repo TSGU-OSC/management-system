@@ -12,7 +12,7 @@
           <div class="demo-fit">
             <el-dropdown>
             <div class="block">
-              <el-avatar shape="square" size="large" fit="cover" :src="this.avatorUrl" />
+              <el-avatar shape="square" size="large" fit="fill" :src="this.avatorUrl" />
             </div>
               <div>{{ this.$store.state.user.name }}</div>
               <template>
@@ -48,11 +48,12 @@
 
 <script>
 import {currentUser, logOut} from "@/api/user";
+import defaultAvatar from "@/assets/img/avator.jpg";
 export default {
   name: "Home",
   data() {
     return {
-      avatorUrl: "/file/download?fileName=" + this.$store.state.user.avator,
+      avatorUrl: this.$store.state.user.avator===''?defaultAvatar:"/file/download?fileName=" + this.$store.state.user.avator,
       navList: [
         {name: "/index", title: "首页", icon: "el-icon-s-home"},
         {name: "/myPage", title: "个人", icon: "el-icon-setting"},
