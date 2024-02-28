@@ -1,6 +1,5 @@
 package com.example.model.dto;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -59,8 +58,8 @@ public class UserAddDTO implements Serializable {
     @Schema(description = "职位（（0成员 1副部长 2 部长 3副社长 4社长） 默认为0）")
     private Integer duty;
 
-    // 部门（0-运营部，1-技术部，2-宣传部）
-    @Schema(description = " 部门（0-运营部，1-技术部，2-宣传部）")
+    // 部门（0-运营部，1-技术部，2-宣传部，3-其它-默认）
+    @Schema(description = " 部门（0-运营部，1-技术部，2-宣传部，3-其它-默认）")
     private Integer department;
 
     // 角色（0普通成员，1管理员，2超管）

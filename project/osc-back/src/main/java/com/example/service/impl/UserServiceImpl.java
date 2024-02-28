@@ -112,7 +112,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 如果用户权限低，对查询到的用户进行脱敏
         Long currentId = BaseContext.getCurrentId();
         if (this.getById(currentId).getRole() == DEFAULT_USER) {
-            list = list.stream().map(this::getSafetyUser).toList();
+//            list = list.stream().map(this::getSafetyUser).toList();
+                list.forEach(this::getSafetyUser);
         }
         return new PageInfo<>(list);
     }

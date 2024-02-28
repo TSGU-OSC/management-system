@@ -7,7 +7,7 @@ spring:
     username: root
     password: 2469
   session:
-    timeout: 864000000
+    timeout: 1440m  # 24h
   servlet:
     multipart:
       max-file-size: 5000GB  # 最大文件大小
@@ -17,7 +17,7 @@ spring:
       host: 127.0.0.1
       database: 2
       # 连接超时时间
-      timeout: 10000000s
+      timeout: 86400000s  # 24h
       lettuce:
         pool:
           # 连接池中的最小空闲连接
@@ -47,9 +47,9 @@ minio: # MinIO连接信息
   # 上传的 Bucket
   bucket: data
   # Access Key
-  accessKey: qpOxDTgSUDyWk1sUOiHO
+  accessKey: Jm8SSL608fU4ILVjAbEf
   # Secret Key
-  secretKey: A02ZMIWO9OKe57EcbMNcSC5kmO6gAu7sL9Yl55aJ
+  secretKey: ox6QF3u1UbeQIhZfZWRKnuenLJM5CfWUrYHeT7Yq
 server:
   port: 8080  # 端口号
   tomcat:

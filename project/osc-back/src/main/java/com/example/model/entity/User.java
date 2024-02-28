@@ -72,8 +72,6 @@ public class User implements Serializable {
      */
     @Schema(description = "手机号")
     @TableField(value = "phone")
-    @NotBlank(message = "密码不能为空字符")
-    @Length(min = 6, message = "密码需大于六位")
     private String phone;
 
     /**
@@ -119,12 +117,13 @@ public class User implements Serializable {
      */
     @Schema(description = " 职位（0成员 1副部长 2 部长 3副社长 4社长）")
     @TableField(value = "duty")
+    @NotBlank(message = "职责不能为空")
     private Integer duty;
 
     /**
-     * 部门（0-运营部，1-技术部，2-宣传部）
+     * 部门（0-运营部，1-技术部，2-宣传部，3-其它-默认）
      */
-    @Schema(description = " 部门（0-运营部，1-技术部，2-宣传部）")
+    @Schema(description = " 部门（0-运营部，1-技术部，2-宣传部，3-其它-默认）")
     @TableField(value = "department")
     private Integer department;
 

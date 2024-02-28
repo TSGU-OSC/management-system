@@ -20,8 +20,6 @@ public interface UserService extends IService<User> {
 
     /**
      * 添加用户
-     *
-     * @return
      */
     long addUser(UserAddDTO userAddDTO);
 

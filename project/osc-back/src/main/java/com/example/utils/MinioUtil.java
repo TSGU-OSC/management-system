@@ -82,8 +82,7 @@ public class MinioUtil {
             file.close();
             servletOutputStream.close();
         } catch (Exception e) {
-            log.error("下载文件时出现异常: " + e);
-            log.error(fileName);
+            log.error("文件名: "+ fileName+"下载文件时出现异常: " + e);
             throw new BusinessException(ErrorCodeEnum.SYSTEM_ERROR, "下载文件时出现异常");
         }
     }
