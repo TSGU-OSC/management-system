@@ -7,15 +7,22 @@
 
       <span class="head-title">开源鸿蒙社团成员管理系统</span>
 
-
-      <div style="float: right;border: 2px ;">
+      <div style="float: right;border: 2px;">
         <div>
-          <div>{{ this.$store.state.user.name }}</div>
-          <el-tooltip class="item" effect="dark" content="退出登录" placement="bottom">
-            <el-button type="danger" style="color: #222; float: right" size="mini" icon="el-icon-switch-button"
-                       @click="logout"
-            ></el-button>
-          </el-tooltip>
+          <div class="demo-fit">
+            <el-dropdown>
+            <div class="block">
+              <el-avatar shape="square" size="large" fit="cover" :src="this.avatorUrl" />
+            </div>
+              <div>{{ this.$store.state.user.name }}</div>
+              <template>
+                <el-dropdown-menu>
+                  <el-dropdown-item @click.native="myPage">个人主页</el-dropdown-item>
+                  <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </div>
         </div>
       </div>
 
@@ -45,11 +52,13 @@ export default {
   name: "Home",
   data() {
     return {
+      avatorUrl: "/file/download?fileName=" + this.$store.state.user.avator,
       navList: [
         {name: "/index", title: "首页", icon: "el-icon-s-home"},
+        {name: "/myPage", title: "个人", icon: "el-icon-setting"},
         {name: "/user", title: "用户管理", icon: "el-icon-s-custom"},
-        {name: "/dictionary", title: "字典管理", icon: "el-icon-bank-card"},
-        {name: "/announcement", title: "公告管理", icon: "el-icon-s-comment"},
+        // {name: "/dictionary", title: "字典管理", icon: "el-icon-bank-card"},
+        // {name: "/announcement", title: "公告管理", icon: "el-icon-s-comment"},
       ],
     };
   },
@@ -73,9 +82,10 @@ export default {
           });
         }
       })
-
       this.$router.push('/login');
-
+    },
+    myPage() {
+      this.$router.push('/myPage');
     },
     getUserInfo() {
       currentUser().then(res=>{
@@ -106,12 +116,18 @@ export default {
   font-weight: bold;
 }
 
-.bottom {
-  clear: both;
-  text-align: center;
-}
-
 .item {
   margin: 4px;
+}
+.demo-fit {
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+}
+.demo-fit .block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
 }
 </style>

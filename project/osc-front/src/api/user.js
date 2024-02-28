@@ -87,14 +87,11 @@ export function userDelete(id) {
   })
 }
 
-//下载文件
-export function downloadFile(data) {
+// 导出Excel
+export function outputExcel() {
   return request({
-    url: '/file/download',
-    responseType: "blob",
-    method: 'post',
-    params:{
-      fileName: data
-    }
+    url: '/excel/output',
+    method: 'get',
+    responseType: 'blob',// 服务器响应的数据类型
   })
 }
