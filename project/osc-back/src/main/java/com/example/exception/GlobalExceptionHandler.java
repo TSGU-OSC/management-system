@@ -30,14 +30,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseVO<Object> argumentExceptionHandler(MethodArgumentNotValidException e) {
-        String resut = "";
+        String result = "";
         //查看MethodArgumentNotValidException类可以发现,异常的信息在BindingResult下List<ObjectError>中
         //我这里取第一条的信息进行展示,可根据实际项目情况自行修改
         //getDefaultMessage()获取的信息就是我们RequestVerificationCode中的message部分
         if (!e.getBindingResult().getAllErrors().isEmpty()) {
-            resut = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+            result = e.getBindingResult().getAllErrors().get(0).getDefaultMessage();
         }
         log.error("MethodArgumentNotValidException:", e);
-        return ResultUtils.error(ErrorCodeEnum.PARAMS_ERROR, "请求参数错误", resut);
+        return ResultUtils.error(ErrorCodeEnum.PARAMS_ERROR, "请求参数错误", result);
     }
 }

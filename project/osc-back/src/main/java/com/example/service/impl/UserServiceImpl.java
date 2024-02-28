@@ -154,7 +154,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 权限足够，可以修改
         this.updateById(user);
         // 获取更改后的用户
-        return this.getById(user.getId());
+        User result = this.getById(user.getId());
+        if (currentUser.getRole() <= DEFAULT_USER) {
+            return this.getSafetyUser(result);
+        }
+        return result;
     }
 
     /**

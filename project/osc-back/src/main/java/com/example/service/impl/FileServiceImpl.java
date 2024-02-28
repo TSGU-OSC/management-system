@@ -38,8 +38,10 @@ public class FileServiceImpl extends ServiceImpl<UserMapper, User> implements Fi
     @Override
     public String uploadFile(MultipartFile file, Long id) {
         String fileName = minioUtil.minioUpload(file, minioProperty.getBucket());
-        //同时将头像文件名存储到数据库中
+        // 同时删除原头像文件
         User user = userService.getById(id);
+        deleteFile(user.getAvator(),user);
+        // 同时将头像文件名存储到数据库中
         user.setAvator(fileName);
         userService.updateUser(user);
         return fileName;
