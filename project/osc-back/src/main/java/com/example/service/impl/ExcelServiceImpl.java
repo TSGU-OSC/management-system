@@ -45,6 +45,12 @@ public class ExcelServiceImpl extends ServiceImpl<UserMapper, User> implements E
      */
     @Override
     public void excelInput(@NotNull List<ExcelInput> cachedDataList) {
+        // 鉴权
+        Long currentId = BaseContext.getCurrentId();
+        User currentUser = userService.getById(currentId);
+        if(currentUser.getRole()<=DEFAULT_USER){
+            throw new BusinessException(ErrorCodeEnum.NO_AUTH,"权限不足");
+        }
         List<User> users = new ArrayList<>();
         cachedDataList.forEach((excelInput -> {
             // 学号不可重复
@@ -82,6 +88,12 @@ public class ExcelServiceImpl extends ServiceImpl<UserMapper, User> implements E
      */
     @Override
     public void excelOutput(HttpServletResponse response) {
+        // 鉴权
+        Long currentId = BaseContext.getCurrentId();
+        User currentUser = userService.getById(currentId);
+        if(currentUser.getRole()<=DEFAULT_USER){
+            throw new BusinessException(ErrorCodeEnum.NO_AUTH,"权限不足");
+        }
         try {
             response.setContentType("application/vnd.ms-excel");// 设置文本内省
             response.setCharacterEncoding("utf-8");// 设置字符编码
@@ -93,8 +105,7 @@ public class ExcelServiceImpl extends ServiceImpl<UserMapper, User> implements E
                     .excludeColumnFiledNames(excludeColumnFiledNames).sheet("用户信息").doWrite(() -> {
                         List<User> userList = this.list();
                         // 如果用户权限低，对查询到的用户进行脱敏
-                        Long currentId = BaseContext.getCurrentId();
-                        if (this.getById(currentId).getRole() == DEFAULT_USER) {
+                        if (currentUser.getRole() == DEFAULT_USER) {
                             userList = userList.stream().map(userService::getSafetyUser).toList();
                         }
                         return userList;
