@@ -4,48 +4,48 @@
     <el-row>
       <el-col :span="24">
         <el-row :gutter="25">
-          <el-col :span="4">
+          <el-col :span="4" style="margin-bottom: 20px">
             <!--搜索区域-->
             <el-input placeholder="请输入成员姓名" v-model="queryInfo.name" clearable @clear="getUserList">
             </el-input>
           </el-col>
-          <el-col :span="5">
+          <el-col :span="5" style="margin-bottom: 20px">
             <el-input placeholder="请输入成员学号" v-model="queryInfo.code" clearable @clear="getUserList">
             </el-input>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="4" style="margin-bottom: 20px">
             <el-input placeholder="请输入成员班级" v-model="queryInfo.clazz" clearable @clear="getUserList">
             </el-input>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="4" style="margin-bottom: 20px">
             <el-input placeholder="请输入成员专业" v-model="queryInfo.major" clearable @clear="getUserList">
             </el-input>
           </el-col>
-          <el-col :span="5">
+          <el-col :span="5" style="margin-bottom: 20px">
             <el-input placeholder="请输入成员学院" v-model="queryInfo.academy" clearable @clear="getUserList">
             </el-input>
           </el-col>
-          <el-col :span="5">
+          <el-col :span="5" style="margin-bottom: 20px">
             <el-input placeholder="请输入成员手机号" v-model="queryInfo.phone" clearable @clear="getUserList">
             </el-input>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="4" style="margin-bottom: 20px">
             <el-input placeholder="请输入成员所在省" v-model="queryInfo.province" clearable
                       @clear="getUserList">
             </el-input>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="4" style="margin-bottom: 20px">
             <el-input placeholder="请输入成员所在市" v-model="queryInfo.city" clearable @clear="getUserList">
             </el-input>
           </el-col>
-        </el-row>
-        <el-row :gutter="25">
-          <el-col :span="5">
+          <el-col :span="5" style="margin-bottom: 20px">
             <el-select v-model="queryInfo.gender" placeholder="请选择性别">
               <el-option v-for="item in optionsGender" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </el-col>
+        </el-row>
+        <el-row :gutter="25" style="margin-bottom: 20px">
           <el-col :span="5">
             <el-select v-model="queryInfo.duty" placeholder="请选择职位">
               <el-option v-for="item in optionsDuty" :key="item.value" :label="item.label" :value="item.value">
@@ -76,12 +76,33 @@
           <el-col :span="2.5">
             <el-button type="primary" @click="resetUserList">刷新</el-button>
           </el-col>
-
         </el-row>
 
         <el-row :gutter="25">
-          <el-col :span="2.5">
+          <el-col :span="2.5" style="margin-bottom: 10px">
             <el-button type="primary" @click="addDialogVisible = true">添加用户</el-button>
+          </el-col>
+          <el-col :span="2.5" :offset="19" style="margin-bottom: 10px">
+            <el-dropdown>
+            <el-button type="success">Excel</el-button>
+              <template>
+                <el-dropdown-menu>
+                  <el-dropdown-item>
+                    <el-upload
+                      action="/excel/input"
+                      accept=".xlsx,.xls"
+                      :show-file-list="false"
+                      :on-success="uploadSuccess"
+                      :on-error="uploadError">
+                      <el-button size="small">点击上传</el-button>
+                    </el-upload>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <el-button size="small" @click="excelOutput">点击导出</el-button>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
           </el-col>
         </el-row>
       </el-col>
@@ -125,6 +146,7 @@
               <span v-if="scope.row.department === 0">运营部</span>
               <span  v-else-if="scope.row.department === 1">技术部</span>
               <span  v-else-if="scope.row.department === 2">宣传部</span>
+              <span  v-else-if="scope.row.department === 3">其它</span>
             </template>
           </el-table-column>
           <el-table-column prop="role" label="角色">
@@ -285,8 +307,9 @@
 </template>
 
 <script>
-import {userAdd, userDelete, userList, userUpdate} from "@/api/user";
+import {outputExcel, userAdd, userDelete, userList, userUpdate} from "@/api/user";
 import row from "element-ui/packages/row";
+import defaultAvatar from "@/assets/img/avator.jpg";
 
 export default {
   computed: {
@@ -334,8 +357,8 @@ export default {
         value: '2',
         label: '宣传部'
       },{
-        value: null,
-        label: '无'
+        value: '3',
+        label: '其它'
       }
       ],
       // 角色选项
@@ -460,7 +483,7 @@ export default {
             this.userList = res.data.data.list;
             this.userList.forEach(item => {
               let fileName = item.avator;
-              item.avator = "/file/download?fileName=" + fileName
+              item.avator = fileName===''?defaultAvatar:"/file/download?fileName=" + fileName
             })
           } else {
             this.$message.error(res.data.description);
@@ -547,8 +570,7 @@ export default {
           this.$message.error("修改用户异常");
           console.loge(err);
         });
-    }
-    ,
+    },
     // 根据ID删除对应的用户信息
     async removeUserById(id) {
       // 弹框 询问用户是否删除
@@ -582,24 +604,38 @@ export default {
             console.log(err);
           });
       }
+    },
+    excelOutput(){
+      outputExcel()
+        .then((res) => {
+          const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' }) // 构造一个blob对象来处理数据，并设置文件类型
+          const href = URL.createObjectURL(blob) //创建新的URL表示指定的blob对象
+          const a = document.createElement('a') //创建a标签
+          a.style.display = 'none'
+          a.href = href // 指定下载链接
+          a.download = 'userInfo' //指定下载文件名
+          a.click() //触发下载
+          URL.revokeObjectURL(a.href) //释放URL对象
+        })
+        .catch((err) => {
+          this.$message.error("Excel导出异常");
+          console.log(err);
+        });
+    },
+    uploadSuccess(res){
+      if (res.code===200){
+        this.$message.success("Excel导入成功")
+      }else {
+        this.$message.error("Excel导入异常: "+res.description);
+      }
+    },
+    uploadError(err){
+      this.$message.error("Excel导入异常");
+      console.log("Excel导入异常",err)
     }
-    ,
-  }
-  ,
+  },
 };
 </script>
 
 <style>
-.el-row {
-  margin-bottom: 20px;
-}
-
-.el-col {
-  border-radius: 4px;
-}
-
-.el-card {
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1) !important;
-  height: 60pt;
-}
 </style>

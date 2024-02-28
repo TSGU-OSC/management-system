@@ -35,42 +35,32 @@ export default new Router({
       path: '/home',
       name: 'Home',
       component: Home,
-      meta: {
-        requireAuth: true
-      },
       redirect: '/index',
       children: [
         {
           path: '/index',
           name: 'Index',
-          component: () => import('@/views/home/index'),
-          meta: {
-            requireAuth: true
-          }
+          component: () => import('@/views/home/index')
         },
         {
           path: '/user',
           name: 'User',
-          component: () => import('@/views/user/index'),
-          meta: {
-            requireAuth: true
-          }
+          component: () => import('@/views/user/index')
+        },
+        {
+          path: '/myPage',
+          name: 'MyPage',
+          component: () => import('@/views/user/myPage')
         },
         {
           path: '/dictionary',
           name: 'Dictionary',
-          component: () => import('@/views/dictionary/index'),
-          meta: {
-            requireAuth: true
-          }
+          component: () => import('@/views/dictionary/index')
         },
         {
           path: '/announcement',
           name: 'Announcement',
-          component: () => import('@/views/announcement/index'),
-          meta: {
-            requireAuth: true
-          }
+          component: () => import('@/views/announcement/index')
         }
 
       ]
@@ -84,9 +74,6 @@ export default new Router({
     {
       path: '/404',
       name: 'NotFound',
-      meta: {
-        requireAuth: false
-      },
       component: () => import('@/views/NotFound/index')
     },
     // 所有未定义路由，全部重定向到404页
