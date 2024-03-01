@@ -41,7 +41,6 @@ public class User implements Serializable {
     @Schema(description = "密码")
     @TableField(value = "password")
     @NotBlank(message = "密码不能为空字符")
-    @Length(min = 6, message = "密码需大于六位")
     private String password;
 
     /**
