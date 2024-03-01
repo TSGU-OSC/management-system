@@ -61,11 +61,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             userAddDTO.setPassword("12345678");
         }
         // 加密密码
-        String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userAddDTO.getPassword()).getBytes());
+//        String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userAddDTO.getPassword()).getBytes());
         // 建立用户实体
         User user = new User();
         user.setCode(userAddDTO.getCode());
-        user.setPassword(encryptPassword);
+        user.setPassword(userAddDTO.getPassword());
         user.setName(userAddDTO.getName());
         user.setGender(userAddDTO.getGender());
         user.setClazz(userAddDTO.getClazz());
@@ -113,7 +113,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Long currentId = BaseContext.getCurrentId();
         if (this.getById(currentId).getRole() == DEFAULT_USER) {
 //            list = list.stream().map(this::getSafetyUser).toList();
-                list.forEach(this::getSafetyUser);
+            list.forEach(this::getSafetyUser);
         }
         return new PageInfo<>(list);
     }
@@ -129,6 +129,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 获取当前登录用户
         Long currentUserId = BaseContext.getCurrentId();
         User currentUser = this.getById(currentUserId);
+        // 普通用户不能修改别人信息
+        if(currentUser.getRole()<=DEFAULT_USER && !Objects.equals(currentUser.getId(), user.getId())){
+            throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
+        }
         // 学号不能修改
         if (user.getCode() != null && !Objects.equals(user.getCode(), this.getById(user.getId()).getCode())) {
             throw new BusinessException(ErrorCodeEnum.NO_AUTH, "学号不可修改");

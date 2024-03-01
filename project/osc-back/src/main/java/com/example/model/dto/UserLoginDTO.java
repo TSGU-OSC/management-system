@@ -25,7 +25,6 @@ public class UserLoginDTO implements Serializable {
 
     @Schema(description = "密码（非空，长度大于6）")
     @NotBlank(message = "密码错误")
-    @Size(min = 6, message = "密码错误")
     private String password;
 
     /**
