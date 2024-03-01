@@ -84,7 +84,7 @@
           </el-col>
           <el-col :span="2.5" :offset="19" style="margin-bottom: 10px">
             <el-dropdown>
-            <el-button type="success">Excel</el-button>
+              <el-button type="success">Excel</el-button>
               <template>
                 <el-dropdown-menu>
                   <el-dropdown-item>
@@ -116,22 +116,22 @@
               <img :src="scope.row.avator" width="70" height="70"/>
             </template>
           </el-table-column>
-          <el-table-column prop="name" label="姓名"></el-table-column>
+          <el-table-column prop="name" label="姓名" width="95"></el-table-column>
           <el-table-column prop="gender" label="性别" width="45">
             <template v-slot:default="scope">
               <span v-if="scope.row.gender === 1">男</span>
               <span  v-else-if="scope.row.gender === 0">女</span>
             </template>
           </el-table-column>
-          <el-table-column prop="idCard" label="身份证号"></el-table-column>
-          <el-table-column prop="code" label="学号"></el-table-column>
+
+          <el-table-column prop="code" label="学号"  width="130"></el-table-column>
           <el-table-column prop="clazz" label="班级" width="45"></el-table-column>
           <el-table-column prop="major" label="专业"></el-table-column>
-          <el-table-column prop="academy" label="学院"></el-table-column>
-          <el-table-column prop="introduction" label="个人介绍"></el-table-column>
-          <el-table-column prop="phone" label="手机号"></el-table-column>
-          <el-table-column prop="province" label="所在省"></el-table-column>
-          <el-table-column prop="city" label="所在市"></el-table-column>
+          <el-table-column prop="academy" label="学院" width="120"></el-table-column>
+          <el-table-column prop="introduction" label="个人介绍"  width="200"></el-table-column>
+          <!-- <el-table-column prop="phone" label="手机号"></el-table-column> -->
+          <el-table-column prop="province" label="所在省" width="80"></el-table-column>
+          <el-table-column prop="city" label="所在市" width="80"></el-table-column>
           <el-table-column prop="duty" label="职位">
             <template v-slot:default="scope">
               <span v-if="scope.row.duty === 0">普通成员</span>
@@ -162,10 +162,11 @@
               <el-tag type="danger" v-if="scope.row.status === 1">封禁</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="createTime" label="创建时间"></el-table-column>
-          <el-table-column prop="createUser" label="创建者ID"></el-table-column>
-          <el-table-column prop="updateTime" label="更新时间"></el-table-column>
-          <el-table-column prop="updateUser" label="更新者ID"></el-table-column>
+          <!-- <el-table-column prop="idCard" label="身份证号"  width="200"></el-table-column> -->
+          <el-table-column prop="createTime" label="创建时间" width="100"></el-table-column>
+          <el-table-column prop="createUser" label="创建者ID" width="100"></el-table-column>
+          <el-table-column prop="updateTime" label="更新时间" width="100"></el-table-column>
+          <el-table-column prop="updateUser" label="更新者ID" width="100"></el-table-column>
           <el-table-column label="操作" width="128" fixed="right">
             <!-- 作用域插槽 -->
             <template v-slot:default="scope">
@@ -173,7 +174,7 @@
               <el-button type="primary" size="mini" icon="el-icon-edit" @click="showEditDialog(scope.row)"></el-button>
               <!-- 删除按钮-->
               <el-button type="danger" size="mini" icon="el-icon-delete"
-                         @click="removeUserById(scope.row.id)"></el-button>
+                         @click="removeUserById(scope.row.id)" ></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -245,26 +246,20 @@
       </span>
     </el-dialog>
     <!--修改用户的对话框-->
-    <el-dialog title="修改用户" :visible.sync="editDialogVisible" width="50%">
+    <el-dialog title="修改用户" :visible.sync="editDialogVisible" width="65%">
       <!--内容主体区域-->
-      <el-form :model="editForm" label-width="70px">
+      <el-form :model="editForm" label-width="80px" :inline="true">
         <el-form-item label="学号" prop="code">
           <el-input v-model="editForm.code"></el-input>
         </el-form-item>
         <el-form-item label="姓名" prop="name">
           <el-input v-model="editForm.name"></el-input>
         </el-form-item>
-        <el-form-item label="状态" prop="status">
-          <el-select v-model="editForm.status" placeholder="请选择状态">
-            <el-option v-for="item in optionsStatus" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
         <el-form-item label="性别" prop="gender">
-          <el-select v-model="editForm.gender" placeholder="请选择性别">
-            <el-option v-for="item in optionsGender" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
+          <el-radio-group v-model="editForm.gender">
+            <el-radio :label="1">男</el-radio>
+            <el-radio :label="0">女</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="班级" prop="clazz">
           <el-input v-model="editForm.clazz"></el-input>
@@ -275,26 +270,38 @@
         <el-form-item label="学院" prop="academy">
           <el-input v-model="editForm.academy"></el-input>
         </el-form-item>
-        <el-form-item label="个人介绍" prop="introduction">
-          <el-input v-model="editForm.introduction"></el-input>
-        </el-form-item>
         <el-form-item label="职位" prop="duty">
-          <el-select v-model="editForm.duty" placeholder="请选择职位">
-            <el-option v-for="item in optionsDuty" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
+          <el-radio-group v-model="editForm.duty">
+            <el-radio :label="0">成员</el-radio>
+            <el-radio :label="1">副部长</el-radio>
+            <el-radio :label="2">部长</el-radio>
+            <el-radio :label="3">副社长</el-radio>
+            <el-radio :label="4">社长</el-radio>
+          </el-radio-group>
         </el-form-item>
-        <el-form-item label="部门" prop="department">
-          <el-select v-model="editForm.department" placeholder="请选择部门">
-            <el-option v-for="item in optionsDepartment" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
+        <el-form-item label="部门" prop="department" style="width: 100%;">
+          <el-radio-group v-model="editForm.department">
+            <el-radio :label="2">宣传部</el-radio>
+            <el-radio :label="1">技术部</el-radio>
+            <el-radio :label="0">运营部</el-radio>
+            <el-radio :label="3">无</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="状态" prop="status">
+          <el-radio-group v-model="editForm.status">
+            <el-radio :label="1">封禁</el-radio>
+            <el-radio :label="0">正常</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="角色" prop="role">
-          <el-select v-model="editForm.role" placeholder="请选择角色">
-            <el-option v-for="item in optionsRole" :key="item.value" :label="item.label" :value="item.value">
-            </el-option>
-          </el-select>
+            <el-radio-group v-model="editForm.role">
+              <el-radio :label="2">超管</el-radio>
+              <el-radio :label="1">管理员</el-radio>
+              <el-radio :label="0">普通成员</el-radio>
+            </el-radio-group>
+        </el-form-item>
+        <el-form-item label="个人介绍" prop="introduction">
+          <el-input type="textarea" v-model="editForm.introduction" style="width: 800px;"></el-input>
         </el-form-item>
       </el-form>
       <!--底部按钮区域-->
@@ -483,7 +490,7 @@ export default {
             this.userList = res.data.data.list;
             this.userList.forEach(item => {
               let fileName = item.avator;
-              item.avator = fileName===''?defaultAvatar:"/file/download?fileName=" + fileName
+              item.avator = fileName===''?defaultAvatar:"/api/file/download?fileName=" + fileName
             })
           } else {
             this.$message.error(res.data.description);

@@ -3,7 +3,7 @@ import request from "@/utils/request"
 // 用户登录
 export function userLogin(data) {
   return request({
-    url: '/user/login',
+    url: '/api/user/login',
     method: 'post',
     data
   })
@@ -13,7 +13,7 @@ export function userLogin(data) {
 // 获取验证码
 export function getCodeImg() {
   return request({
-    url: '/user/verify',
+    url: '/api/user/verify',
     method: 'post'
   })
 }
@@ -23,7 +23,7 @@ export function getCodeImg() {
 // 用户登出
 export function logOut() {
   return request({
-    url: '/user/logout',
+    url: '/api/user/logout',
     method: 'post'
   })
 }
@@ -31,7 +31,7 @@ export function logOut() {
 //获取用户总数量
 export function userCount() {
   return request({
-    url: '/user/count/sum',
+    url: '/api/user/count/sum',
     method: 'get',
 
   })
@@ -40,7 +40,7 @@ export function userCount() {
 // 获取当前登录用户
 export function currentUser() {
   return request({
-    url: '/user/current',
+    url: '/api/user/current',
     method: 'get',
   })
 }
@@ -48,7 +48,7 @@ export function currentUser() {
 //获取用户列表
 export function userList(data,pageNumber,pageSize) {
   return request({
-    url: '/user/search',
+    url: '/api/user/search',
     method: 'post',
     params: {
       pageNumber: pageNumber,
@@ -61,7 +61,7 @@ export function userList(data,pageNumber,pageSize) {
 //添加用户
 export function userAdd(data) {
   return request({
-    url: '/user/add',
+    url: '/api/user/add',
     method: 'post',
     data
   })
@@ -70,7 +70,7 @@ export function userAdd(data) {
 //修改用户
 export function userUpdate(data) {
   return request({
-    url: '/user/update',
+    url: '/api/user/update',
     method: 'post',
     data
   })
@@ -79,7 +79,7 @@ export function userUpdate(data) {
 //删除用户
 export function userDelete(id) {
   return request({
-    url: '/user/delete',
+    url: '/api/user/delete',
     method: 'post',
     params: {
       id
@@ -90,7 +90,7 @@ export function userDelete(id) {
 // 导出Excel
 export function outputExcel() {
   return request({
-    url: '/excel/output',
+    url: '/api/excel/output',
     method: 'get',
     responseType: 'blob',// 服务器响应的数据类型
   })

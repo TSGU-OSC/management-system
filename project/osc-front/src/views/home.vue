@@ -7,11 +7,11 @@
 
       <span class="head-title">开源鸿蒙社团成员管理系统</span>
 
-      <div style="float: right;border: 2px;">
+      <div style="float: right;border: 2px;" v-if="this.load">
         <div>
           <div class="demo-fit">
             <el-dropdown>
-            <div class="block">
+            <div class="block" >
               <el-avatar shape="square" size="large" fit="fill" :src="this.avatorUrl" />
             </div>
               <div>{{ this.$store.state.user.name }}</div>
@@ -32,7 +32,7 @@
       <!-- 侧边栏 -->
       <el-aside width="13%">
         <el-menu :default-active="$route.path" router text-color="black" active-text-color="red">
-          <el-menu-item v-for="(item, i) in navList" :key="i" :index="item.name">
+          <el-menu-item v-for="(item, i) in this.navList" :key="i" :index="item.name">
             <i :class="item.icon"></i>
             {{ item.title }}
           </el-menu-item>
@@ -49,22 +49,28 @@
 <script>
 import {currentUser, logOut} from "@/api/user";
 import defaultAvatar from "@/assets/img/avator.jpg";
+
 export default {
   name: "Home",
   data() {
     return {
-      avatorUrl: this.$store.state.user.avator===''?defaultAvatar:"/file/download?fileName=" + this.$store.state.user.avator,
-      navList: [
-        {name: "/index", title: "首页", icon: "el-icon-s-home"},
-        {name: "/myPage", title: "个人", icon: "el-icon-setting"},
-        {name: "/user", title: "用户管理", icon: "el-icon-s-custom"},
-        // {name: "/dictionary", title: "字典管理", icon: "el-icon-bank-card"},
-        // {name: "/announcement", title: "公告管理", icon: "el-icon-s-comment"},
-      ],
+      avatorUrl: this.$store.state.user.avator===''?defaultAvatar:"/api/file/download?fileName=" + this.$store.state.user.avator,
+      navList: '',
+      load: false,
     };
+  },
+  created() {
+    this.navList= [
+      {name: "/index", title: "首页", icon: "el-icon-s-home"},
+      {name: "/myPage", title: "个人", icon: "el-icon-setting"},
+      {name: "/user", title: "用户管理", icon: "el-icon-s-custom"},
+      // {name: "/dictionary", title: "字典管理", icon: "el-icon-bank-card"},
+      // {name: "/announcement", title: "公告管理", icon: "el-icon-s-comment"},
+    ];
   },
   mounted() {
     this.getUserInfo();
+    this.load=true;
   },
   methods: {
     logout() {
@@ -89,13 +95,14 @@ export default {
       this.$router.push('/myPage');
     },
     getUserInfo() {
-      currentUser().then(res=>{
+     currentUser().then(res=>{
         if (res.data.code === 200) {
           this.$store.commit('SET_USER', res.data.data);
         } else {
           console.error(res.data.message);
         }
       })
+      this.load=true;
     }
   }
 };

@@ -15,7 +15,8 @@
         type="password"
         v-model="loginForm.password"
         auto-complete="off"
-        placeholder="密码"
+        placeholder="请输入您的密码"
+        show-password
       ></el-input>
     </el-form-item>
     <el-form-item prop="verifyCode">
@@ -31,7 +32,6 @@
       <div class="login-code">
         <img :src="codeUrl" class="login-code-img" @click="getCode">
       </div>
-      <p style="text-align: center;font-size: 12px;">验证码有效期为30秒，请及时刷新！</p>
     </el-form-item>
     <el-form-item style="width: 100%">
       <el-button
