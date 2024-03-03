@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 //导入登录页面组件
 import Login from '@/views/login.vue'
 import Home from '@/views/home.vue'
+import Register from '@/views/register.vue'
 
 // 解决Vue-Router升级导致的Uncaught(in promise) navigation guard问题
 
@@ -61,7 +62,18 @@ export default new Router({
           path: '/announcement',
           name: 'Announcement',
           component: () => import('@/views/announcement/index')
+        },
+        {
+          path: '/screen',
+          name: 'Screen',
+          component: () => import('@/views/screen/index')
+        },
+        {
+          path: '/audit',
+          name: 'Audit',
+          component: () => import('@/views/audit/index')
         }
+
 
       ]
     },
@@ -70,6 +82,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component: Register
     },
     {
       path: '/404',

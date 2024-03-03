@@ -1,13 +1,14 @@
 <template>
   <body id="login-page">
   <el-form class="login-container" label-position="left" label-width="0px">
-    <h3 class="login_title">开源鸿蒙社团成员管理系统登录</h3>
+    <h3 class="login_title">开源鸿蒙社团管理系统</h3>
+  
     <el-form-item>
       <el-input
         type="text"
         v-model="loginForm.code"
         auto-complete="off"
-        placeholder="学号"
+        placeholder="请输入学号"
       ></el-input>
     </el-form-item>
     <el-form-item>
@@ -15,31 +16,41 @@
         type="password"
         v-model="loginForm.password"
         auto-complete="off"
-        placeholder="请输入您的密码"
+        placeholder="请输入密码"
         show-password
       ></el-input>
     </el-form-item>
     <el-form-item prop="verifyCode">
       <el-input
         v-model="loginForm.verifyCode"
+        type="text"
         auto-complete="off"
-        placeholder="验证码"
-        style="width: 58%"
+        placeholder="请输入验证码,30秒有效"
+        style="width: 60%"
         @keyup.enter.native="login"
       >
         <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon"/>
       </el-input>
-      <div class="login-code">
+      <div class="login-code" style="text-align: right;">
         <img :src="codeUrl" class="login-code-img" @click="getCode">
       </div>
     </el-form-item>
-    <el-form-item style="width: 100%">
+    <el-form-item>
       <el-button
         type="primary"
-        style="width: 100%; border: none;"
+        style="width: 50%; border: none;border-radius: 10px;"
         @click="login"
         icon="el-icon-s-promotion"
       >登录
+      </el-button
+      >
+      <el-button
+        type="primary"
+        style="width: 40%; border-radius: 10px;"
+        @click="register"
+        icon="el-icon-user-solid
+"
+      >注册
       </el-button
       >
     </el-form-item>
@@ -73,6 +84,9 @@ export default {
         this.codeUrl = res.data.data.image
         this.loginForm.verifyCodeKey = res.data.data.key
       })
+    },
+    register(){
+      this.$router.replace('/register') 
     },
     login() {
       var _this = this;

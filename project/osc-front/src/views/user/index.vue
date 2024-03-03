@@ -70,26 +70,26 @@
               </el-option>
             </el-select>
           </el-col>
-          <el-col :span="2.5">
+          <el-col :span="2">
             <el-button type="primary" icon="el-icon-search" @click="getUserList">搜索</el-button>
           </el-col>
-          <el-col :span="2.5">
+          <el-col :span="2">
             <el-button type="primary" @click="resetUserList">刷新</el-button>
           </el-col>
         </el-row>
 
         <el-row :gutter="25">
           <el-col :span="2.5" style="margin-bottom: 10px">
-            <el-button type="primary" @click="addDialogVisible = true">添加用户</el-button>
+            <el-button type="primary" v-if="this.$store.state.user.role!==0"  @click="addDialogVisible = true">添加用户</el-button>
           </el-col>
           <el-col :span="2.5" :offset="19" style="margin-bottom: 10px">
-            <el-dropdown>
+            <el-dropdown v-if="this.$store.state.user.role!==0">
               <el-button type="success">Excel</el-button>
               <template>
                 <el-dropdown-menu>
                   <el-dropdown-item>
                     <el-upload
-                      action="/excel/input"
+                      action="/api/excel/input"
                       accept=".xlsx,.xls"
                       :show-file-list="false"
                       :on-success="uploadSuccess"
@@ -109,8 +109,8 @@
 
       <el-col :span="24">
         <!--显示用户信息表格-->
-        <el-table :data="userList" border stripe>
-          <el-table-column prop="id" label="ID"></el-table-column>
+        <el-table :data="userList" border stripe :default-sort = "{prop: 'updateTime', order: 'descending'}">
+          <!-- <el-table-column prop="id" label="ID"></el-table-column> -->
           <el-table-column prop="avator" label="头像">
             <template v-slot:default="scope">
               <img :src="scope.row.avator" width="70" height="70"/>
@@ -129,9 +129,9 @@
           <el-table-column prop="major" label="专业"></el-table-column>
           <el-table-column prop="academy" label="学院" width="120"></el-table-column>
           <el-table-column prop="introduction" label="个人介绍"  width="200"></el-table-column>
-          <!-- <el-table-column prop="phone" label="手机号"></el-table-column> -->
-          <el-table-column prop="province" label="所在省" width="80"></el-table-column>
-          <el-table-column prop="city" label="所在市" width="80"></el-table-column>
+          <el-table-column prop="phone" label="手机号" v-if="this.$store.state.user.role!==0"></el-table-column>
+          <el-table-column prop="province" label="所在省" width="80" v-if="this.$store.state.user.role!==0"></el-table-column>
+          <el-table-column prop="city" label="所在市" width="80" v-if="this.$store.state.user.role!==0"></el-table-column>
           <el-table-column prop="duty" label="职位">
             <template v-slot:default="scope">
               <span v-if="scope.row.duty === 0">普通成员</span>
@@ -162,18 +162,18 @@
               <el-tag type="danger" v-if="scope.row.status === 1">封禁</el-tag>
             </template>
           </el-table-column>
-          <!-- <el-table-column prop="idCard" label="身份证号"  width="200"></el-table-column> -->
-          <el-table-column prop="createTime" label="创建时间" width="100"></el-table-column>
+          <el-table-column prop="idCard" label="身份证号"  width="200" v-if="this.$store.state.user.role!==0"></el-table-column>
+          <el-table-column prop="createTime" label="创建时间" width="160" ></el-table-column>
           <el-table-column prop="createUser" label="创建者ID" width="100"></el-table-column>
-          <el-table-column prop="updateTime" label="更新时间" width="100"></el-table-column>
+          <el-table-column prop="updateTime" label="更新时间" width="160" sortable></el-table-column>
           <el-table-column prop="updateUser" label="更新者ID" width="100"></el-table-column>
-          <el-table-column label="操作" width="128" fixed="right">
+          <el-table-column label="操作" width="128" fixed="right" v-if="this.$store.state.user.role!==0">
             <!-- 作用域插槽 -->
-            <template v-slot:default="scope">
+            <template v-slot:default="scope" >
               <!--修改按钮-->
               <el-button type="primary" size="mini" icon="el-icon-edit" @click="showEditDialog(scope.row)"></el-button>
               <!-- 删除按钮-->
-              <el-button type="danger" size="mini" icon="el-icon-delete"
+              <el-button type="danger" size="mini" icon="el-icon-delete" 
                          @click="removeUserById(scope.row.id)" ></el-button>
             </template>
           </el-table-column>
@@ -195,22 +195,24 @@
       </template>
     </el-row>
     <!--添加用户的对话框-->
-    <el-dialog title="添加用户" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
+    <el-dialog title="添加用户" :visible.sync="addDialogVisible" width="80%" @close="addDialogClosed">
       <!--内容主体区域-->
-      <el-form :model="userForm" label-width="70px">
+      <el-form :model="userForm" label-width="70px" :inline="true">
         <el-form-item label="姓名" prop="name">
           <el-input v-model="userForm.name"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
           <el-input v-model="userForm.password" show-password placeholder="默认为 12345678"	></el-input>
         </el-form-item>
+          <el-form-item label="学号" prop="code">
+          <el-input v-model="userForm.code"></el-input>
+        </el-form-item>
         <el-form-item label="性别" prop="gender">
           <el-radio v-model="userForm.gender" label="1">男</el-radio>
           <el-radio v-model="userForm.gender" label="0">女</el-radio>
         </el-form-item>
-        <el-form-item label="学号" prop="code">
-          <el-input v-model="userForm.code"></el-input>
-        </el-form-item>
+        
+      
         <el-form-item label="班级" prop="clazz">
           <el-input v-model="userForm.clazz"></el-input>
         </el-form-item>
@@ -255,6 +257,7 @@
         <el-form-item label="姓名" prop="name">
           <el-input v-model="editForm.name"></el-input>
         </el-form-item>
+        
         <el-form-item label="性别" prop="gender">
           <el-radio-group v-model="editForm.gender">
             <el-radio :label="1">男</el-radio>
@@ -460,8 +463,9 @@ export default {
         department: "",
         role: "",
         status: "",
-      },
+      },   
     };
+ 
   },
   // 生命周期函数
   created() {

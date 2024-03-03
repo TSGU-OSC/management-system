@@ -8,6 +8,13 @@ export function userLogin(data) {
     data
   })
 }
+export function userRegister(data) {
+  return request({
+    url: '/api/user/register',
+    method: 'post',
+    data
+  })
+}
 
 
 // 获取验证码
@@ -27,16 +34,6 @@ export function logOut() {
     method: 'post'
   })
 }
-
-//获取用户总数量
-export function userCount() {
-  return request({
-    url: '/api/user/count/sum',
-    method: 'get',
-
-  })
-}
-
 // 获取当前登录用户
 export function currentUser() {
   return request({
@@ -93,5 +90,43 @@ export function outputExcel() {
     url: '/api/excel/output',
     method: 'get',
     responseType: 'blob',// 服务器响应的数据类型
+  })
+}
+
+//统计用户来自的省
+export function userProvinceCount() {
+  return request({
+    url: '/api/user/count/province',
+    method: 'get',
+  })
+}
+
+//统计用户性别
+export function userGenderCount(data) {
+  return request({
+    url: '/api/user/count/gender',
+    method: 'get',
+    data
+  })
+}
+
+//统计用户总人数
+export function userCount() {
+  return request({
+    url: '/api/user/count/sum',
+    method: 'get',
+  })
+}
+
+//获取审核用户列表
+export function userAudit(data,pageNumber,pageSize) {
+  return request({
+    url: '/api/user/audit',
+    method: 'post',
+    params: {
+      pageNumber: pageNumber,
+      pageSize: pageSize,
+    },
+    data
   })
 }
