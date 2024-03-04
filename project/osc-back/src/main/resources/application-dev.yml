@@ -7,7 +7,7 @@ spring:
     username: root
     password: 2469
   session:
-    timeout: 864000000
+    timeout: 1440m  # 24h
   servlet:
     multipart:
       max-file-size: 5000GB  # 最大文件大小
@@ -17,7 +17,7 @@ spring:
       host: 127.0.0.1
       database: 2
       # 连接超时时间
-      timeout: 10000000s
+      timeout: 86400000s  # 24h
       lettuce:
         pool:
           # 连接池中的最小空闲连接
@@ -28,17 +28,32 @@ spring:
           max-active: 8
           # #连接池最大阻塞等待时间（使用负值表示没有限制）
           max-wait: -1ms
+pagehelper:
+  # 设置方言，此处指定 MySQL 数据库
+  helper-dialect: mysql
+  # 是否启动合理化，默认是 false。
+  # 启用合理化时，如果pageNum<1会查询第一页，如果pageNum>pages（最大页数）会查询最后一页。
+  # 禁用合理化时，如果pageNum<1或pageNum>pages会返回空数据
+  reasonable: true
+  # 是否支持接口参数来传递分页参数，默认false
+  support-methods-arguments: true
+  # 为了支持startPage(Object params)方法，增加了该参数来配置参数映射，用于从对象中根据属性名取值
+  params: count=countSql
+  # 默认值为 false，当该参数设置为 true 时，如果 pageSize=0 或者 RowBounds.limit = 0 就会查询出全部的结果（相当于没有执行分页查询，但是返回结果仍然是 Page 类型）
+  page-size-zero: true
 minio: # MinIO连接信息
   # 访问资源的 URL
   url: "http://localhost:9000/"
   # 上传的 Bucket
   bucket: data
   # Access Key
-  accessKey: qpOxDTgSUDyWk1sUOiHO
+  accessKey: Jm8SSL608fU4ILVjAbEf
   # Secret Key
-  secretKey: A02ZMIWO9OKe57EcbMNcSC5kmO6gAu7sL9Yl55aJ
+  secretKey: ox6QF3u1UbeQIhZfZWRKnuenLJM5CfWUrYHeT7Yq
 server:
   port: 8080  # 端口号
+  tomcat:
+    max-http-form-post-size: -1 # POST请求数据不做大小限制，以免高清头像传输失败
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

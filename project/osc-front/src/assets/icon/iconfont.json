@@ -1,0 +1,79 @@
+{
+  "id": "4400085",
+  "name": "osc",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1234",
+      "name": "保存",
+      "font_class": "baocun",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "1262485",
+      "name": "活动",
+      "font_class": "huodong",
+      "unicode": "e716",
+      "unicode_decimal": 59158
+    },
+    {
+      "icon_id": "4412486",
+      "name": "提交",
+      "font_class": "tijiao",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "4936977",
+      "name": "Gitlab-fill",
+      "font_class": "Gitlab-fill",
+      "unicode": "e881",
+      "unicode_decimal": 59521
+    },
+    {
+      "icon_id": "5387402",
+      "name": "仓库",
+      "font_class": "cangku",
+      "unicode": "eac9",
+      "unicode_decimal": 60105
+    },
+    {
+      "icon_id": "5532887",
+      "name": "公众号",
+      "font_class": "gongzhonghao",
+      "unicode": "e625",
+      "unicode_decimal": 58917
+    },
+    {
+      "icon_id": "7100397",
+      "name": "fork",
+      "font_class": "fork",
+      "unicode": "e641",
+      "unicode_decimal": 58945
+    },
+    {
+      "icon_id": "9592758",
+      "name": "人数",
+      "font_class": "renshu",
+      "unicode": "e678",
+      "unicode_decimal": 59000
+    },
+    {
+      "icon_id": "26267572",
+      "name": "gitee",
+      "font_class": "gitee",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "34661570",
+      "name": "AI绘画",
+      "font_class": "AIhuihua",
+      "unicode": "e640",
+      "unicode_decimal": 58944
+    }
+  ]
+}

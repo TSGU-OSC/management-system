@@ -1,15 +1,13 @@
 package com.example.utils;
 
-import com.example.common.ErrorCode;
+import com.example.enums.ErrorCodeEnum;
 import com.example.exception.BusinessException;
-import com.example.model.entity.MinIOProperty;
 import io.minio.*;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -55,16 +53,16 @@ public class MinioUtil {
             return objectName;
         } catch (Exception e) {
             log.error("文件上传失败: " + e);
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "文件上传失败");
+            throw new BusinessException(ErrorCodeEnum.SYSTEM_ERROR, "文件上传失败");
         }
     }
 
     /**
      * 下载文件
      */
-    public InputStream downloadFile(String bucketName, String fileName, HttpServletResponse response) {
+    public void downloadFile(String bucketName, String fileName, HttpServletResponse response) {
         if (StringUtils.isBlank(fileName)) {
-            throw new BusinessException(ErrorCode.NULL_ERROR, "参数为空");
+            throw new BusinessException(ErrorCodeEnum.NULL_ERROR, "参数为空");
         }
         try {
             InputStream file = minioClient.getObject(GetObjectArgs.builder().bucket(bucketName).object(fileName).build());
@@ -72,6 +70,7 @@ public class MinioUtil {
             response.setHeader("Content-Disposition", "attachment;filename=" +
                     URLEncoder.encode(fileName.substring(fileName.lastIndexOf("/") + 1), "UTF-8"));
             response.setContentType("application/octet-stream");
+//            response.setContentType("img/jpg");
             response.setCharacterEncoding("UTF-8");
             ServletOutputStream servletOutputStream = response.getOutputStream();
             int len;
@@ -82,10 +81,9 @@ public class MinioUtil {
             servletOutputStream.flush();
             file.close();
             servletOutputStream.close();
-            return file;
         } catch (Exception e) {
-            log.error("下载文件时出现异常: " + e);
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "下载文件时出现异常");
+            log.error("文件名: "+ fileName+"下载文件时出现异常: " + e);
+            throw new BusinessException(ErrorCodeEnum.SYSTEM_ERROR, "下载文件时出现异常");
         }
     }
 
@@ -95,17 +93,17 @@ public class MinioUtil {
     public void deleteFile(String bucketName, String fileName) {
         try {
             if (StringUtils.isBlank(fileName)) {
-                throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
+                throw new BusinessException(ErrorCodeEnum.PARAMS_ERROR, "参数为空");
             }
             boolean isExist = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
             if (isExist) {
                 minioClient.removeObject(RemoveObjectArgs.builder().bucket(bucketName).object(fileName).build());
             } else {
-                throw new BusinessException(ErrorCode.PARAMS_ERROR, "桶不存在");
+                throw new BusinessException(ErrorCodeEnum.PARAMS_ERROR, "桶不存在");
             }
         } catch (Exception e) {
             log.error("删除桶内所有文件时出现异常: " + e.getMessage());
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "删除桶内所有文件时出现异常");
+            throw new BusinessException(ErrorCodeEnum.SYSTEM_ERROR, "删除桶内所有文件时出现异常");
         }
     }
 

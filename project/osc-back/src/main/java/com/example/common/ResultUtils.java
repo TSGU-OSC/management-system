@@ -1,66 +1,47 @@
 package com.example.common;
 
+import com.example.enums.ErrorCodeEnum;
+import com.example.model.vo.ResponseVO;
+
 /**
  *  统一返回工具类
  *
- * @author Uncommon
+ * @author lwy
  */
 public class ResultUtils {
 
     /**
      * 成功
-     *
-     * @param data
-     * @return
-     * @param <T>
      */
-    public static <T> BaseResponse<T> success(T data) {
-        return new BaseResponse<>(0,data,"OK");
+    public static <T> ResponseVO<T> success(T data) {
+        return new ResponseVO<>(200,data,"OK");
     }
 
     /**
      * 失败
-     *
-     * @param errorCode
-     * @return
-     * @param <T>
      */
-    public static <T> BaseResponse<T> error(ErrorCode errorCode) {
-        return new BaseResponse<>(errorCode);
+    public static <T> ResponseVO<T> error(ErrorCodeEnum errorCodeEnum) {
+        return new ResponseVO<>(errorCodeEnum);
     }
 
     /**
      * 失败
-     *
-     * @param errorCode
-     * @param message
-     * @param description
-     * @return
      */
-    public static BaseResponse error(ErrorCode errorCode, String message,String description) {
-        return new BaseResponse(errorCode.getCode(),null,message,description);
+    public static ResponseVO<Object> error(ErrorCodeEnum errorCodeEnum, String message, String description) {
+        return new ResponseVO<>(errorCodeEnum.getCode(),null,message,description);
     }
 
     /**
      * 失败
-     *
-     * @param errorCode
-     * @param description
-     * @return
      */
-    public static BaseResponse error(ErrorCode errorCode,String description) {
-        return new BaseResponse(errorCode.getCode(),null,errorCode.getMessage(),description);
+    public static ResponseVO<Object> error(ErrorCodeEnum errorCodeEnum, String description) {
+        return new ResponseVO<>(errorCodeEnum.getCode(),null, errorCodeEnum.getMessage(),description);
     }
 
     /**
      * 失败
-     *
-     * @param code
-     * @param message
-     * @param description
-     * @return
      */
-    public static BaseResponse error(int code, String message,String description) {
-        return new BaseResponse(code,null,message,description);
+    public static ResponseVO<Object> error(int code, String message, String description) {
+        return new ResponseVO<>(code, null, message, description);
     }
 }

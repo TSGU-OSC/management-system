@@ -1,6 +1,5 @@
 package com.example.config;
 
-import com.example.model.entity.MinIOProperty;
 import io.minio.MinioClient;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
