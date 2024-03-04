@@ -35,3 +35,4 @@
 ## 三、快速启动
 
 🚀 如需启动该项目，[请点击这里](./document/quickStart.md)
+📖 如果遇到问题，请提交issue：[帮助文档](./document/issue.md)
