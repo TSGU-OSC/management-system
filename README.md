@@ -34,4 +34,4 @@
 
 ## 三、快速启动
 
-🚀 如需启动该项目，[请点击这里](./quickStart.md)
+🚀 如需启动该项目，[请点击这里](./document/quickStart.md)

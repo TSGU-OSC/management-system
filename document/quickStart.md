@@ -73,7 +73,7 @@ set-ExecutionPolicy RemoteSigned
 
 这样我们就成功啦，以下是展示图：
 
-![image-01](./images/image-01.png)
+![image-01](./img/image-quickStart-01.png)
 
 
 
