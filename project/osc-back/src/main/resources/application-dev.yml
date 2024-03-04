@@ -1,0 +1,75 @@
+spring:
+  application:
+    name: osc_user_center
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/osc
+    username: root
+    password: 2469
+  session:
+    timeout: 1440m  # 24h
+  servlet:
+    multipart:
+      max-file-size: 5000GB  # 最大文件大小
+  data:
+    redis:
+      port: 6379
+      host: 127.0.0.1
+      database: 2
+      # 连接超时时间
+      timeout: 86400000s  # 24h
+      lettuce:
+        pool:
+          # 连接池中的最小空闲连接
+          min-idle: 0
+          # 连接池中的最大空闲连接
+          max-idle: 8
+          # 连接池的最大数据库连接数
+          max-active: 8
+          # #连接池最大阻塞等待时间（使用负值表示没有限制）
+          max-wait: -1ms
+pagehelper:
+  # 设置方言，此处指定 MySQL 数据库
+  helper-dialect: mysql
+  # 是否启动合理化，默认是 false。
+  # 启用合理化时，如果pageNum<1会查询第一页，如果pageNum>pages（最大页数）会查询最后一页。
+  # 禁用合理化时，如果pageNum<1或pageNum>pages会返回空数据
+  reasonable: true
+  # 是否支持接口参数来传递分页参数，默认false
+  support-methods-arguments: true
+  # 为了支持startPage(Object params)方法，增加了该参数来配置参数映射，用于从对象中根据属性名取值
+  params: count=countSql
+  # 默认值为 false，当该参数设置为 true 时，如果 pageSize=0 或者 RowBounds.limit = 0 就会查询出全部的结果（相当于没有执行分页查询，但是返回结果仍然是 Page 类型）
+  page-size-zero: true
+minio: # MinIO连接信息
+  # 访问资源的 URL
+  url: "http://localhost:9000/"
+  # 上传的 Bucket
+  bucket: data
+  # Access Key
+  accessKey: Jm8SSL608fU4ILVjAbEf
+  # Secret Key
+  secretKey: ox6QF3u1UbeQIhZfZWRKnuenLJM5CfWUrYHeT7Yq
+server:
+  port: 8080  # 端口号
+  tomcat:
+    max-http-form-post-size: -1 # POST请求数据不做大小限制，以免高清头像传输失败
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-value: 1 # 逻辑删除值
+      logic-not-delete-value: 0 # 逻辑未删除值
+# knife4j的增强配置，不需要增强可以不配
+knife4j:
+  enable: true # 开启增强
+  setting:
+    enable-swagger-models: true     # 开启SwaggerModels自定义名称
+    swagger-model-name: 模块类     # SwaggerModels自定义名称
+    enable-home-custom: true      # 自定义主页内容
+    home-custom-path: classpath:markdown/home.md    # 主页的Markdown文件位置
+    enable-footer: false    # 关闭原始Footer
+    enable-footer-custom: true     # 开启自定义Footer
+    footer-custom-content: 版权所有   # 自定义Footer内容
+  production: false # 是否为生产环境（生产环境会屏蔽接口文档）

@@ -1,11 +1,13 @@
 package com.example.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.model.dto.QueryDTO;
+import com.example.model.dto.UserAddDTO;
 import com.example.model.entity.User;
-import com.example.model.entity.VerifyCodeEntity;
-import com.example.model.vo.UserAddVO;
-import com.example.model.vo.UserLoginVO;
-import jakarta.servlet.http.HttpServletRequest;
+import com.github.pagehelper.PageInfo;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -18,22 +20,35 @@ public interface UserService extends IService<User> {
 
     /**
      * 添加用户
-     *
-     * @return
      */
-    long addUser(UserAddVO userAddVO);
+    long addUser(UserAddDTO userAddDTO);
+
 
     /**
-     * 用户登录
+     * 查询用户
      *
-     * @return 脱敏后的用户信息
+     * @param queryDTO   查询用户DTO类
+     * @param pageNumber 页码
+     * @param pageSize   每页数目
+     * @return 用户列表
      */
-    User userLogin(UserLoginVO userLoginVO, HttpServletRequest request);
+    PageInfo<User> listUsers(QueryDTO queryDTO, Integer pageNumber, Integer pageSize);
 
     /**
-     * 用户登出
+     * 更改用户
+     *
+     * @param user 需更改的用户
+     * @return 更改后的用户
      */
-    void userLogout(HttpServletRequest request);
+    User updateUser(User user);
+
+    /**
+     * 删除用户
+     *
+     * @param id 待删除用户id
+     * @return 已删除用户的id
+     */
+    Long deleteUser(Long id);
 
     /**
      * 用户脱敏
@@ -44,17 +59,25 @@ public interface UserService extends IService<User> {
     User getSafetyUser(User originUser);
 
     /**
-     * 获取验证码
+     * 获取当前登录用户
      *
-     * @return
+     * @return 当前登录用户
      */
-    VerifyCodeEntity generateVerifyCode();
+    User getCurrentUser();
+
 
     /**
-     * 检验验证码
+     * 统计男/女人数
      *
-     * @param userLoginVO
-     * @return
+     * @param gender 男-1/女-0
+     * @return 男/女总人数
      */
-    Boolean verifyVerifyCode(UserLoginVO userLoginVO);
+    long countGender(int gender);
+
+    /**
+     * 统计各省人数
+     *
+     * @return 各省人数列表
+     */
+    List<Map<String, Object>> countProvince();
 }

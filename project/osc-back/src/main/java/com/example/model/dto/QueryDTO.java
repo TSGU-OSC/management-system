@@ -3,15 +3,19 @@ package com.example.model.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
  * 查询用户DTO类
+ *
+ * @author lwy
  */
 @Schema(description = "查询用户请求体")
 @Data
 public class QueryDTO implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 5231231861777401881L;
     /**
      * 学号
@@ -24,6 +28,12 @@ public class QueryDTO implements Serializable {
      */
     @Schema(description = "姓名")
     private String name;
+
+    /**
+     * 姓别
+     */
+    @Schema(description = "姓别")
+    private Integer gender;
 
     /**
      * 手机号
@@ -66,6 +76,12 @@ public class QueryDTO implements Serializable {
      */
     @Schema(description = "职位 （0成员 1副部长 2 部长 3副社长 4社长）")
     private Integer duty;
+
+    /**
+     * 部门（0-运营部，1-技术部，2-宣传部）
+     */
+    @Schema(description = " 部门（0-运营部，1-技术部，2-宣传部）")
+    private Integer department;
 
     /**
      * 状态（0正常 1封号）

@@ -1,28 +1,29 @@
 package com.example.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.common.ErrorCode;
+import com.example.common.BaseContext;
+import com.example.enums.ErrorCodeEnum;
 import com.example.exception.BusinessException;
-import com.example.mapper.NewUserMapper;
+import com.example.mapper.UserMapper;
+import com.example.model.dto.QueryDTO;
+import com.example.model.dto.UserAddDTO;
 import com.example.model.entity.User;
-import com.example.model.entity.VerifyCodeEntity;
-import com.example.model.vo.UserAddVO;
-import com.example.model.vo.UserLoginVO;
 import com.example.service.UserService;
-import com.example.utils.RedisCache;
-import com.wf.captcha.ArithmeticCaptcha;
-import com.wf.captcha.base.Captcha;
-import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
-import org.springframework.util.StringUtils;
 
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import static com.example.constant.UserConstant.*;
 
 /**
  * 用户服务实现类
@@ -31,100 +32,158 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 @Slf4j
-public class UserServiceImpl extends ServiceImpl<NewUserMapper, User> implements UserService {
-
-    @Resource
-    private NewUserMapper userMapper;
-
-    @Resource
-    private RedisCache redisCache;
-    /**
-     * 对密码进行加盐加密（加盐就是让密码加密后更复杂）
-     */
-    private static final String SALT = "lwy";
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     /**
      * 添加用户
      *
-     * @param userAddVO
+     * @param userAddDTO 用户添加DTO类
      * @return 添加的用户id
      */
     @Override
-    public long addUser(UserAddVO userAddVO) {
-        if (userAddVO == null) {
-            throw new BusinessException(ErrorCode.NULL_ERROR, "参数为空");
+    public long addUser(@NotNull UserAddDTO userAddDTO) {
+        // 获取当前线程用户
+        Long currentId = BaseContext.getCurrentId();
+        User currentUser = this.getById(currentId);
+        // 权限需要高于被创建用户的权限
+        if (currentUser.getRole() <= userAddDTO.getRole()) {
+            throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
         }
         // 学号不可重复
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("code", userAddVO.getCode());
+        queryWrapper.eq("code", userAddDTO.getCode());
         long count = this.count(queryWrapper);
         if (count > 0) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "学号重复");
+            throw new BusinessException(ErrorCodeEnum.PARAMS_ERROR, "学号重复");
+        }
+        // 设置默认密码
+        if (StringUtils.isBlank(userAddDTO.getPassword())) {
+            userAddDTO.setPassword("12345678");
         }
         // 加密密码
-        String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userAddVO.getPassword()).getBytes());
+//        String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userAddDTO.getPassword()).getBytes());
         // 建立用户实体
         User user = new User();
-        user.setCode(userAddVO.getCode());
-        user.setPassword(encryptPassword);
-        user.setName(userAddVO.getName());
-        user.setClazz(userAddVO.getClazz());
-        user.setMajor(userAddVO.getMajor());
-        user.setAcademy(userAddVO.getAcademy());
-        user.setDuty(userAddVO.getDuty());
-        user.setRole(userAddVO.getRole());
+        user.setCode(userAddDTO.getCode());
+        user.setPassword(userAddDTO.getPassword());
+        user.setName(userAddDTO.getName());
+        user.setGender(userAddDTO.getGender());
+        user.setClazz(userAddDTO.getClazz());
+        user.setMajor(userAddDTO.getMajor());
+        user.setAcademy(userAddDTO.getAcademy());
+        user.setDuty(userAddDTO.getDuty());
+        user.setDepartment(userAddDTO.getDepartment());
+        user.setRole(userAddDTO.getRole());
         // 存储用户信息
-        boolean result = this.save(user);
-        // 添加失败
-        if (!result) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "注册失败");
-        }
+        this.save(user);
         // 用户添加成功
         return user.getId();
     }
 
     /**
-     * 用户登录
+     * 查询用户
      *
-     * @param userLoginVO
-     * @return 脱敏后的用户信息
+     * @param queryDTO   查询用户DTO类
+     * @param pageNumber 页码
+     * @param pageSize   每页数目
+     * @return 用户列表
      */
     @Override
-    public User userLogin(UserLoginVO userLoginVO, HttpServletRequest request) {
-        // 校验验证码
-        this.verifyVerifyCode(userLoginVO);
-        // 对密码加密
-        String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userLoginVO.getPassword()).getBytes());
-        // 尝试登录
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("code", userLoginVO.getCode());
-        queryWrapper.eq("password", encryptPassword);
-        User user = userMapper.selectOne(queryWrapper);
-        //用户不存在
-        if (user == null) {
-            log.info("在数据库中找不到学号和密码匹配的数据");
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户不存在");
-        }
-        // 用户被封号
-        if (user.getStatus() == 1) {
-            log.info("用户已被封号");
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户已被封号");
-        }
-        //用户脱敏
-        User safetyUser = getSafetyUser(user);
-        // 设置当前登录用户
-        request.getSession().setAttribute("USER_LOGIN_STATE", user.getId());
+    public PageInfo<User> listUsers(QueryDTO queryDTO, Integer pageNumber, Integer pageSize) {
+        // 开始分页查询
+        PageHelper.startPage(pageNumber, pageSize);
+        // 非空查询
+        LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.like(StringUtils.isNotEmpty(queryDTO.getCode()), User::getCode, queryDTO.getCode())
+                .like(StringUtils.isNotEmpty(queryDTO.getMajor()), User::getMajor, queryDTO.getMajor())
+                .like(StringUtils.isNotEmpty(queryDTO.getName()), User::getName, queryDTO.getName())
+                .like(StringUtils.isNotEmpty(queryDTO.getCity()), User::getCity, queryDTO.getCity())
+                .like(StringUtils.isNotEmpty(queryDTO.getAcademy()), User::getAcademy, queryDTO.getAcademy())
+                .like(StringUtils.isNotEmpty(queryDTO.getPhone()), User::getPhone, queryDTO.getPhone())
+                .like(StringUtils.isNotEmpty(queryDTO.getProvince()), User::getProvince, queryDTO.getProvince())
+                .like(queryDTO.getGender() != null, User::getGender, queryDTO.getGender())
+                .like(queryDTO.getDuty() != null, User::getDuty, queryDTO.getDuty())
+                .like(queryDTO.getDepartment() != null, User::getDepartment, queryDTO.getDepartment())
+                .like(queryDTO.getClazz() != null, User::getClazz, queryDTO.getClazz())
+                .like(queryDTO.getStatus() != null, User::getStatus, queryDTO.getStatus())
+                .like(queryDTO.getRole() != null, User::getRole, queryDTO.getRole());
 
-        return safetyUser;
+        List<User> list = this.list(lambdaQueryWrapper);
+        // 如果用户权限低，对查询到的用户进行脱敏
+        Long currentId = BaseContext.getCurrentId();
+        if (this.getById(currentId).getRole() == DEFAULT_USER) {
+//            list = list.stream().map(this::getSafetyUser).toList();
+            list.forEach(this::getSafetyUser);
+        }
+        return new PageInfo<>(list);
     }
 
     /**
-     * 用户登出
+     * 更改用户
+     *
+     * @param user 需更改的用户
+     * @return 更改后的用户
      */
     @Override
-    public void userLogout(HttpServletRequest request) {
-        // 注销session
-        request.getSession().invalidate();
+    public User updateUser(User user) {
+        // 获取当前登录用户
+        Long currentUserId = BaseContext.getCurrentId();
+        User currentUser = this.getById(currentUserId);
+        // 普通用户不能修改别人信息
+        if(currentUser.getRole()<=DEFAULT_USER && !Objects.equals(currentUser.getId(), user.getId())){
+            throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
+        }
+        // 学号不能修改
+        if (user.getCode() != null && !Objects.equals(user.getCode(), this.getById(user.getId()).getCode())) {
+            throw new BusinessException(ErrorCodeEnum.NO_AUTH, "学号不可修改");
+        }
+        // 如果是修改自己的信息
+        if (currentUserId.equals(user.getId())) {
+            // 超级管理员才能修改自己的 role status duty department
+            if (currentUser.getRole() != SUPER_ADMIN_USER &&
+                    (!currentUser.getRole().equals(user.getRole()) ||
+                            !currentUser.getStatus().equals(user.getStatus()) ||
+                            !currentUser.getDuty().equals(user.getDuty()) ||
+                            !currentUser.getDepartment().equals(user.getDepartment()))) {
+                throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
+            }
+        } else {  // 如果不是修改自己的信息
+            // 超管才能修改他人的 role status duty department ，除非修改者的权限高于被修改者，
+            // 并且修改者不能将被修改者的权限改至高于等于修改者的权限
+            if (currentUser.getRole() != SUPER_ADMIN_USER &&
+                    currentUser.getRole() <=
+                            (Math.max(user.getRole(), this.getById(user.getId()).getRole()))) {
+                throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
+            }
+        }
+        // 权限足够，可以修改
+        this.updateById(user);
+        // 获取更改后的用户
+        User result = this.getById(user.getId());
+        if (currentUser.getRole() <= DEFAULT_USER) {
+            return this.getSafetyUser(result);
+        }
+        return result;
+    }
+
+    /**
+     * 删除用户
+     *
+     * @param id 待删除用户id
+     * @return 已删除用户的id
+     */
+    @Override
+    public Long deleteUser(Long id) {
+        // 获取当前登录用户
+        Long currentId = BaseContext.getCurrentId();
+        User user = this.getById(currentId);
+        // 只能删除权限低于自己的用户
+        if (user.getRole() <= this.getById(id).getRole()) {
+            throw new BusinessException(ErrorCodeEnum.NO_AUTH, "用户权限不足");
+        }
+        // 删除用户
+        this.removeById(id);
+        return user.getId();
     }
 
     /**
@@ -135,14 +194,12 @@ public class UserServiceImpl extends ServiceImpl<NewUserMapper, User> implements
      */
     @Override
     public User getSafetyUser(User originUser) {
-        if (originUser == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户为空");
-        }
         User safetyUser = new User();
         safetyUser.setId(originUser.getId());
         safetyUser.setCode(originUser.getCode());
         safetyUser.setAvator(originUser.getAvator());
         safetyUser.setName(originUser.getName());
+        safetyUser.setGender(originUser.getGender());
         safetyUser.setPhone(originUser.getPhone());
         safetyUser.setProvince(originUser.getProvince());
         safetyUser.setCity(originUser.getCity());
@@ -150,59 +207,49 @@ public class UserServiceImpl extends ServiceImpl<NewUserMapper, User> implements
         safetyUser.setMajor(originUser.getMajor());
         safetyUser.setAcademy(originUser.getAcademy());
         safetyUser.setDuty(originUser.getDuty());
+        safetyUser.setDepartment(originUser.getDepartment());
+        safetyUser.setRole(originUser.getRole());
         safetyUser.setIntroduction(originUser.getIntroduction());
+        safetyUser.setStatus(originUser.getStatus());
 
         return safetyUser;
     }
 
     /**
-     * 生产验证码
+     * 获取当前登录用户
      *
-     * @return
+     * @return 当前登录用户
      */
     @Override
-    public VerifyCodeEntity generateVerifyCode(){
-        // 创建验证码对象
-        Captcha captcha = new ArithmeticCaptcha();
-
-        // 生成验证码编号
-        String verifyCodeKey = UUID.randomUUID().toString();
-        String verifyCode = captcha.text();
-
-        // 获取验证码图片，构造响应结果
-        VerifyCodeEntity verifyCodeEntity = new VerifyCodeEntity(verifyCodeKey, captcha.toBase64(), verifyCode);
-
-        // 存入Redis，设置120s过期
-
-        redisCache.setCacheObject(verifyCodeKey, verifyCode, 120, TimeUnit.SECONDS);
-
-        return verifyCodeEntity;
+    public User getCurrentUser() {
+        // 获取当前登录用户
+        Long currentId = BaseContext.getCurrentId();
+        User currentUser = this.getById(currentId);
+        return this.getSafetyUser(currentUser);
     }
 
     /**
-     * 检验验证码
+     * 统计男/女人数
      *
-     * @param userLoginVO
-     * @return
+     * @param gender 男-1/女-0
+     * @return 男/女总人数
      */
     @Override
-    public Boolean verifyVerifyCode(UserLoginVO userLoginVO) {
-        // 校验验证码
-        // 获取用户输入的验证码
-        String actual = userLoginVO.getVerifyCode();
-        // 判断验证码是否过期
-        if (redisCache.getCacheExpire(userLoginVO.getVerifyCodeKey(), TimeUnit.SECONDS) < 0) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR,"验证码过期");
-        }
-        // 从redis读取验证码并删除缓存
-        String expect = redisCache.getCacheObject(userLoginVO.getVerifyCodeKey());
-        redisCache.deleteCacheObject(userLoginVO.getVerifyCodeKey());
+    public long countGender(int gender) {
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(User::getGender, gender);
+        return this.count(queryWrapper);
+    }
 
-        // 比较用户输入的验证码和缓存中的验证码是否一致，不一致则抛错
-        if (!StringUtils.hasText(expect) || !StringUtils.hasText(actual) || !actual.equalsIgnoreCase(expect)) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR,"验证码错误");
-        }
-
-        return true;
+    /**
+     * 统计各省人数
+     *
+     * @return 各省人数列表
+     */
+    @Override
+    public List<Map<String, Object>> countProvince() {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("count(*) as count,province").groupBy("province");
+        return this.listMaps(queryWrapper);
     }
 }

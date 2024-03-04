@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
  *
  * @author lwy
  */
-@TableName(value = "new_user")
+@TableName(value = "user")
 @Data
 public class User implements Serializable {
     /**
@@ -40,7 +41,6 @@ public class User implements Serializable {
     @Schema(description = "密码")
     @TableField(value = "password")
     @NotBlank(message = "密码不能为空字符")
-    @Length(min = 6, message = "密码需大于六位")
     private String password;
 
     /**
@@ -59,12 +59,18 @@ public class User implements Serializable {
     private String name;
 
     /**
+     * 姓别
+     */
+    @Schema(description = "姓别（1-男 0-女）")
+    @TableField(value = "gender")
+    @NotBlank(message = "姓别不能为空")
+    private int gender;
+
+    /**
      * 手机号
      */
     @Schema(description = "手机号")
     @TableField(value = "phone")
-    @NotBlank(message = "密码不能为空字符")
-    @Length(min = 6, message = "密码需大于六位")
     private String phone;
 
     /**
@@ -110,7 +116,15 @@ public class User implements Serializable {
      */
     @Schema(description = " 职位（0成员 1副部长 2 部长 3副社长 4社长）")
     @TableField(value = "duty")
+    @NotBlank(message = "职责不能为空")
     private Integer duty;
+
+    /**
+     * 部门（0-运营部，1-技术部，2-宣传部，3-其它-默认）
+     */
+    @Schema(description = " 部门（0-运营部，1-技术部，2-宣传部，3-其它-默认）")
+    @TableField(value = "department")
+    private Integer department;
 
     /**
      * 个人介绍
@@ -136,9 +150,8 @@ public class User implements Serializable {
     /**
      * 角色（0普通成员，1管理员，2超管）
      */
-    @Schema(description = "角色（0普通成员，1管理员，2超管）")
+    @Schema(description = "角色（0普通成员，1管理员，2超管 默认为0）")
     @TableField(value = "role")
-    @NotNull(message = "角色不能为空")
     private Integer role;
 
     /**
@@ -177,6 +190,7 @@ public class User implements Serializable {
     @TableField(value = "update_user", fill = FieldFill.INSERT_UPDATE)
     private Long updateUser;
 
+    @Serial
     @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -7373203003403525090L;
 }
