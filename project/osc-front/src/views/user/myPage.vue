@@ -3,8 +3,7 @@
     <div>
       <div class="PersonTop_img">
         <el-upload ref="upload" action="/api/file/upload" accept="image/*" :data="{ id: this.user.id }"
-          :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload"
-          :show-file-list="false">
+          :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :show-file-list="false">
           <img v-if="avatorUrl" :src="avatorUrl">
         </el-upload>
       </div>
@@ -30,6 +29,8 @@
             <el-button type="primary" size="small" icon="el-icon-edit" @click="showEditDialog">修改个人信息</el-button>
             <el-button type="danger" size="small" icon="el-icon-warning
 " @click="showEditPasswordDialog">修改密码</el-button>
+            <el-button type="success" size="small" icon="el-icon-mic
+" @click="showEditIntroductionDialog">修改个人简介</el-button>
           </template>
           <el-descriptions-item>
 
@@ -138,7 +139,7 @@
               <i class="el-icon-collection-tag"></i>
               个人介绍
             </template>
-            {{ user.introduction }}
+            <div v-html="this.user.introduction"></div>
           </el-descriptions-item>
         </el-descriptions>
       </div>
@@ -196,18 +197,13 @@
             <el-radio :label="3">无</el-radio>
           </el-radio-group>
         </el-form-item>
-
-
-        <el-form-item label="个人介绍" prop="introduction">
-          <el-input type="textarea" v-model="editUser.introduction" style="width: 800px;"></el-input>
-        </el-form-item>
-
       </el-form>
       <!--底部按钮区域-->
       <span slot="footer" class="dialog-footer">
         <el-button @click="editDialogVisible1 = false">取 消</el-button>
         <el-button type="primary" @click="edit">确 定</el-button>
       </span>
+
     </el-dialog>
     <!-- 修改密码 -->
     <el-dialog title="修改密码" :visible.sync="editDialogVisible2" width="25%">
@@ -242,6 +238,17 @@
         <el-button type="primary" @click="editPassword">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 修改个人介绍 -->
+    <el-dialog title="个人简介" :visible.sync="editDialogVisible3" width="80%">
+  
+        <quill-editor ref="myQuillEditor" v-model="editUser.introduction" :options="editorOption"
+          @blur="onEditorBlur($event)" @focus="onEditorFocus($event)" @ready="onEditorReady($event)" style="height: 200px;margin-bottom: 4%;" />
+    
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible3 = false">取 消</el-button>
+        <el-button type="primary" @click="edit">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -251,10 +258,15 @@ import { currentUser, userUpdate } from "@/api/user";
 import defaultAvatar from "@/assets/img/avator.jpg";
 import { pcTextArr } from "element-china-area-data";
 // import PasswordStrength from "@/components/drag/PasswordStrength";
-
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+import { quillEditor } from "vue-quill-editor";
 
 export default {
-
+  components: {
+    quillEditor
+  },
   computed: {
     // 密码强度 0~3  0无强度、1低强度、2中强度、3高强度
     strength({ }) { //验证密码强度的函数
@@ -270,10 +282,27 @@ export default {
   },
   data() {
     return {
+      editorOption: {
+        modules: {
+          toolbar: [
+            ['bold', 'italic', 'underline', 'strike'], // 加粗 斜体 下划线 删除线
+            [{ header: 1 }, { header: 2 }], // 1、2 级标题
+            // [{ indent: '-1' }, { indent: '+1' }], // 缩进
+            [{ direction: 'rtl' }], // 文本方向
+            [{ header: [1, 2, 3, 4, 5, 6] }], // 标题
+            [{ color: [] }, { background: [] }], // 字体颜色、字体背景颜色
+            // [{ font: ['songti'] }], // 字体种类
+            [{ align: [] }], // 对齐方式
+            ['clean'], // 清除文本格式
+          ]
+        },
+        placeholder: '请输入正文'
+      },
       avatorUrl: this.$store.state.user.avator === '' ? defaultAvatar : "/api/file/download?fileName=" + this.$store.state.user.avator,
       user: this.$store.state.user,
       editDialogVisible1: false, // 控制修改用户信息对话框是否显示
-      editDialogVisible2: false, // 控制修改用户信息对话框是否显示
+      editDialogVisible2: false, // 控制修改用户密码对话框是否显示
+      editDialogVisible3: false, // 控制修改用户简介对话框是否显示
       optionsnative_place: pcTextArr,
       editUser: {},
       preEditUser: {},
@@ -286,12 +315,12 @@ export default {
   },
   methods: {
     beforeAvatarUpload(file) {
-        const isLt2M = file.size / 1024 / 1024 <5;
-        if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 5MB!');
-        }
-        return  isLt2M;
-      },
+      const isLt2M = file.size / 1024 / 1024 < 5;
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 5MB!');
+      }
+      return isLt2M;
+    },
     alertPassword() {
       if (this.strength <= 1) {
         this.$message.error("检测到您的密码为弱密码，请及时修改密码");
@@ -317,10 +346,9 @@ export default {
       // 将user复制给preEditUser
       this.preEditUser = { ...this.user };
 
-
       this.editDialogVisible1 = true;
     },
-    // 监听 修改用户状态
+    // 监听 修改密码状态
     showEditPasswordDialog() {
       // 将user复制给editUser
       this.editUser = { ...this.user };
@@ -330,6 +358,16 @@ export default {
 
       this.editDialogVisible2 = true;
       this.passwordValid = ""
+    },
+    // 监听 修改个人介绍状态
+    showEditIntroductionDialog() {
+      // 将user复制给editUser
+      this.editUser = { ...this.user };
+      this.editUser.province = [this.editUser.province, this.editUser.city];
+      // 将user复制给preEditUser
+      this.preEditUser = { ...this.user };
+
+      this.editDialogVisible3 = true;
     },
     editPassword() {
       if (this.editUser.password !== this.passwordValid) {
@@ -347,6 +385,7 @@ export default {
         .then((res) => {
           if (res.data.code === 200) {
             this.editDialogVisible1 = false;
+            this.editDialogVisible2 = false;
             this.editDialogVisible2 = false;
             this.$store.commit('SET_USER', res.data.data);
             this.user = this.$store.state.user;

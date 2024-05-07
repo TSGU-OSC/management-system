@@ -3,13 +3,12 @@ package com.example.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.model.dto.AnnouncementAddDTO;
 import com.example.model.entity.Announcement;
-
-import java.util.List;
+import com.github.pagehelper.PageInfo;
 
 /**
  * 针对表【announcement】的数据库操作Service
  *
- * @author lwy
+ * @author osc
  */
 public interface AnnouncementService extends IService<Announcement> {
 
@@ -41,7 +40,7 @@ public interface AnnouncementService extends IService<Announcement> {
      * @param announcement 脱敏前的公告
      * @return 脱敏后的公告
      */
-    Announcement getSafetyAnnouncement(Announcement announcement);
+//    Announcement getSafetyAnnouncement(Announcement announcement);
 
     /**
      * 查询公告
@@ -49,5 +48,5 @@ public interface AnnouncementService extends IService<Announcement> {
      * @param title 公告标题
      * @return 公告列表
      */
-    List<Announcement> listAnnouncements(String title);
+    PageInfo<Announcement> listAnnouncements(String title, Integer pageNumber, Integer pageSize);
 }

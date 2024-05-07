@@ -20,7 +20,7 @@
                 <el-form-item label="密码" prop="password"  :rules="[
                     { required: true, message: '密码不能为空', trigger: 'blur' },
                 ]">
-                    <el-input placeholder="密码默认为12345678" show-password v-model="userForm.password"></el-input>
+                    <el-input placeholder="请输入密码" show-password v-model="userForm.password"></el-input>
                 </el-form-item>
                 <el-form-item label="学号" prop="code"  :rules="[
                     { required: true, message: '学号不能为空', trigger: 'blur' },
@@ -71,13 +71,13 @@
                         </el-radio-group>
                     </el-form-item>
                 </div>
-
+<!-- 
                 <el-form-item label="个人介绍" prop="introduction">
                     <el-input placeholder="展示一下自己吧~" type="textarea" v-model="userForm.introduction"
                         style="width: 880px;" maxlength="300" show-word-limit rows="5"></el-input>
-                </el-form-item>
+                </el-form-item> -->
 
-
+                <p style="text-align: center;font-size: 12px;">tips:注册成功后，请等待管理员审核同意后，才可以登录进入系统哦~</p>
 
 
             </el-form>

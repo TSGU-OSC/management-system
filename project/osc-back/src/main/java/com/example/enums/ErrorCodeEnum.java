@@ -3,7 +3,7 @@ package com.example.enums;
 /**
  * 错误码
  *
- * @author lwy
+ * @author osc
  */
 public enum ErrorCodeEnum {
     SUCCESS(200, "OK", ""),

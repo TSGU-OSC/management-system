@@ -11,7 +11,7 @@ import java.io.Serializable;
 /**
  * EasyExcel 写对象实体
  *
- * @author lwy
+ * @author osc
  */
 @Schema(description = "Excel用户导出请求体")
 @Data
@@ -42,10 +42,10 @@ public class ExcelOutput implements Serializable {
     private String name;
 
     /**
-     * 姓别
+     * 性别
      */
-    @Schema(description = "姓别（1-男 0-女）")
-    @ExcelProperty(value = "姓别")
+    @Schema(description = "性别（1-男 0-女）")
+    @ExcelProperty(value = "性别")
     private int gender;
 
     /**

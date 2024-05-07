@@ -2,9 +2,11 @@ package com.example.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.constant.UserConstant;
 import com.example.enums.ErrorCodeEnum;
 import com.example.exception.BusinessException;
 import com.example.mapper.UserMapper;
+import com.example.model.dto.RegisterDTO;
 import com.example.model.dto.UserLoginDTO;
 import com.example.model.dto.VerifyCodeDTO;
 import com.example.model.entity.User;
@@ -23,12 +25,12 @@ import org.springframework.util.StringUtils;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import static com.example.constant.UserConstant.SALT;
+
 
 /**
  * 用户登录服务实现类
  *
- * @author lwy
+ * @author osc
  */
 @Service
 @Slf4j
@@ -54,28 +56,32 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
         // 校验验证码
         this.verifyVerifyCode(userLoginDTO);
         // 对密码加密
-        String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userLoginDTO.getPassword()).getBytes());
+//        String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userLoginDTO.getPassword()).getBytes());
         // 尝试登录
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("code", userLoginDTO.getCode());
-        queryWrapper.eq("password", encryptPassword);
+        queryWrapper.eq("password", userLoginDTO.getPassword());
         User user = userMapper.selectOne(queryWrapper);
         //用户不存在
         if (user == null) {
             log.info("在数据库中找不到学号和密码匹配的数据");
-            throw new BusinessException(ErrorCodeEnum.PARAMS_ERROR, "用户不存在");
+            throw new BusinessException(ErrorCodeEnum.PARAMS_ERROR, "用户名或密码错误");
         }
         // 用户被封号
         if (user.getStatus() == 1) {
             log.info("用户已被封号");
             throw new BusinessException(ErrorCodeEnum.PARAMS_ERROR, "用户已被封号");
         }
+        if (user.getStatus() == 2) {
+            log.info("注册用户需要得到管理员同意");
+            throw new BusinessException(ErrorCodeEnum.PARAMS_ERROR, "新注册用户需要得到管理员同意才能登录");
+        }
         //用户脱敏
-        User safetyUser = userService.getSafetyUser(user);
+//        User safetyUser = userService.getSafetyUser(user);
         // 设置当前登录用户
         request.getSession().setAttribute("USER_LOGIN_STATE", user.getId());
 
-        return safetyUser;
+        return user;
     }
 
     /**
@@ -102,7 +108,7 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
         // 获取验证码图片，构造响应结果
         VerifyCodeDTO verifyCodeDTO = new VerifyCodeDTO(verifyCodeKey, captcha.toBase64(), verifyCode);
         // 存入Redis，设置30s过期
-        redisCache.setCacheObject(verifyCodeKey, verifyCode, 30, TimeUnit.SECONDS);
+        redisCache.setCacheObject(verifyCodeKey, verifyCode, UserConstant.CODE_EXPIRE_TIME, TimeUnit.SECONDS);
 
         return verifyCodeDTO;
     }
@@ -127,5 +133,44 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
         if (!StringUtils.hasText(expect) || !StringUtils.hasText(actual) || !actual.equalsIgnoreCase(expect)) {
             throw new BusinessException(ErrorCodeEnum.PARAMS_ERROR, "验证码错误");
         }
+    }
+
+    @Override
+    public long register(RegisterDTO registerDTO) {
+        // 学号不可重复
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("code", registerDTO.getCode());
+        long count = this.count(queryWrapper);
+        if (count > 0) {
+            throw new BusinessException(ErrorCodeEnum.PARAMS_ERROR, "学号重复");
+        }
+        // 设置默认密码
+        if (org.apache.commons.lang3.StringUtils.isBlank(registerDTO.getPassword())) {
+            registerDTO.setPassword("12345678");
+        }
+        // 加密密码
+//        String encryptPassword = DigestUtils.md5DigestAsHex((SALT + registerDTO.getPassword()).getBytes());
+        // 建立用户实体
+        User user = new User();
+        user.setCode(registerDTO.getCode());
+        user.setPassword(registerDTO.getPassword());
+        user.setName(registerDTO.getName());
+        user.setGender(registerDTO.getGender());
+        user.setClazz(registerDTO.getClazz());
+        user.setProvince(registerDTO.getProvince());
+        user.setCity(registerDTO.getCity());
+        user.setMajor(registerDTO.getMajor());
+        user.setIdCard(registerDTO.getIdCard());
+        user.setPhone(registerDTO.getPhone());
+        user.setIntroduction(registerDTO.getIntroduction());
+        user.setAcademy(registerDTO.getAcademy());
+        user.setDepartment(registerDTO.getDepartment());
+        user.setStatus(2);
+//        user.setCreateUser(0L);
+//        user.setUpdateUser(0L);
+        // 存储用户信息
+        this.save(user);
+        // 用户添加成功
+        return user.getId();
     }
 }

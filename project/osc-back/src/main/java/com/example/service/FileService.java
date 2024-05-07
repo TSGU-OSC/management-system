@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * 文件服务类
  *
- * @author lwy
+ * @author osc
  */
 public interface FileService extends IService<User> {
     /**

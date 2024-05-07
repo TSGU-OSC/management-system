@@ -17,7 +17,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,12 +25,12 @@ import java.util.List;
 import java.util.Set;
 
 import static com.example.constant.UserConstant.DEFAULT_USER;
-import static com.example.constant.UserConstant.SALT;
+
 
 /**
  * Excel服务实现类
  *
- * @author lwy
+ * @author osc
  */
 @Service
 @Slf4j
@@ -39,50 +38,47 @@ public class ExcelServiceImpl extends ServiceImpl<UserMapper, User> implements E
 
     @Resource
     UserService userService;
-
-    /**
-     * Excel导入用户信息
-     */
-    @Override
     public void excelInput(@NotNull List<ExcelInput> cachedDataList) {
-        // 鉴权
+// 鉴权
         Long currentId = BaseContext.getCurrentId();
         User currentUser = userService.getById(currentId);
-        if(currentUser.getRole()<=DEFAULT_USER){
-            throw new BusinessException(ErrorCodeEnum.NO_AUTH,"权限不足");
+        if (currentUser.getRole() <= DEFAULT_USER) {
+            throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
         }
         List<User> users = new ArrayList<>();
         cachedDataList.forEach((excelInput -> {
-            // 学号不可重复
+            if (excelInput.getCode().length() != 11) {
+                throw new BusinessException(ErrorCodeEnum.PARAMS_ERROR, excelInput.getCode() + "-学号格式错误");
+            }
+// 学号不可重复
             QueryWrapper<User> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("code", excelInput.getCode());
             long count = this.count(queryWrapper);
             if (count > 0) {
-                throw new BusinessException(ErrorCodeEnum.PARAMS_ERROR, "学号重复");
+                throw new BusinessException(ErrorCodeEnum.PARAMS_ERROR, excelInput.getCode() + "-学号重复");
             }
-            // 加密密码
-            String encryptPassword = DigestUtils.md5DigestAsHex((SALT + "12345678").getBytes());
-            // 建立用户实体
+// 分割地区
+            String[] place = excelInput.getPlace().split("-");
+// 建立用户实体
             User user = new User();
             user.setCode(excelInput.getCode());
-            user.setPassword(encryptPassword);
+            user.setPassword("12345678");
             user.setName(excelInput.getName());
-            user.setGender(excelInput.getGender());
+            user.setGender("男".equals(excelInput.getGender()) ? 1 : 0);
             user.setPhone(excelInput.getPhone());
-            user.setClazz(excelInput.getClazz());
+            user.setClazz(Integer.valueOf(excelInput.getClazz()));
             user.setMajor(excelInput.getMajor());
             user.setAcademy(excelInput.getAcademy());
-            user.setProvince(excelInput.getProvince());
-            user.setCity(excelInput.getCity());
-            user.setDuty(excelInput.getDuty());
-            user.setDepartment(excelInput.getDepartment());
+            user.setProvince(place[0]);
+            user.setCity(place[1]);
+// 0-运营部，1-技术部，2-宣传部
+            user.setDepartment("运营部".equals(excelInput.getDepartment()) ? 0 : "技术部".equals(excelInput.getDepartment()) ? 1 : 2);
             user.setIntroduction(excelInput.getIntroduction());
             users.add(user);
         }));
-        // 存储用户信息
+// 存储用户信息
         this.saveBatch(users);
     }
-
     /**
      * 导出用户信息
      */

@@ -69,8 +69,8 @@ export default {
       { name: "/myPage", title: "个人", icon: "el-icon-setting" },
       { name: "/user", title: "用户管理", icon: "el-icon-s-custom" },
       // {name: "/dictionary", title: "字典管理", icon: "el-icon-bank-card"},
-      // { name: "/announcement", title: "公告管理", icon: "el-icon-s-comment" },
-      // { name: "/screen", title: "成员展板", icon: "el-icon-monitor" },
+      { name: "/announcement", title: "公告管理", icon: "el-icon-s-comment" },
+      { name: "/screen", title: "成员展板", icon: "el-icon-monitor" },
       { name: "/audit", title: "成员审核", icon: "el-icon-bell" },
     ];
   }else{
@@ -79,8 +79,8 @@ export default {
       { name: "/myPage", title: "个人", icon: "el-icon-setting" },
       { name: "/user", title: "用户管理", icon: "el-icon-s-custom" },
       // {name: "/dictionary", title: "字典管理", icon: "el-icon-bank-card"},
-      // { name: "/announcement", title: "公告管理", icon: "el-icon-s-comment" },
-      // { name: "/screen", title: "成员展板", icon: "el-icon-monitor" },
+      { name: "/announcement", title: "公告管理", icon: "el-icon-s-comment" },
+      { name: "/screen", title: "成员展板", icon: "el-icon-monitor" },
     ];
   }
   
@@ -96,7 +96,7 @@ export default {
       { name: "/index", title: "首页", icon: "el-icon-s-home" },
       { name: "/myPage", title: "个人", icon: "el-icon-setting" },
       { name: "/user", title: "用户管理", icon: "el-icon-s-custom" },
-      {name: "/dictionary", title: "字典管理", icon: "el-icon-bank-card"},
+      // {name: "/dictionary", title: "字典管理", icon: "el-icon-bank-card"},
       { name: "/announcement", title: "公告管理", icon: "el-icon-s-comment" },
       { name: "/screen", title: "成员展板", icon: "el-icon-monitor" },
       { name: "/audit", title: "成员审核", icon: "el-icon-bell" },
@@ -107,8 +107,8 @@ export default {
       { name: "/myPage", title: "个人", icon: "el-icon-setting" },
       { name: "/user", title: "用户管理", icon: "el-icon-s-custom" },
       // {name: "/dictionary", title: "字典管理", icon: "el-icon-bank-card"},
-      // { name: "/announcement", title: "公告管理", icon: "el-icon-s-comment" },
-      // { name: "/screen", title: "成员展板", icon: "el-icon-monitor" },
+      { name: "/announcement", title: "公告管理", icon: "el-icon-s-comment" },
+      { name: "/screen", title: "成员展板", icon: "el-icon-monitor" },
     ];
   }
     }

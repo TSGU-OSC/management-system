@@ -6,7 +6,7 @@ import com.example.model.vo.ResponseVO;
 /**
  *  统一返回工具类
  *
- * @author lwy
+ * @author osc
  */
 public class ResultUtils {
 

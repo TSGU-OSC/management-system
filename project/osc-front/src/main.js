@@ -14,6 +14,10 @@ Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
+
+
 new Vue({
   el: '#app',
   router,

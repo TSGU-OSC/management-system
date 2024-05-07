@@ -22,9 +22,9 @@ import java.util.Map;
 /**
  * 用户服务控制类
  *
- * @author lwy
+ * @author osc
  */
-@ApiSupport(author = "lwy") // 接口作者
+@ApiSupport(author = "osc") // 接口作者
 @Tag(name = "用户管理接口")   // 接口分组名
 @Slf4j  // 日志
 @RestController
@@ -110,13 +110,14 @@ public class UserController {
         return ResultUtils.success(count);
     }
 
+
     /**
      * 统计男/女人数
      */
     @GetMapping("/count/gender")
     @Operation(description = "统计男/女人数 1-男 0-女")
-    public ResponseVO<Long> countGender(int gender) {
-        long count = userService.countGender(gender);
+    public ResponseVO<long[]> countGender() {
+        long[] count = userService.countGender();
         return ResultUtils.success(count);
     }
 
@@ -128,5 +129,15 @@ public class UserController {
     public ResponseVO<List<Map<String, Object>>> countProvince() {
         List<Map<String, Object>> maps = userService.countProvince();
         return ResultUtils.success(maps);
+    }
+
+    /**
+     * 待通过用户列表
+     */
+    @PostMapping("/audit")
+    @Operation(description = "统计待通过")
+    public ResponseVO<PageInfo<User>> countAudit(@RequestBody QueryDTO queryDTO,Integer pageNumber,Integer pageSize) {
+        PageInfo<User> userList = userService.countAudit(queryDTO, pageNumber, pageSize);
+        return ResultUtils.success(userList);
     }
 }

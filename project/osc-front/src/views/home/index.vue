@@ -71,7 +71,7 @@
           <div class="data">
             <i class="iconfont icon-tijiao "></i>
             <p style="font-family: 幼圆;">PR数量</p>
-            <p class="num"><VueCountUp :start-value="0" :end-value="157" /></p>
+            <p class="num"><VueCountUp :start-value="0" :end-value="177" /></p>
           </div>
           <div class="data">
             <i class="iconfont icon-huodong"></i>
@@ -91,7 +91,7 @@
           <div class="data">
             <i class="iconfont icon-renshu"></i>
             <p style="font-family: 幼圆;">成员数量</p>
-            <p class="num"><VueCountUp :start-value="0" :end-value="115" /></p>
+            <p class="num"><VueCountUp :start-value="0" :end-value="116" /></p>
           </div>
         </div>
       </el-col>

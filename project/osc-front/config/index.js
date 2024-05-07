@@ -12,8 +12,9 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        // target: 'http://127.0.0.1:8080',
-        target: 'http://10.21.101.44:8080',
+        // target: 'http://127.0.0.1:8081',
+        // target: 'http://10.21.101.44:8080',
+        target: 'http://127.0.0.1:8080',
         changeOrigin: true,
         // nginx环境中注意可能要删除
         pathRewrite: {

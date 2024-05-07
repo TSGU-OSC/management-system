@@ -21,7 +21,7 @@ import java.util.UUID;
 /**
  * MinIO工具类
  *
- * @author lwy
+ * @author osc
  */
 @Slf4j
 @Component
