@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 /**
  * 全局异常处理器
@@ -39,5 +40,14 @@ public class GlobalExceptionHandler {
         }
         log.error("MethodArgumentNotValidException:", e);
         return ResultUtils.error(ErrorCodeEnum.PARAMS_ERROR, "请求参数错误", result);
+    }
+
+    /**
+     * 文件传输超限异常
+     */
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseVO<Object> maxUploadSizeExceptionHandler(MaxUploadSizeExceededException e) {
+        log.error("MaxUploadSizeExceededException: ", e);
+        return ResultUtils.error(ErrorCodeEnum.SYSTEM_ERROR, e.getMessage(), "文件太大");
     }
 }

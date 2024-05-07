@@ -33,7 +33,7 @@
         <el-table :data="userList" border stripe style="width: 100%;">
             <el-table-column prop="createTime" label="申请时间" width="160"></el-table-column>
             <el-table-column prop="name" label="姓名" width="95"></el-table-column>
-            <el-table-column prop="gender" label="性别" width="45">
+            <el-table-column prop="gender" label="性别" width="55">
                 <template v-slot:default="scope">
                     <span v-if="scope.row.gender === 1">男</span>
                     <span v-else-if="scope.row.gender === 0">女</span>
@@ -47,10 +47,10 @@
                 </template>
             </el-table-column>
             <el-table-column prop="code" label="学号" width="130"></el-table-column>
-            <el-table-column prop="clazz" label="班级" width="45"></el-table-column>
+            <el-table-column prop="clazz" label="班级" width="55"></el-table-column>
             <el-table-column prop="major" label="专业"></el-table-column>
             <el-table-column prop="academy" label="学院" width="120"></el-table-column>
-            <el-table-column prop="introduction" label="个人介绍" width="200"></el-table-column>
+            <!-- <el-table-column prop="introduction" label="个人介绍" width="200"></el-table-column> -->
             <el-table-column prop="phone" label="手机号" v-if="this.$store.state.user.role !== 0"></el-table-column>
             <el-table-column prop="province" label="所在省" width="80"
                 v-if="this.$store.state.user.role !== 0"></el-table-column>
@@ -272,17 +272,17 @@ export default {
                         this.editDialogVisible = false;
                         this.getUserList();
                         this.$message({
-                            message: "修改用户成功",
+                            message: "通过用户成功",
                             type: "success",
                         });
                     } else {
-                        this.$message.error("修改用户失败:" + res.data.description);
+                        this.$message.error("通过用户失败:" + res.data.description);
                         // 重置修改信息表
                         this.editForm = { ...this.preEditForm }
                     }
                 })
                 .catch((err) => {
-                    this.$message.error("修改用户异常");
+                    this.$message.error("通过用户异常");
                     console.loge(err);
                 });
         },
@@ -290,8 +290,8 @@ export default {
         async removeUserById(userinfo) {
             // 弹框 询问用户是否删除
             const confirmResult = await this.$confirm(
-                "此操作将永久删除该用户, 是否继续?",
-                "提示",
+                "您确定要拒绝此用户的注册申请吗?",
+                "温馨提示",
                 {
                     confirmButtonText: "确定",
                     cancelButtonText: "取消",

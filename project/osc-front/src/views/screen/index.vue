@@ -1,88 +1,142 @@
-<!--
-<template>
-  <Map ref="map" :content="content"  />
-&lt;!&ndash;  <Map ref="map" />&ndash;&gt;
-</template>
-
-<script>
-// 引入echarts以及中国地图china.js
-
-import 'echarts/map/js/china'
-import Map from '../../components/map/map';
-import axios from 'axios';
-
-export default {
-  data(){
-    return {
-      content:[]
-    }
-  },
-  components: {
-    Map
-  },
-  methods: {
-  },
-  created() {
-    axios.get("/api/user/count/province").then(res => {
-      if (res.data.code === 200) {
-        console.log(res)
-        this.content=res.data.data.map(obj=>{
-          return {name:obj.province,value:obj.count}
-        })
-        console.log("testdata",this.content)
-      } else {
-        this.$message.error("获取用户信息失败")
-      }
-    }).catch((err) => {
-      this.$message.error("获取用户信息异常");
-    })
-  }
-
-}
-
-
-</script>
--->
 <template>
   <div class="Echarts">
-    <div id="main" style="width: 600px;height:400px;"></div>
+    <div id="gender"  style="width: 30%;height:600px;float: left"></div>
+    <div id="main" style="width: 70%;height:600px;float: right"></div>
   </div>
 </template>
 
 <script>
+import chinaJson from './china.json';
+import {userGenderCount, userProvinceCount} from "../../api/user";
 export default {
   name: 'Echarts',
+  data(){
+    return {
+      content: [],
+      gender: [],
+    }
+  },
   methods:{
-    myEcharts(){
+    myEcharts1(){
       // 基于准备好的dom，初始化echarts实例
-      var myChart = this.$echarts.init(document.getElementById('main'));
-
+      const myChart = this.$echarts.init(document.getElementById('gender'));
       // 指定图表的配置项和数据
-      var option = {
+      const option = {
         title: {
-          text: 'ECharts 入门示例'
+          text: '开源鸿蒙社男女比例',
+          left: 'center'
         },
-        tooltip: {},
+        color: ['#7B68EE','#FFC0CB'],
+        tooltip: {
+          trigger: 'item'
+        },
         legend: {
-          data:['销量']
+          orient: 'vertical',
+          left: 'left'
         },
-        xAxis: {
-          data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-        },
-        yAxis: {},
-        series: [{
-          name: '销量',
-          type: 'bar',
-          data: [5, 20, 36, 10, 10, 20]
-        }]
-      };
+        series: [
+          {
+            name: '人数',
+            type: 'pie',
+            radius: '70%',
+            data: this.gender,
+            emphasis: {
+              itemStyle: {
 
-      // 使用刚指定的配置项和数据显示图表。
-      myChart.setOption(option);
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: 'rgba(0, 0, 0, 0.5)'
+              }
+            }
+          }
+        ]
+      };
+      userGenderCount().then((res) => {
+        if (res.data.code === 200) {
+          this.gender.push({"value": res.data.data[0],"name": '男'});
+          this.gender.push({"value": res.data.data[1],"name": '女'});
+          // 使用刚指定的配置项和数据显示图表。
+          myChart.setOption(option);
+        } else {
+          this.$message.error("获取用户信息失败")
+        }
+      }).catch((err) => {
+        this.$message.error("获取用户信息异常");
+      })
+    },
+    myEcharts2(){
+      // 基于准备好的dom，初始化echarts实例
+      const myChart = this.$echarts.init(document.getElementById('main'));
+      this.$echarts.registerMap('China', chinaJson);
+      // 指定图表的配置项和数据
+      const option = {
+        title: {
+          text: '开源鸿蒙社人员分布',
+          left: 'center'
+        },
+        tooltip: {
+          trigger: 'item',
+          transitionDuration: 0.2
+        },
+        visualMap: {
+          left: 'right',
+          min: 0,
+          max: 50,
+          inRange: {
+            color: [
+              '#ffffbf',
+              '#fee090',
+              '#fdae61',
+              '#f46d43',
+              '#d73027',
+              '#a50026'
+            ]
+          },
+          text: ['High', 'Low'],
+          calculable: true
+        },
+        series: [
+          {
+            name: '地区/人数',
+            type: 'map',
+            map: 'China',
+            layoutCenter: ['50%', '50%'],
+            layoutSize: '600',
+            // label: {
+            //   show: true
+            // },
+            emphasis: {
+              label: {
+                show: true
+              }
+            },
+            data: this.content
+          }
+        ]
+      };
+      userProvinceCount().then((res) => {
+        if (res.data.code === 200) {
+          console.log(res.data.data)
+          res.data.data.forEach(obj=>{
+            let province=obj.province;
+            let count=obj.count;
+            let con={"name": province,"value": count}
+            this.content.push(con)
+          })
+          console.log("testdata",this.content)
+          // 使用刚指定的配置项和数据显示图表。
+          myChart.setOption(option);
+        } else {
+          this.$message.error("获取用户信息失败")
+        }
+      }).catch((err) => {
+        this.$message.error("获取用户信息异常");
+      })
     }
   },
   mounted() {
-    this.myEcharts();
+    this.myEcharts1();
+    this.myEcharts2();
   }
 }
 </script>

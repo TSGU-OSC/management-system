@@ -31,9 +31,9 @@ import java.util.Map;
 /**
  * Excel服务控制类
  *
- * @author lwy
+ * @author osc
  */
-@ApiSupport(author = "lwy") // 接口作者
+@ApiSupport(author = "osc") // 接口作者
 @Tag(name = "Excel管理接口")   // 接口分组名
 @Slf4j  // 日志
 @RestController

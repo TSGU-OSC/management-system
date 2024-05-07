@@ -9,6 +9,7 @@ import com.example.service.UserService;
 import com.example.utils.MinioUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,7 +18,7 @@ import java.io.InputStream;
 /**
  * 文件服务实现类
  *
- * @author lwy
+ * @author osc
  */
 @Service
 public class FileServiceImpl extends ServiceImpl<UserMapper, User> implements FileService {
@@ -40,7 +41,7 @@ public class FileServiceImpl extends ServiceImpl<UserMapper, User> implements Fi
         String fileName = minioUtil.minioUpload(file, minioProperty.getBucket());
         // 同时删除原头像文件
         User user = userService.getById(id);
-        if(user.getAvator()!=null) {
+        if(!"".equals(user.getAvator())) {
             deleteFile(user.getAvator(),user);
         }
         // 同时将头像文件名存储到数据库中

@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * 公告添加请求体
  *
- * @author lwy
+ * @author osc
  */
 @Schema(description = "添加公告请求体")
 @Data
@@ -28,4 +28,11 @@ public class AnnouncementAddDTO implements Serializable {
      */
     @Schema(description = "公告内容")
     private String content;
+
+
+    /**
+     * 公告级别（0普通公告 1紧急公告）
+     */
+    @Schema(description = "公告级别")
+    private Integer status;
 }

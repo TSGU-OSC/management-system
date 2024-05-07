@@ -13,7 +13,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 /**
  * 请求拦截器
  *
- * @author lwy
+ * @author osc
  */
 @Component
 @Slf4j

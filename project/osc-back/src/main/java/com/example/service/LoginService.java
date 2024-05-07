@@ -1,6 +1,7 @@
 package com.example.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.model.dto.RegisterDTO;
 import com.example.model.dto.UserLoginDTO;
 import com.example.model.dto.VerifyCodeDTO;
 import com.example.model.entity.User;
@@ -9,7 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 /**
  * 用户登录服务类
  *
- * @author lwy
+ * @author osc
  */
 public interface LoginService extends IService<User> {
     /**
@@ -37,4 +38,12 @@ public interface LoginService extends IService<User> {
      * @param userLoginDTO 用户登录DTO类
      */
     void verifyVerifyCode(UserLoginDTO userLoginDTO);
+
+    /**
+     * 注册用户
+     *
+     * @param registerDTO 注册DTO类
+     * @return 注册成功返回用户ID
+     */
+    long register(RegisterDTO registerDTO);
 }

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * MinIO 存储属性类
  *
- * @author lwy
+ * @author osc
  */
 @Data
 @Configuration

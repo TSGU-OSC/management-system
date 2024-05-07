@@ -5,7 +5,7 @@ import com.example.model.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * @author lwy
+ * @author osc
  */
 @Mapper
 public interface UserMapper extends BaseMapper<User> {

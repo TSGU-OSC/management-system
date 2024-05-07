@@ -11,7 +11,7 @@ import java.io.Serializable;
 /**
  * 用户登录请求体
  *
- * @author lwy
+ * @author osc
  */
 @Schema(description = "用户登录请求参数")
 @Data
@@ -24,7 +24,7 @@ public class UserLoginDTO implements Serializable {
     private String code;
 
     @Schema(description = "密码（非空，长度大于6）")
-    @NotBlank(message = "密码错误")
+    @NotBlank(message = "密码不能为空")
     private String password;
 
     /**
