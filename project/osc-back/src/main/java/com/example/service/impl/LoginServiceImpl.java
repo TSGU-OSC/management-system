@@ -140,6 +140,7 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
         // 学号不可重复
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("code", registerDTO.getCode());
+        queryWrapper.eq("is_deleted",0);
         long count = this.count(queryWrapper);
         if (count > 0) {
             throw new BusinessException(ErrorCodeEnum.PARAMS_ERROR, "学号重复");
