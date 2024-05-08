@@ -241,6 +241,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             safetyUser.setDepartment(originUser.getDepartment());
             safetyUser.setRole(originUser.getRole());
             safetyUser.setIntroduction(originUser.getIntroduction());
+            safetyUser.setProvince(originUser.getProvince());
+            safetyUser.setCity(originUser.getCity());
             return safetyUser;
         }
         return originUser;

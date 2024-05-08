@@ -6,35 +6,35 @@
         <el-row :gutter="25">
           <el-col :span="5" style="margin-bottom: 20px">
             <!--搜索区域-->
-            <el-input placeholder="请输入成员姓名" v-model="queryInfo.name" clearable @clear="getUserList">
+            <el-input placeholder="请输入成员姓名" v-model="queryInfo.name" clearable @clear="getUserList" @keyup.native.enter="getUserList">
             </el-input>
           </el-col>
-          <el-col :span="5" style="margin-bottom: 20px" v-if="this.$store.state.user.role !== 0">
-            <el-input placeholder="请输入成员学号" v-model="queryInfo.code" clearable @clear="getUserList">
-            </el-input>
-          </el-col>
-          <el-col :span="5" style="margin-bottom: 20px">
-            <el-input placeholder="请输入成员班级" v-model="queryInfo.clazz" clearable @clear="getUserList">
+          <el-col :span="5" style="margin-bottom: 20px" v-if="this.$store.state.user.role > 0">
+            <el-input placeholder="请输入成员学号" v-model="queryInfo.code" clearable @clear="getUserList" @keyup.native.enter="getUserList">
             </el-input>
           </el-col>
           <el-col :span="5" style="margin-bottom: 20px">
-            <el-input placeholder="请输入成员专业" v-model="queryInfo.major" clearable @clear="getUserList">
+            <el-input placeholder="请输入成员班级" v-model="queryInfo.clazz" clearable @clear="getUserList" @keyup.native.enter="getUserList">
             </el-input>
           </el-col>
           <el-col :span="5" style="margin-bottom: 20px">
-            <el-input placeholder="请输入成员学院" v-model="queryInfo.academy" clearable @clear="getUserList">
+            <el-input placeholder="请输入成员专业" v-model="queryInfo.major" clearable @clear="getUserList" @keyup.native.enter="getUserList">
             </el-input>
           </el-col>
-          <el-col :span="5" style="margin-bottom: 20px" v-if="this.$store.state.user.role !== 0">
-            <el-input placeholder="请输入成员手机号" v-model="queryInfo.phone" clearable @clear="getUserList">
+          <el-col :span="5" style="margin-bottom: 20px">
+            <el-input placeholder="请输入成员学院" v-model="queryInfo.academy" clearable @clear="getUserList" @keyup.native.enter="getUserList">
+            </el-input>
+          </el-col>
+          <el-col :span="5" style="margin-bottom: 20px" v-if="this.$store.state.user.role > 0">
+            <el-input placeholder="请输入成员手机号" v-model="queryInfo.phone" clearable @clear="getUserList" @keyup.native.enter="getUserList">
             </el-input>
           </el-col>
           <el-col :span="4" style="margin-bottom: 20px" v-if="this.$store.state.user.role !== 0">
-            <el-input placeholder="请输入成员所在省" v-model="queryInfo.province" clearable @clear="getUserList">
+            <el-input placeholder="请输入成员所在省" v-model="queryInfo.province" clearable @clear="getUserList" @keyup.native.enter="getUserList">
             </el-input>
           </el-col>
           <el-col :span="4" style="margin-bottom: 20px" v-if="this.$store.state.user.role !== 0">
-            <el-input placeholder="请输入成员所在市" v-model="queryInfo.city" clearable @clear="getUserList">
+            <el-input placeholder="请输入成员所在市" v-model="queryInfo.city" clearable @clear="getUserList" @keyup.native.enter="getUserList">
             </el-input>
           </el-col>
           <!-- <el-col :span="5" style="margin-bottom: 20px">
@@ -129,15 +129,15 @@
           </el-table-column>
 
           <el-table-column prop="code" label="学号" width="130"
-            v-if="this.$store.state.user.role !== 0"></el-table-column>
+            v-if="this.$store.state.user.role > 0"></el-table-column>
           <el-table-column prop="clazz" label="班级" width="55"></el-table-column>
           <el-table-column prop="major" label="专业"></el-table-column>
           <el-table-column prop="academy" label="学院" width="120"></el-table-column>
-          <el-table-column prop="phone" label="手机号" v-if="this.$store.state.user.role !== 0"></el-table-column>
+          <el-table-column prop="phone" label="手机号" v-if="this.$store.state.user.role > 0"></el-table-column>
           <el-table-column prop="province" label="所在省" width="80"
-            v-if="this.$store.state.user.role !== 0"></el-table-column>
+            ></el-table-column>
           <el-table-column prop="city" label="所在市" width="80"
-            v-if="this.$store.state.user.role !== 0"></el-table-column>
+            ></el-table-column>
           <el-table-column prop="duty" label="职位">
 
             <template v-slot:default="scope">
@@ -173,7 +173,7 @@
             </template>
           </el-table-column>
           <el-table-column prop="idCard" label="身份证号" width="200"
-            v-if="this.$store.state.user.role !== 0"></el-table-column>
+            v-if="this.$store.state.user.role > 1 "></el-table-column>
           <el-table-column prop="createTime" label="创建时间" width="160"
             v-if="this.$store.state.user.role !== 0"></el-table-column>
           <el-table-column prop="createUser" label="创建者ID" width="100"
