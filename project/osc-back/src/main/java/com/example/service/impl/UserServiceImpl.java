@@ -230,7 +230,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Long currentId = BaseContext.getCurrentId();
         User currentUser = this.getById(currentId);
 
-        if( currentUser.getRole() <=originUser.getRole()&&currentUser.getRole() != SUPER_ADMIN_USER){
+        if( currentUser.getRole() <originUser.getRole()&&currentUser.getRole() != SUPER_ADMIN_USER){
             safetyUser.setAvator(originUser.getAvator());
             safetyUser.setName(originUser.getName());
             safetyUser.setGender(originUser.getGender());
