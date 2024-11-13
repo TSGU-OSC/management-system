@@ -1,13 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="47f98af6-3136-48e9-9e83-99bf7aba26b3" name="Changes" comment="" />
+    <list default="true" id="47f98af6-3136-48e9-9e83-99bf7aba26b3" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/osc-back/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/osc-back/sql/create_user.sql" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/sql/create_user.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/osc-back/sql/user.sql" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/sql/user.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/model/dto/RegisterDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/model/dto/RegisterDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/model/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/model/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/osc-back/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/src/main/resources/application-dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/osc-back/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/osc-back/src/main/resources/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/src/main/resources/mapper/UserMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/osc-front/config/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-front/config/index.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -22,16 +42,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/git/shetuan-manager-system/project/osc-back&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "database.data.extractors.current.export.id": "Comma-separated (CSV)_id",
+    "git-widget-placeholder": "develop",
+    "last_opened_file_path": "D:/git/shetuan-manager-system/project/osc-back",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "SDKs",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql",
+      "postgresql"
+    ]
   }
-}</component>
+}]]></component>
+  <component name="ReactorSettings">
+    <option name="notificationShown" value="true" />
+  </component>
   <component name="RunManager">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="shetuan-manager-system" />
@@ -42,6 +82,14 @@
     <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
       <module name="shetuan-manager-system" />
       <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="OSCApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="OSC" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.OSCApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>

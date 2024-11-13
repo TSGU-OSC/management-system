@@ -17,8 +17,8 @@ import java.time.LocalDateTime;
  *
  * @author osc
  */
-@TableName(value = "user")
-        @Data
+@TableName(value = "user",schema = "public")
+@Data
 public class User implements Serializable {
     /**
      * 用户id
@@ -139,7 +139,7 @@ public class User implements Serializable {
      * 身份证号码
      */
     @Schema(description = "身份证号")
-    @TableField(value = "ID_card")
+    @TableField(value = "id_card")
     private String idCard;
 
     /**
@@ -169,7 +169,7 @@ public class User implements Serializable {
      */
     @Schema(description = "创建时间")
     @TableField(value = "create_time", fill = FieldFill.INSERT)
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
     /**
@@ -177,7 +177,7 @@ public class User implements Serializable {
      */
     @Schema(description = "更新时间")
     @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
     /**
      * 创建者

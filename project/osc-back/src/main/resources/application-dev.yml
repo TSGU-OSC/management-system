@@ -2,10 +2,13 @@ spring:
   application:
     name: osc_user_center
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://10.21.101.44:3306/osc
-    username: root
-    password: fushenqi
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://172.19.15.13:3306/osc
+#    username: root
+#    password: fushenqi
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://192.168.50.164:30004/osc?currentSchema=public&binaryTransfer=false
+    username: opentenbase
   session:
     timeout: 864000000
   servlet:
@@ -15,8 +18,8 @@ spring:
       max-file-size: 10MB # 最大文件大小大文件大小
   data:
     redis:
-      port: 6379
-      host: 127.0.0.1
+      port: 6380
+      host: 172.19.15.13
       database: 2
       # 连接超时时间
       timeout: 10000000s
@@ -30,9 +33,11 @@ spring:
           max-active: 8
           # #连接池最大阻塞等待时间（使用负值表示没有限制）
           max-wait: -1ms
+      password: fushenqi123
 pagehelper:
   # 设置方言，此处指定 MySQL 数据库
-  helper-dialect: mysql
+#  helper-dialect: mysql
+  helper-dialect: postgresql
   # 是否启动合理化，默认是 false。
   # 启用合理化时，如果pageNum<1会查询第一页，如果pageNum>pages（最大页数）会查询最后一页。
   # 禁用合理化时，如果pageNum<1或pageNum>pages会返回空数据
@@ -45,13 +50,13 @@ pagehelper:
   page-size-zero: true
 minio: # MinIO连接信息
   # 访问资源的 URL
-  url: "http://localhost:9000/"
+  url: "http://172.19.15.13:9000/"
   # 上传的 Bucket
   bucket: data
   # Access Key
-  accessKey: admin
+  accessKey: SqSOJSL6k0ZVtsZkTfvd
   # Secret Key
-  secretKey: admin123
+  secretKey: U5nZhMtb82a2HVwdlZlWHOPQ7Tt85jxmQGyUHEsH
 server:
   port: 8080  # 端口号
   tomcat:

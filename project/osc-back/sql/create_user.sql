@@ -12,7 +12,7 @@ CREATE TABLE `new_user` (
                             `academy` varchar(15) NOT NULL COMMENT '学院',
                             `duty` tinyint NOT NULL DEFAULT '0' COMMENT '职位（0成员 1副部长 2 部长 3副社长 4社长）',
                             `introduction` varchar(255) DEFAULT NULL COMMENT '个人介绍',
-                            `ID_card` varchar(18) DEFAULT NULL COMMENT '身份证号码',
+                            `id_card` varchar(18) DEFAULT NULL COMMENT '身份证号码',
                             `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态（0正常 1封号）',
                             `is_deleted` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否删除（0正常 1删除）',
                             `create_time` datetime NOT NULL COMMENT '创建时间',

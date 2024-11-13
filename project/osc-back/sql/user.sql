@@ -14,7 +14,7 @@ create table user
     academy      varchar(15)                                                                         not null comment '学院',
     duty         tinyint      default 0                                                              not null comment '职位（0成员 1副部长 2 部长 3副社长 4社长）',
     introduction text                                                                                null comment '个人介绍',
-    ID_card      varchar(18)                                                                         null comment '身份证号码',
+    id_card      varchar(18)                                                                         null comment '身份证号码',
     status       tinyint(1)   default 0                                                              not null comment '状态（0正常 1封号）',
     is_deleted   tinyint(1)   default 0                                                              not null comment '是否删除（0正常 1删除）',
     create_time  datetime                                                                            not null comment '创建时间',

@@ -81,7 +81,7 @@ public class RegisterDTO implements Serializable {
      * 身份证号码
      */
     @Schema(description = "身份证号")
-    @TableField(value = "ID_card")
+    @TableField(value = "id_card")
     private String idCard;
 
     /**

@@ -10,32 +10,32 @@
         <result property="password" column="password" jdbcType="VARCHAR"/>
         <result property="avator" column="avator" jdbcType="VARCHAR"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
-        <result property="gender" column="gender" jdbcType="TINYINT"/>
+        <result property="gender" column="gender" jdbcType="SMALLINT"/>
         <result property="phone" column="phone" jdbcType="VARCHAR"/>
         <result property="province" column="province" jdbcType="VARCHAR"/>
         <result property="city" column="city" jdbcType="VARCHAR"/>
         <result property="clazz" column="clazz" jdbcType="INTEGER"/>
         <result property="major" column="major" jdbcType="VARCHAR"/>
         <result property="academy" column="academy" jdbcType="VARCHAR"/>
-        <result property="duty" column="duty" jdbcType="TINYINT"/>
+        <result property="duty" column="duty" jdbcType="SMALLINT"/>
         <result property="introduction" column="introduction" jdbcType="VARCHAR"/>
-        <result property="idCard" column="ID_card" jdbcType="VARCHAR"/>
-        <result property="status" column="status" jdbcType="TINYINT"/>
-        <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+        <result property="idCard" column="id_card" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="SMALLINT"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="SMALLINT"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <result property="createUser" column="create_user" jdbcType="INTEGER"/>
         <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
-        <result property="role" column="role" jdbcType="TINYINT"/>
+        <result property="role" column="role" jdbcType="SMALLINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,`code`,`password`,
-        avator,`name`,gender,phone,
+        id,code,"password",
+        avator,"name",gender,phone,
         province,city,clazz,
         major,academy,duty,
-        introduction,ID_card,`status`,
+        introduction,id_card,`status`,
         is_deleted,create_time,update_time,
-        create_user,update_user,`role`
+        create_user,update_user,"role"
     </sql>
 </mapper>

@@ -11,7 +11,6 @@ import com.example.mapper.UserMapper;
 import com.example.model.dto.QueryDTO;
 import com.example.model.dto.UserAddDTO;
 import com.example.model.entity.User;
-import com.example.service.FileService;
 import com.example.service.UserService;
 import com.example.utils.MinioUtil;
 import com.github.pagehelper.Page;
@@ -21,15 +20,12 @@ import jakarta.annotation.Resource;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static com.example.constant.UserConstant.*;
 
@@ -105,7 +101,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public PageInfo<User> listUsers(QueryDTO queryDTO, Integer pageNumber, Integer pageSize) {
 // 开始分页查询
 
-        Page<Object> page = PageHelper.startPage(pageNumber, pageSize,"duty desc,code asc");
+        Page<Object> page = PageHelper.startPage(pageNumber, pageSize, "duty desc,code asc");
 // 非空查询
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(StringUtils.isNotEmpty(queryDTO.getCode()), User::getCode, queryDTO.getCode())
@@ -115,12 +111,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .like(StringUtils.isNotEmpty(queryDTO.getAcademy()), User::getAcademy, queryDTO.getAcademy())
                 .like(StringUtils.isNotEmpty(queryDTO.getPhone()), User::getPhone, queryDTO.getPhone())
                 .like(StringUtils.isNotEmpty(queryDTO.getProvince()), User::getProvince, queryDTO.getProvince())
-                .like(queryDTO.getGender() != null, User::getGender, queryDTO.getGender())
-                .like(queryDTO.getDuty() != null, User::getDuty, queryDTO.getDuty())
-                .like(queryDTO.getDepartment() != null, User::getDepartment, queryDTO.getDepartment())
-                .like(queryDTO.getClazz() != null, User::getClazz, queryDTO.getClazz())
-                .like(queryDTO.getStatus() != null, User::getStatus, queryDTO.getStatus())
-                .like(queryDTO.getRole() != null, User::getRole, queryDTO.getRole())
+                .eq(queryDTO.getGender() != null, User::getGender, queryDTO.getGender())
+                .eq(queryDTO.getDuty() != null, User::getDuty, queryDTO.getDuty())
+                .eq(queryDTO.getDepartment() != null, User::getDepartment, queryDTO.getDepartment())
+                .eq(queryDTO.getClazz() != null, User::getClazz, queryDTO.getClazz())
+                .eq(queryDTO.getStatus() != null, User::getStatus, queryDTO.getStatus())
+                .eq(queryDTO.getRole() != null, User::getRole, queryDTO.getRole())
                 .ne(User::getStatus, 2);
 
         List<User> list = this.list(lambdaQueryWrapper);
@@ -148,11 +144,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Long currentUserId = BaseContext.getCurrentId();
         User currentUser = this.getById(currentUserId);
         // 平级用户不能修改平级用户信息
-        if (currentUser.getRole() <= user.getRole() && currentUser.getRole()!=SUPER_ADMIN_USER && !Objects.equals(currentUser.getId(), user.getId())) {
+        if (currentUser.getRole() <= user.getRole() && currentUser.getRole() != SUPER_ADMIN_USER && !Objects.equals(currentUser.getId(), user.getId())) {
             throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
         }
         // 学号不能为空
-        if(user.getCode() == null||user.getCode().length()!=11){
+        if (user.getCode() == null || user.getCode().length() != 11) {
             throw new BusinessException(ErrorCodeEnum.PARAMS_ERROR, "学号不符合规范");
         }
         // 学号不可重复
@@ -160,7 +156,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         queryWrapper.eq("code", user.getCode());
         queryWrapper.ne("id", user.getId());
         long count = this.count(queryWrapper);
-        if (count>0) {
+        if (count > 0) {
             throw new BusinessException(ErrorCodeEnum.PARAMS_ERROR, "学号重复");
         }
         // 密码非空
@@ -210,13 +206,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new BusinessException(ErrorCodeEnum.NO_AUTH, "用户权限不足");
         }
         // 删除头像
-        if(!"".equals(user.getAvator())){
+        if (!"".equals(user.getAvator())) {
             minioUtil.deleteFile(minioProperty.getBucket(), user.getAvator());
         }
         // 删除用户
         this.removeById(id);
         return id;
     }
+
     /**
      * 用户脱敏
      *
@@ -230,7 +227,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Long currentId = BaseContext.getCurrentId();
         User currentUser = this.getById(currentId);
 
-        if( currentUser.getRole() <=originUser.getRole()&&currentUser.getRole() != SUPER_ADMIN_USER && currentUser.getRole() != ADMIN_USER){
+        if (currentUser.getRole() <= originUser.getRole() && currentUser.getRole() != SUPER_ADMIN_USER && currentUser.getRole() != ADMIN_USER) {
             safetyUser.setAvator(originUser.getAvator());
             safetyUser.setName(originUser.getName());
             safetyUser.setGender(originUser.getGender());
@@ -265,8 +262,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * 统计男/女人数
      *
      * @return 男/女总人数
-
-    /**
+     * <p>
+     * /**
      * 统计男女人数
      */
     @Override
@@ -291,7 +288,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public List<Map<String, Object>> countProvince() {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.ne("status",2);
+        queryWrapper.ne("status", 2);
         queryWrapper.select("count(*) as count,province").groupBy("province");
         return this.listMaps(queryWrapper);
     }
@@ -304,18 +301,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new BusinessException(ErrorCodeEnum.NO_AUTH, "普通用户无法查询待通过用户");
         }
         // 开始分页查询
-        PageHelper.startPage(pageNumber, pageSize);
+        Page<Object> page = PageHelper.startPage(pageNumber, pageSize);
         // 非空查询
         LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(StringUtils.isNotEmpty(queryDTO.getCode()), User::getCode, queryDTO.getCode())
                 .like(StringUtils.isNotEmpty(queryDTO.getName()), User::getName, queryDTO.getName())
-                .ne(User::getStatus,0)
-                .ne(User::getStatus,1)
-                .like(queryDTO.getStatus() != null, User::getStatus, queryDTO.getStatus())
+                .ne(User::getStatus, 0)
+                .ne(User::getStatus, 1)
+                .eq(queryDTO.getStatus() != null, User::getStatus, queryDTO.getStatus())
                 .orderByDesc(User::getCreateTime);
 
         List<User> list = this.list(lambdaQueryWrapper);
 
-        return new PageInfo<>(list);
+        PageInfo<User> pageInfo = new PageInfo<>(list);
+        pageInfo.setPages(page.getPages());
+        pageInfo.setTotal(page.getTotal());
+
+        return pageInfo;
     }
 }
