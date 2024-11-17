@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
  *
  * @author osc
  */
-@TableName(value = "user",schema = "public")
+@TableName(value = "user")
 @Data
 public class User implements Serializable {
     /**

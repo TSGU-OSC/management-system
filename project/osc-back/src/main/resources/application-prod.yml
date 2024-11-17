@@ -3,7 +3,7 @@ spring:
     name: osc_user_center
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://10.21.101.44:3306/osc
+    url: jdbc:mysql://172.19.15.13:3306/osc
     username: root
     password: fushenqi
   session:
@@ -15,8 +15,8 @@ spring:
       max-file-size: 10MB # 最大文件大小大文件大小
   data:
     redis:
-      port: 6379
-      host: 10.21.101.44
+      port: 6380
+      host: 172.19.15.13
       database: 2
       # 连接超时时间
       timeout: 10000000s
@@ -30,7 +30,6 @@ spring:
           max-active: 8
           # #连接池最大阻塞等待时间（使用负值表示没有限制）
           max-wait: -1ms
-      username: default
       password: fushenqi123
 pagehelper:
   # 设置方言，此处指定 MySQL 数据库
@@ -47,7 +46,7 @@ pagehelper:
   page-size-zero: true
 minio: # MinIO连接信息
   # 访问资源的 URL
-  url: "http://10.21.101.44:9000/"
+  url: "http://172.19.15.13:9000/"
   # 上传的 Bucket
   bucket: data
   # Access Key

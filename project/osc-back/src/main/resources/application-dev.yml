@@ -2,13 +2,10 @@ spring:
   application:
     name: osc_user_center
   datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://172.19.15.13:3306/osc
-#    username: root
-#    password: fushenqi
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://192.168.50.164:30004/osc?currentSchema=public&binaryTransfer=false
-    username: opentenbase
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://172.19.15.13:3306/osc
+    username: root
+    password: fushenqi
   session:
     timeout: 864000000
   servlet:
@@ -36,8 +33,7 @@ spring:
       password: fushenqi123
 pagehelper:
   # 设置方言，此处指定 MySQL 数据库
-#  helper-dialect: mysql
-  helper-dialect: postgresql
+  helper-dialect: mysql
   # 是否启动合理化，默认是 false。
   # 启用合理化时，如果pageNum<1会查询第一页，如果pageNum>pages（最大页数）会查询最后一页。
   # 禁用合理化时，如果pageNum<1或pageNum>pages会返回空数据
@@ -54,9 +50,9 @@ minio: # MinIO连接信息
   # 上传的 Bucket
   bucket: data
   # Access Key
-  accessKey: SqSOJSL6k0ZVtsZkTfvd
+  accessKey: admin
   # Secret Key
-  secretKey: U5nZhMtb82a2HVwdlZlWHOPQ7Tt85jxmQGyUHEsH
+  secretKey: admin123
 server:
   port: 8080  # 端口号
   tomcat:
@@ -79,4 +75,4 @@ knife4j:
     enable-footer: false    # 关闭原始Footer
     enable-footer-custom: true     # 开启自定义Footer
     footer-custom-content: 版权所有   # 自定义Footer内容
-  production: false # 是否为生产环境（生产环境会屏蔽接口文档）
+  production: true # 是否为生产环境（生产环境会屏蔽接口文档）

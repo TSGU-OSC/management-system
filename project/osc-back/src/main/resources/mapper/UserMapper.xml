@@ -10,28 +10,28 @@
         <result property="password" column="password" jdbcType="VARCHAR"/>
         <result property="avator" column="avator" jdbcType="VARCHAR"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
-        <result property="gender" column="gender" jdbcType="SMALLINT"/>
+        <result property="gender" column="gender" jdbcType="TINYINT"/>
         <result property="phone" column="phone" jdbcType="VARCHAR"/>
         <result property="province" column="province" jdbcType="VARCHAR"/>
         <result property="city" column="city" jdbcType="VARCHAR"/>
         <result property="clazz" column="clazz" jdbcType="INTEGER"/>
         <result property="major" column="major" jdbcType="VARCHAR"/>
         <result property="academy" column="academy" jdbcType="VARCHAR"/>
-        <result property="duty" column="duty" jdbcType="SMALLINT"/>
+        <result property="duty" column="duty" jdbcType="TINYINT"/>
         <result property="introduction" column="introduction" jdbcType="VARCHAR"/>
         <result property="idCard" column="id_card" jdbcType="VARCHAR"/>
-        <result property="status" column="status" jdbcType="SMALLINT"/>
-        <result property="isDeleted" column="is_deleted" jdbcType="SMALLINT"/>
+        <result property="status" column="status" jdbcType="TINYINT"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <result property="createUser" column="create_user" jdbcType="INTEGER"/>
         <result property="updateUser" column="update_user" jdbcType="INTEGER"/>
-        <result property="role" column="role" jdbcType="SMALLINT"/>
+        <result property="role" column="role" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,code,"password",
-        avator,"name",gender,phone,
+        id,code,`password`,
+        avator,`name`,gender,phone,
         province,city,clazz,
         major,academy,duty,
         introduction,id_card,`status`,

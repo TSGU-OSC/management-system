@@ -4,18 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="47f98af6-3136-48e9-9e83-99bf7aba26b3" name="Changes" comment="">
+    <list default="true" id="47f98af6-3136-48e9-9e83-99bf7aba26b3" name="Changes" comment="数据库改为OpenTenbase">
+      <change afterPath="$PROJECT_DIR$/project/osc-back/sql/optenbaseTables.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/osc-back/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/osc-back/sql/create_user.sql" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/sql/create_user.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/osc-back/sql/user.sql" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/sql/user.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/model/dto/RegisterDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/model/dto/RegisterDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/model/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/model/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/service/impl/UserServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/osc-back/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/src/main/resources/application-dev.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/osc-back/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/osc-back/src/main/resources/application-prod.yml" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/src/main/resources/application-prod.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/osc-back/src/main/resources/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/src/main/resources/mapper/UserMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/osc-front/config/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-front/config/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,9 +47,11 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "database.data.extractors.current.export.id": "Comma-separated (CSV)_id",
+    "database.data.extractors.current.export.id": "SQL Inserts",
     "git-widget-placeholder": "develop",
     "last_opened_file_path": "D:/git/shetuan-manager-system/project/osc-back",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "SDKs",
@@ -64,8 +62,8 @@
   },
   "keyToStringList": {
     "DatabaseDriversLRU": [
-      "mysql",
-      "postgresql"
+      "postgresql",
+      "mysql"
     ]
   }
 }]]></component>
@@ -104,10 +102,25 @@
       <option name="presentableId" value="Default" />
       <updated>1715088555808</updated>
       <workItem from="1715088557037" duration="31000" />
+      <workItem from="1731578668302" duration="1727000" />
+      <workItem from="1731821553898" duration="3523000" />
     </task>
+    <task id="LOCAL-00001" summary="数据库改为OpenTenbase">
+      <option name="closed" value="true" />
+      <created>1731504215194</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1731504215194</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="数据库改为OpenTenbase" />
+    <option name="LAST_COMMIT_MESSAGE" value="数据库改为OpenTenbase" />
   </component>
 </project>
