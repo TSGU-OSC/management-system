@@ -30,6 +30,7 @@ spring:
           max-active: 8
           # #连接池最大阻塞等待时间（使用负值表示没有限制）
           max-wait: -1ms
+#      username: default
       password: fushenqi123
 pagehelper:
   # 设置方言，此处指定 MySQL 数据库
@@ -54,7 +55,7 @@ minio: # MinIO连接信息
   # Secret Key
   secretKey: admin123
 server:
-  port: 8080  # 端口号
+  port: 8081  # 端口号
   tomcat:
     max-http-form-post-size: -1 # POST请求数据不做大小限制，以免高清头像传输失败
 mybatis-plus:
