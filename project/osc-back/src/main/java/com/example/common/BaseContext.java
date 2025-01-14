@@ -3,7 +3,7 @@ package com.example.common;
 /**
  * 基于ThreadLocal，用于保存和获取用户id的工具类
  *
- * @author lwy
+ * @author osc
  */
 public class BaseContext {
 

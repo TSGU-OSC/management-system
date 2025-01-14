@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * 用户服务
  *
- * @author lwy
+ * @author osc
  */
 public interface UserService extends IService<User> {
 
@@ -72,7 +72,7 @@ public interface UserService extends IService<User> {
      * @param gender 男-1/女-0
      * @return 男/女总人数
      */
-    long countGender(int gender);
+    long[] countGender();
 
     /**
      * 统计各省人数
@@ -80,4 +80,13 @@ public interface UserService extends IService<User> {
      * @return 各省人数列表
      */
     List<Map<String, Object>> countProvince();
+
+    /**
+     * 统计待通过
+     * @param queryDTO
+     * @param pageNumber
+     * @param pageSize
+     * @return
+     */
+    PageInfo<User> countAudit(QueryDTO queryDTO, Integer pageNumber, Integer pageSize);
 }

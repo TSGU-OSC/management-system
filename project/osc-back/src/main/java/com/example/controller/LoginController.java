@@ -3,11 +3,14 @@ package com.example.controller;
 import com.example.common.ResultUtils;
 import com.example.enums.ErrorCodeEnum;
 import com.example.exception.BusinessException;
+import com.example.model.dto.RegisterDTO;
+import com.example.model.dto.UserAddDTO;
 import com.example.model.dto.UserLoginDTO;
 import com.example.model.dto.VerifyCodeDTO;
 import com.example.model.entity.User;
 import com.example.model.vo.ResponseVO;
 import com.example.service.LoginService;
+import com.example.service.UserService;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,9 +23,9 @@ import org.springframework.web.bind.annotation.*;
 /**
  * 用户登录控制类
  *
- * @author lwy
+ * @author osc
  */
-@ApiSupport(author = "lwy") // 接口作者
+@ApiSupport(author = "osc") // 接口作者
 @Tag(name = "用户登录接口")   // 接口分组名
 @Slf4j  // 日志
 @RestController
@@ -66,5 +69,18 @@ public class LoginController {
     public ResponseVO<VerifyCodeDTO> getVerifyCode() {
         VerifyCodeDTO verifyCode = loginService.generateVerifyCode();
         return ResultUtils.success(verifyCode);
+    }
+
+
+    /**
+     * 注册用户
+     *
+     * @return 验证码DTO类
+     */
+    @PostMapping("/register")
+    @Operation(description = "注册用户")
+    public ResponseVO<Long>  register(@RequestBody @Validated RegisterDTO registerDTO) {
+        long newUserId = loginService.register(registerDTO);
+        return ResultUtils.success(newUserId);
     }
 }

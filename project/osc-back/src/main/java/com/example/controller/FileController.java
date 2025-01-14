@@ -19,9 +19,9 @@ import java.io.InputStream;
 /**
  * MinIO控制类
  *
- * @author lwy
+ * @author osc
  */
-@ApiSupport(author = "lwy") // 接口作者
+@ApiSupport(author = "osc") // 接口作者
 @Tag(name = "MinIO管理接口")   // 接口分组名
 // @CrossOrigin
 @RestController

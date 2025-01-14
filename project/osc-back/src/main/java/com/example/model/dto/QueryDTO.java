@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * 查询用户DTO类
  *
- * @author lwy
+ * @author osc
  */
 @Schema(description = "查询用户请求体")
 @Data
@@ -30,9 +30,9 @@ public class QueryDTO implements Serializable {
     private String name;
 
     /**
-     * 姓别
+     * 性别
      */
-    @Schema(description = "姓别")
+    @Schema(description = "性别")
     private Integer gender;
 
     /**

@@ -12,7 +12,7 @@ import java.io.Serializable;
 /**
  * 验证码实体
  *
- * @author lwy
+ * @author osc
  */
 @Schema(description = "验证码实体")
 @Data

@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 /**
  * 自定义元数据对象处理器
  *
- * @author lwy
+ * @author osc
  */
 @Component
 @Slf4j
@@ -25,8 +25,14 @@ public class MyMetaObjecthandler implements MetaObjectHandler {
         log.info(metaObject.toString());
         metaObject.setValue("createTime", LocalDateTime.now());
         metaObject.setValue("updateTime", LocalDateTime.now());
-        metaObject.setValue("createUser", BaseContext.getCurrentId());
-        metaObject.setValue("updateUser", BaseContext.getCurrentId());
+        if(BaseContext.getCurrentId()==null){
+            metaObject.setValue("createUser", 0L);
+            metaObject.setValue("updateUser", 0L);
+        }else{
+            metaObject.setValue("createUser", BaseContext.getCurrentId());
+            metaObject.setValue("updateUser", BaseContext.getCurrentId());
+        }
+
 
     }
 

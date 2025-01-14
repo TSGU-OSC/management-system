@@ -18,9 +18,8 @@
         <result property="major" column="major" jdbcType="VARCHAR"/>
         <result property="academy" column="academy" jdbcType="VARCHAR"/>
         <result property="duty" column="duty" jdbcType="TINYINT"/>
-        <result property="department" column="department" jdbcType="TINYINT"/>
         <result property="introduction" column="introduction" jdbcType="VARCHAR"/>
-        <result property="idCard" column="ID_card" jdbcType="VARCHAR"/>
+        <result property="idCard" column="id_card" jdbcType="VARCHAR"/>
         <result property="status" column="status" jdbcType="TINYINT"/>
         <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
@@ -31,12 +30,12 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,`code`,`password`,
+        id,code,`password`,
         avator,`name`,gender,phone,
         province,city,clazz,
-        major,academy,duty,department,
-        introduction,ID_card,`status`,
+        major,academy,duty,
+        introduction,id_card,`status`,
         is_deleted,create_time,update_time,
-        create_user,update_user,`role`
+        create_user,update_user,"role"
     </sql>
 </mapper>

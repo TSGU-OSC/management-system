@@ -3,21 +3,23 @@ spring:
     name: osc_user_center
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/osc
+    url: jdbc:mysql://172.19.15.13:3306/osc
     username: root
-    password: 2469
+    password: fushenqi
   session:
-    timeout: 1440m  # 24h
+    timeout: 864000000
   servlet:
     multipart:
-      max-file-size: 5000GB  # 最大文件大小
+      enabled: true # 开启配置
+      max-request-size: 1024MB
+      max-file-size: 10MB # 最大文件大小大文件大小
   data:
     redis:
-      port: 6379
-      host: 127.0.0.1
+      port: 6380
+      host: 172.19.15.13
       database: 2
       # 连接超时时间
-      timeout: 86400000s  # 24h
+      timeout: 10000000s
       lettuce:
         pool:
           # 连接池中的最小空闲连接
@@ -28,6 +30,8 @@ spring:
           max-active: 8
           # #连接池最大阻塞等待时间（使用负值表示没有限制）
           max-wait: -1ms
+#      username: default
+      password: fushenqi123
 pagehelper:
   # 设置方言，此处指定 MySQL 数据库
   helper-dialect: mysql
@@ -43,15 +47,15 @@ pagehelper:
   page-size-zero: true
 minio: # MinIO连接信息
   # 访问资源的 URL
-  url: "http://localhost:9000/"
+  url: "http://172.19.15.13:9000/"
   # 上传的 Bucket
   bucket: data
   # Access Key
-  accessKey: Jm8SSL608fU4ILVjAbEf
+  accessKey: admin
   # Secret Key
-  secretKey: ox6QF3u1UbeQIhZfZWRKnuenLJM5CfWUrYHeT7Yq
+  secretKey: admin123
 server:
-  port: 8080  # 端口号
+  port: 8081  # 端口号
   tomcat:
     max-http-form-post-size: -1 # POST请求数据不做大小限制，以免高清头像传输失败
 mybatis-plus:
@@ -72,4 +76,4 @@ knife4j:
     enable-footer: false    # 关闭原始Footer
     enable-footer-custom: true     # 开启自定义Footer
     footer-custom-content: 版权所有   # 自定义Footer内容
-  production: false # 是否为生产环境（生产环境会屏蔽接口文档）
+  production: true # 是否为生产环境（生产环境会屏蔽接口文档）

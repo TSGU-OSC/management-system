@@ -1,6 +1,7 @@
 package com.example.model.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 /**
  * 用户实体
  *
- * @author lwy
+ * @author osc
  */
 @TableName(value = "user")
 @Data
@@ -33,6 +34,7 @@ public class User implements Serializable {
     @Schema(description = "学号")
     @TableField(value = "code")
     @Length(min = 11, max = 11, message = "学号不规范")
+//    @NotBlank(message = "学号不能为空")
     private String code;
 
     /**
@@ -59,11 +61,11 @@ public class User implements Serializable {
     private String name;
 
     /**
-     * 姓别
+     * 性别
      */
-    @Schema(description = "姓别（1-男 0-女）")
+    @Schema(description = "性别（1-男 0-女）")
     @TableField(value = "gender")
-    @NotBlank(message = "姓别不能为空")
+    @NotBlank(message = "性别不能为空")
     private int gender;
 
     /**
@@ -137,13 +139,13 @@ public class User implements Serializable {
      * 身份证号码
      */
     @Schema(description = "身份证号")
-    @TableField(value = "ID_card")
+    @TableField(value = "id_card")
     private String idCard;
 
     /**
-     * 状态（0正常 1封号）
+     * 状态（0正常 1封号 2待通过）
      */
-    @Schema(description = "状态（0正常 1封号）")
+    @Schema(description = "状态（0正常 1封号 2待通过 3未通过）")
     @TableField(value = "status")
     private Integer status;
 
@@ -167,6 +169,7 @@ public class User implements Serializable {
      */
     @Schema(description = "创建时间")
     @TableField(value = "create_time", fill = FieldFill.INSERT)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
     /**
@@ -174,8 +177,8 @@ public class User implements Serializable {
      */
     @Schema(description = "更新时间")
     @TableField(value = "update_time", fill = FieldFill.INSERT_UPDATE)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
-
     /**
      * 创建者
      */

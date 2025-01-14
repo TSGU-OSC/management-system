@@ -5,6 +5,7 @@ import com.example.model.dto.AnnouncementAddDTO;
 import com.example.model.entity.Announcement;
 import com.example.model.vo.ResponseVO;
 import com.example.service.AnnouncementService;
+import com.github.pagehelper.PageInfo;
 import com.github.xiaoymin.knife4j.annotations.ApiSupport;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,14 +15,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * 公告服务控制类
  *
- * @author lwy
+ * @author osc
  */
-@ApiSupport(author = "lwy") // 接口作者
+@ApiSupport(author = "osc") // 接口作者
 @Tag(name = "公告管理接口")   // 接口分组名
 @Slf4j  // 日志
 @RestController
@@ -51,9 +50,8 @@ public class AnnouncementController {
      */
     @GetMapping("/search")
     @Operation(description = "根据标题查询公告信息")  // 接口信息描述
-    public ResponseVO<List<Announcement>> listAnnouncements(String title) {
-        List<Announcement> announcementList = announcementService.listAnnouncements(title);
-
+    public ResponseVO<PageInfo<Announcement>> listAnnouncements(String title, Integer pageNumber, Integer pageSize) {
+        PageInfo<Announcement> announcementList = announcementService.listAnnouncements(title, pageNumber, pageSize);
         return ResultUtils.success(announcementList);
     }
 

@@ -25,7 +25,7 @@
         v-model="loginForm.verifyCode"
         type="text"
         auto-complete="off"
-        placeholder="请输入验证码,30秒有效"
+        placeholder="验证码1分钟内有效"
         style="width: 60%"
         @keyup.enter.native="login"
       >
@@ -104,6 +104,7 @@ export default {
           this.$router.replace({path: path === '/' || path === undefined ? '/' : path})
         } else {
           this.$message.error(resp.data.description);
+          this.getCode()
           console.log(resp);
         }
       }).catch((err) => {

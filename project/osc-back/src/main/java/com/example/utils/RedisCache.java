@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Redis缓存工具类
  *
- * @author lwy
+ * @author osc
  */
 @Component
 public class RedisCache {

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * MinIO配置类
  *
- * @author lwy
+ * @author osc
  */
 @Slf4j
 @Configuration
