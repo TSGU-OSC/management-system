@@ -9,6 +9,7 @@ import com.example.service.UserService;
 import com.example.utils.MinioUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
