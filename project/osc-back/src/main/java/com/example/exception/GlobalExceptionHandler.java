@@ -1,9 +1,11 @@
 package com.example.exception;
 
+import cn.dev33.satoken.exception.SaTokenException;
 import com.example.common.ResultUtils;
 import com.example.enums.ErrorCodeEnum;
 import com.example.model.vo.ResponseVO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -49,5 +51,17 @@ public class GlobalExceptionHandler {
     public ResponseVO<Object> maxUploadSizeExceptionHandler(MaxUploadSizeExceededException e) {
         log.error("MaxUploadSizeExceededException: ", e);
         return ResultUtils.error(ErrorCodeEnum.SYSTEM_ERROR, e.getMessage(), "文件太大");
+    }
+
+    /**
+     *
+     * sa-token框架鉴权失败异常处理
+     *
+     */
+    @ExceptionHandler(SaTokenException.class)
+    public ResponseVO<Object> SaTokenExceptionHandler(SaTokenException e){
+        log.error("SaTokenException",e);
+        return ResultUtils.error(HttpStatus.FORBIDDEN.value(), e.getMessage(), "权限不足");
+
     }
 }

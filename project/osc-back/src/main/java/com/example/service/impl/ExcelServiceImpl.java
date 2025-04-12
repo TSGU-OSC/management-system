@@ -1,9 +1,9 @@
 package com.example.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.common.BaseContext;
 import com.example.enums.ErrorCodeEnum;
 import com.example.exception.BusinessException;
 import com.example.mapper.UserMapper;
@@ -24,8 +24,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.example.constant.UserConstant.DEFAULT_USER;
-
 
 /**
  * Excel服务实现类
@@ -40,9 +38,9 @@ public class ExcelServiceImpl extends ServiceImpl<UserMapper, User> implements E
     UserService userService;
     public void excelInput(@NotNull List<ExcelInput> cachedDataList) {
 // 鉴权
-        Long currentId = BaseContext.getCurrentId();
-        User currentUser = userService.getById(currentId);
-        if (currentUser.getRole() <= DEFAULT_USER) {
+//        Long currentId = BaseContext.getCurrentId();
+//        User currentUser = userService.getById(currentId);
+        if (StpUtil.hasRole("0")) {
             throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
         }
         List<User> users = new ArrayList<>();
@@ -85,9 +83,9 @@ public class ExcelServiceImpl extends ServiceImpl<UserMapper, User> implements E
     @Override
     public void excelOutput(HttpServletResponse response) {
         // 鉴权
-        Long currentId = BaseContext.getCurrentId();
-        User currentUser = userService.getById(currentId);
-        if(currentUser.getRole()<=DEFAULT_USER){
+//        Long currentId = BaseContext.getCurrentId();
+//        User currentUser = userService.getById(currentId);
+        if(StpUtil.hasRole("0")){
             throw new BusinessException(ErrorCodeEnum.NO_AUTH,"权限不足");
         }
         try {
@@ -101,7 +99,7 @@ public class ExcelServiceImpl extends ServiceImpl<UserMapper, User> implements E
                     .excludeColumnFiledNames(excludeColumnFiledNames).sheet("用户信息").doWrite(() -> {
                         List<User> userList = this.list();
                         // 如果用户权限低，对查询到的用户进行脱敏
-                        if (currentUser.getRole() == DEFAULT_USER) {
+                        if (StpUtil.hasRole("0")) {
                             userList = userList.stream().map(userService::getSafetyUser).toList();
                         }
                         return userList;

@@ -65,5 +65,5 @@ public class UserAddDTO implements Serializable {
 
     // 角色（0普通成员，1管理员，2超管）
     @Schema(description = "角色（0普通成员，1管理员，2超管 默认为0）")
-    private Integer role;
+    private String role;
 }

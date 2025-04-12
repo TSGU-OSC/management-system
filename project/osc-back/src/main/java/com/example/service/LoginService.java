@@ -6,6 +6,7 @@ import com.example.model.dto.UserLoginDTO;
 import com.example.model.dto.VerifyCodeDTO;
 import com.example.model.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 用户登录服务类
@@ -18,12 +19,12 @@ public interface LoginService extends IService<User> {
      *
      * @return 脱敏后的用户信息
      */
-    User userLogin(UserLoginDTO userLoginDTO, HttpServletRequest request);
+    User userLogin(UserLoginDTO userLoginDTO, HttpServletResponse response);
 
     /**
      * 用户登出
      */
-    void userLogout(HttpServletRequest request);
+    void userLogout();
 
     /**
      * 获取验证码

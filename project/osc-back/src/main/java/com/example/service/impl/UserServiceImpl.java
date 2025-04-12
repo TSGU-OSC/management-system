@@ -1,5 +1,6 @@
 package com.example.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -27,8 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.example.constant.UserConstant.*;
-
 /**
  * 用户服务实现类
  *
@@ -53,12 +52,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public long addUser(@NotNull UserAddDTO userAddDTO) {
         // 获取当前线程用户
-        Long currentId = BaseContext.getCurrentId();
-        User currentUser = this.getById(currentId);
+//        Long currentId = BaseContext.getCurrentId();
+//        User currentUser = this.getById(currentId);
         // 权限需要高于被创建用户的权限
-        if (currentUser.getRole() <= userAddDTO.getRole()) {
-            throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
-        }
+//        if (currentUser.getRole() <= userAddDTO.getRole()) {
+//            throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
+//        }
+        StpUtil.checkRoleOr("1","2");
+
+
+
         // 学号不可重复
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("code", userAddDTO.getCode());
@@ -144,7 +147,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Long currentUserId = BaseContext.getCurrentId();
         User currentUser = this.getById(currentUserId);
         // 平级用户不能修改平级用户信息
-        if (currentUser.getRole() <= user.getRole() && currentUser.getRole() != SUPER_ADMIN_USER && !Objects.equals(currentUser.getId(), user.getId())) {
+//        if (currentUser.getRole() <= user.getRole() && currentUser.getRole() != SUPER_ADMIN_USER && !Objects.equals(currentUser.getId(), user.getId())) {
+//            throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
+//        }
+        if (StpUtil.hasRole(user.getRole()) && StpUtil.hasRole("2") && !Objects.equals(currentUser.getId(), user.getId())) {
             throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
         }
         // 学号不能为空
@@ -166,7 +172,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         // 如果是修改自己的信息
         if (currentUserId.equals(user.getId())) {
             // 超级管理员才能修改自己的 role status duty department
-            if (currentUser.getRole() != SUPER_ADMIN_USER &&
+            if (!StpUtil.hasRole("2") &&
                     (!currentUser.getRole().equals(user.getRole()) ||
                             !currentUser.getStatus().equals(user.getStatus()) ||
                             !currentUser.getDuty().equals(user.getDuty()) ||
@@ -176,9 +182,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         } else {  // 如果不是修改自己的信息
             // 超管才能修改他人的 role status duty department ，除非修改者的权限高于被修改者，
             // 并且修改者不能将被修改者的权限改至高于等于修改者的权限
-            if (currentUser.getRole() != SUPER_ADMIN_USER &&
-                    currentUser.getRole() <=
-                            (Math.max(user.getRole(), this.getById(user.getId()).getRole()))) {
+            if (!StpUtil.hasRole("2") &&
+                    Integer.parseInt(currentUser.getRole()) <=
+                            (Math.max(Integer.parseInt(user.getRole()), Integer.parseInt(this.getById(user.getId()).getRole())))) {
                 throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
             }
         }
@@ -202,7 +208,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Long currentId = BaseContext.getCurrentId();
         User currentUser = this.getById(currentId);
         // 只能删除权限低于自己的用户
-        if (currentUser.getRole() <= user.getRole()) {
+        if (Integer.parseInt(currentUser.getRole()) <= Integer.parseInt(user.getRole())) {
             throw new BusinessException(ErrorCodeEnum.NO_AUTH, "用户权限不足");
         }
         // 删除头像
@@ -227,7 +233,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Long currentId = BaseContext.getCurrentId();
         User currentUser = this.getById(currentId);
 
-        if (currentUser.getRole() <= originUser.getRole() && currentUser.getRole() != SUPER_ADMIN_USER && currentUser.getRole() != ADMIN_USER) {
+        if (Integer.parseInt(currentUser.getRole()) <= Integer.parseInt(originUser.getRole()) && !StpUtil.hasRole("2") && !StpUtil.hasRole("1")) {
             safetyUser.setAvator(originUser.getAvator());
             safetyUser.setName(originUser.getName());
             safetyUser.setGender(originUser.getGender());
@@ -297,7 +303,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public PageInfo<User> countAudit(QueryDTO queryDTO, Integer pageNumber, Integer pageSize) {
         // 如果用户权限低 报错
         Long currentId = BaseContext.getCurrentId();
-        if (this.getById(currentId).getRole() == DEFAULT_USER) {
+        if (StpUtil.hasRole("0")) {
             throw new BusinessException(ErrorCodeEnum.NO_AUTH, "普通用户无法查询待通过用户");
         }
         // 开始分页查询

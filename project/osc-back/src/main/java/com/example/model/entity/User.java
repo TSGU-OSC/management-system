@@ -154,7 +154,7 @@ public class User implements Serializable {
      */
     @Schema(description = "角色（0普通成员，1管理员，2超管 默认为0）")
     @TableField(value = "role")
-    private Integer role;
+    private String role;
 
     /**
      * 是否删除（0正常 1删除）

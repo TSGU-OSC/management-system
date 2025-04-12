@@ -59,7 +59,7 @@ create table if not exists public."user"
     update_time  timestamp              not null,
     create_user  integer                not null,
     update_user  integer                not null,
-    role         tinyint     default 0 not null,
+    role         varchar(10)     default 0 not null,
     gender       tinyint     default 1 not null,
     constraint user_code_unique
         unique (id, code)

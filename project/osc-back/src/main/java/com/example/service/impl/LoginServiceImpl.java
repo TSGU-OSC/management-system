@@ -1,5 +1,6 @@
 package com.example.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.constant.UserConstant;
@@ -16,10 +17,10 @@ import com.example.utils.RedisCache;
 import com.wf.captcha.ArithmeticCaptcha;
 import com.wf.captcha.base.Captcha;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.UUID;
@@ -52,7 +53,7 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
      * @return 脱敏后的用户信息
      */
     @Override
-    public User userLogin(UserLoginDTO userLoginDTO, HttpServletRequest request) {
+    public User userLogin(UserLoginDTO userLoginDTO, HttpServletResponse response) {
         // 校验验证码
         this.verifyVerifyCode(userLoginDTO);
         // 对密码加密
@@ -79,7 +80,16 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
         //用户脱敏
 //        User safetyUser = userService.getSafetyUser(user);
         // 设置当前登录用户
-        request.getSession().setAttribute("USER_LOGIN_STATE", user.getId());
+//        request.getSession().setAttribute("USER_LOGIN_STATE", user.getId());
+
+        //调用.login方法隐式的创建一个token并存入用户id
+        StpUtil.login(user.getId());
+        //获取到token
+        String token = StpUtil.getTokenValue();
+        //将token写入cookie并将cookie放进响应体中
+        Cookie cookie = new Cookie("token", token);
+        response.addCookie(cookie);
+
 
         return user;
     }
@@ -88,9 +98,12 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
      * 用户登出
      */
     @Override
-    public void userLogout(HttpServletRequest request) {
-        // 注销session
-        request.getSession().invalidate();
+    public void userLogout() {
+//        // 注销session
+//        request.getSession().invalidate();
+        //调用登出api删除token信息实现登出效果
+        StpUtil.logout();
+
     }
 
     /**
