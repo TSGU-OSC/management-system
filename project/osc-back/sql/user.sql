@@ -21,6 +21,6 @@ create table user
     update_time  datetime                                                                            not null comment '更新时间',
     create_user  int                                                                                 not null comment '创建者',
     update_user  int                                                                                 not null comment '更新者',
-    role         varchar(10)                                                                             not null comment '角色（0普通成员，1管理员，2超管）',
+    role         varchar(10)  DEFAULT 'ROLE_ADMIN'                                                                      not null comment '角色（0普通成员，1管理员，2超管）',
     gender       tinyint      default 1                                                              not null comment '性别(1-男 0-女)'
 );

@@ -42,7 +42,7 @@ public class AnnouncementServiceImpl extends ServiceImpl<AnnouncementMapper, Ann
 //        Long currentId = BaseContext.getCurrentId();
 //        User currentUser = userService.getById(currentId);
         // 鉴权
-        if (StpUtil.hasRole("0")) {
+        if (StpUtil.hasRole("ROLE_MEMBER")) {
             throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
         }
         Announcement announcement = new Announcement();
@@ -64,7 +64,7 @@ public class AnnouncementServiceImpl extends ServiceImpl<AnnouncementMapper, Ann
 //        Long currentId = BaseContext.getCurrentId();
 //        User user = userService.getById(currentId);
         // 鉴权
-        if (StpUtil.hasRole("0")) {
+        if (StpUtil.hasRole("MEMBER")) {
             throw new BusinessException(ErrorCodeEnum.NO_AUTH, "用户权限不足");
         }
         // 删除公告
@@ -83,7 +83,7 @@ public class AnnouncementServiceImpl extends ServiceImpl<AnnouncementMapper, Ann
 //        User currentUser = userService.getById(currentUserId);
 
         // 鉴权
-        if (StpUtil.hasRole("0")) {
+        if (StpUtil.hasRole("MEMBER")) {
             throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
         }
         // 权限足够，可以修改

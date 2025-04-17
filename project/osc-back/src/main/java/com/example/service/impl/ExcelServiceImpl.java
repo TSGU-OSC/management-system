@@ -40,7 +40,7 @@ public class ExcelServiceImpl extends ServiceImpl<UserMapper, User> implements E
 // 鉴权
 //        Long currentId = BaseContext.getCurrentId();
 //        User currentUser = userService.getById(currentId);
-        if (StpUtil.hasRole("0")) {
+        if (StpUtil.hasRole("ROLE_ADMIN")) {
             throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
         }
         List<User> users = new ArrayList<>();
@@ -85,7 +85,7 @@ public class ExcelServiceImpl extends ServiceImpl<UserMapper, User> implements E
         // 鉴权
 //        Long currentId = BaseContext.getCurrentId();
 //        User currentUser = userService.getById(currentId);
-        if(StpUtil.hasRole("0")){
+        if(StpUtil.hasRole("ROLE_MEMBER")){
             throw new BusinessException(ErrorCodeEnum.NO_AUTH,"权限不足");
         }
         try {
@@ -99,7 +99,7 @@ public class ExcelServiceImpl extends ServiceImpl<UserMapper, User> implements E
                     .excludeColumnFiledNames(excludeColumnFiledNames).sheet("用户信息").doWrite(() -> {
                         List<User> userList = this.list();
                         // 如果用户权限低，对查询到的用户进行脱敏
-                        if (StpUtil.hasRole("0")) {
+                        if (StpUtil.hasRole("ROLE_MEMBER")) {
                             userList = userList.stream().map(userService::getSafetyUser).toList();
                         }
                         return userList;

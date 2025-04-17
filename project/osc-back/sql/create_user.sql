@@ -19,6 +19,6 @@ CREATE TABLE `new_user` (
                             `update_time` datetime NOT NULL COMMENT '更新时间',
                             `create_user` int NOT NULL COMMENT '创建者',
                             `update_user` int NOT NULL COMMENT '更新者',
-                            `role` varchar(10) NOT NULL COMMENT '角色（0普通成员，1管理员，2超管）',
+                            `role` varchar(10)default 'ROLE_MEMBER'NOT NULL COMMENT '角色（0普通成员，1管理员，2超管）',
                             PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
