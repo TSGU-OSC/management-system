@@ -5,14 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2fcb4764-ca43-4352-a4c0-a12a926a8043" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/enums/RoleEnum.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/osc-back/sql/create_user.sql" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/sql/create_user.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/osc-back/sql/optenbaseTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/sql/optenbaseTables.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/osc-back/sql/user.sql" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/sql/user.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/enums/RoleEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/enums/RoleEnum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/model/dto/QueryDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/model/dto/QueryDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/model/dto/UserAddDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/model/dto/UserAddDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/model/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/model/entity/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/service/impl/AnnouncementServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/service/impl/AnnouncementServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/service/impl/ExcelServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/service/impl/ExcelServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/utils/StpInterfaceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/project/osc-back/src/main/java/com/example/utils/StpInterfaceImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,37 +41,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "C:/Users/czc/IdeaProjects/management-system1/project/osc-back/src/main/java/com/example/service",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "项目",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "spring.configuration.checksum": "0e0ec5752ef20d94dc6fbb13507f5e5e",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/czc/IdeaProjects/management-system1/project/osc-back/src/main/java/com/example/service&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;项目&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;0e0ec5752ef20d94dc6fbb13507f5e5e&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ],
-    "com.intellij.ide.scratch.LRUPopupBuilder$1/SQL 方言": [
-      "MySQL"
+    &quot;com.intellij.ide.scratch.LRUPopupBuilder$1/SQL 方言&quot;: [
+      &quot;MySQL&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\czc\IdeaProjects\management-system1\project\osc-back\src\main\java\com\example\service" />
@@ -104,7 +104,8 @@
       <workItem from="1744650082037" duration="553000" />
       <workItem from="1744787919154" duration="32000" />
       <workItem from="1744793361112" duration="15000" />
-      <workItem from="1744874086243" duration="5069000" />
+      <workItem from="1744874086243" duration="6691000" />
+      <workItem from="1745039467034" duration="4080000" />
     </task>
     <task id="LOCAL-00001" summary="更新鉴权功能">
       <option name="closed" value="true" />
@@ -114,7 +115,15 @@
       <option name="project" value="LOCAL" />
       <updated>1744476040693</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="更新鉴权功能第二次修订版">
+      <option name="closed" value="true" />
+      <created>1744879315838</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1744879315838</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -122,6 +131,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="更新鉴权功能" />
-    <option name="LAST_COMMIT_MESSAGE" value="更新鉴权功能" />
+    <MESSAGE value="更新鉴权功能第二次修订版" />
+    <option name="LAST_COMMIT_MESSAGE" value="更新鉴权功能第二次修订版" />
   </component>
 </project>

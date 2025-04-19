@@ -93,6 +93,6 @@ public class QueryDTO implements Serializable {
      * 角色（0普通成员，1管理员，2超管）
      */
     @Schema(description = "角色（0普通成员，1管理员，2超管）")
-    private String role;
+    private Integer role;
 
 }

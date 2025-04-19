@@ -151,7 +151,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 //        if (currentUser.getRole() <= user.getRole() && currentUser.getRole() != SUPER_ADMIN_USER && !Objects.equals(currentUser.getId(), user.getId())) {
 //            throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
 ////        }
-        if (StpUtil.hasRole(user.getRole()) && !StpUtil.hasRole("ROLE_SUPER_ADMIN") && !Objects.equals(currentUser.getId(), user.getId())) {
+        if (StpUtil.hasRole(RoleEnum.getMsgByNum(user.getRole())) && !StpUtil.hasRole("ROLE_SUPER_ADMIN") && !Objects.equals(currentUser.getId(), user.getId())) {
             throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
         }
         // 学号不能为空
@@ -184,8 +184,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             // 超管才能修改他人的 role status duty department ，除非修改者的权限高于被修改者，Integer.parseInt(this.getById(user.getId()).getRole())))
             // 并且修改者不能将被修改者的权限改至高于等于修改者的权限
             if (!StpUtil.hasRole("ROLE_SUPER_ADMIN") &&
-                    RoleEnum.valueOf(currentUser.getRole().toUpperCase()).getRoleNum() <=
-                            (Math.max(RoleEnum.valueOf(user.getRole().toUpperCase()).getRoleNum(), RoleEnum.valueOf(this.getById(user.getId()).getRole().toUpperCase()).getRoleNum()))) {
+                    currentUser.getRole() <=
+                            (Math.max(user.getRole(), this.getById(user.getId()).getRole()))) {
                 throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
             }
         }
@@ -212,7 +212,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 //        if (Integer.parseInt(currentUser.getRole()) <= Integer.parseInt(user.getRole())) {
 //            throw new BusinessException(ErrorCodeEnum.NO_AUTH, "用户权限不足");
 //        }
-        if (RoleEnum.valueOf(currentUser.getRole().toUpperCase()).getRoleNum() <= RoleEnum.valueOf(user.getRole().toUpperCase()).getRoleNum()) {
+        if (currentUser.getRole() <= user.getRole()) {
             throw new BusinessException(ErrorCodeEnum.NO_AUTH, "用户权限不足");
         }
         // 删除头像
@@ -237,7 +237,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         Long currentId = BaseContext.getCurrentId();
         User currentUser = this.getById(currentId);
 
-        if (Integer.parseInt(currentUser.getRole()) <= Integer.parseInt(originUser.getRole()) && !StpUtil.hasRole("2") && !StpUtil.hasRole("1")) {
+        if (currentUser.getRole() <= originUser.getRole() && !StpUtil.hasRole("ROLE_SUPER_ADMIN") && !StpUtil.hasRole("ROLE_ADMIN")) {
             safetyUser.setAvator(originUser.getAvator());
             safetyUser.setName(originUser.getName());
             safetyUser.setGender(originUser.getGender());
