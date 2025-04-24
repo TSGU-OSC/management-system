@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -44,8 +45,8 @@ public class LoginController {
      */
     @PostMapping("/login")
     @Operation(description = "用户登录")  // 接口信息描述
-    public ResponseVO<User> login(@RequestBody @Validated UserLoginDTO userLoginDTO, HttpServletRequest request) {
-        User user = loginService.userLogin(userLoginDTO, request);
+    public ResponseVO<User> login(@RequestBody @Validated UserLoginDTO userLoginDTO, HttpServletResponse response) {
+        User user = loginService.userLogin(userLoginDTO,response);
         return ResultUtils.success(user);
     }
 
@@ -55,7 +56,7 @@ public class LoginController {
     @PostMapping("/logout")
     @Operation(description = "用户退出")  // 接口信息描述
     public ResponseVO<String> logout(HttpServletRequest request) {
-        loginService.userLogout(request);
+        loginService.userLogout();
         return ResultUtils.success("登出成功");
     }
 

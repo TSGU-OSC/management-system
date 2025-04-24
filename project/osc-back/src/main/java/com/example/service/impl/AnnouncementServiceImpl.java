@@ -1,14 +1,13 @@
 package com.example.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.common.BaseContext;
 import com.example.enums.ErrorCodeEnum;
 import com.example.exception.BusinessException;
 import com.example.mapper.AnnouncementMapper;
 import com.example.model.dto.AnnouncementAddDTO;
 import com.example.model.entity.Announcement;
-import com.example.model.entity.User;
 import com.example.service.AnnouncementService;
 import com.example.service.UserService;
 import com.github.pagehelper.PageHelper;
@@ -18,8 +17,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static com.example.constant.UserConstant.DEFAULT_USER;
 
 /**
  * 针对表【announcement】的数据库操作Service实现
@@ -42,10 +39,10 @@ public class AnnouncementServiceImpl extends ServiceImpl<AnnouncementMapper, Ann
     @Override
     public Long addAnnouncement(AnnouncementAddDTO announcementAddDTO) {
         // 获取当前线程用户
-        Long currentId = BaseContext.getCurrentId();
-        User currentUser = userService.getById(currentId);
+//        Long currentId = BaseContext.getCurrentId();
+//        User currentUser = userService.getById(currentId);
         // 鉴权
-        if (currentUser.getRole() <= DEFAULT_USER) {
+        if (StpUtil.hasRole("ROLE_MEMBER")) {
             throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
         }
         Announcement announcement = new Announcement();
@@ -64,10 +61,10 @@ public class AnnouncementServiceImpl extends ServiceImpl<AnnouncementMapper, Ann
     @Override
     public void deleteAnnouncement(Long id) {
         // 获取当前登录用户
-        Long currentId = BaseContext.getCurrentId();
-        User user = userService.getById(currentId);
+//        Long currentId = BaseContext.getCurrentId();
+//        User user = userService.getById(currentId);
         // 鉴权
-        if (user.getRole() <= DEFAULT_USER) {
+        if (StpUtil.hasRole("ROLE_MEMBER")) {
             throw new BusinessException(ErrorCodeEnum.NO_AUTH, "用户权限不足");
         }
         // 删除公告
@@ -82,11 +79,11 @@ public class AnnouncementServiceImpl extends ServiceImpl<AnnouncementMapper, Ann
     @Override
     public void updateAnnouncement(Announcement announcement) {
         // 获取当前登录用户
-        Long currentUserId = BaseContext.getCurrentId();
-        User currentUser = userService.getById(currentUserId);
+//        Long currentUserId = BaseContext.getCurrentId();
+//        User currentUser = userService.getById(currentUserId);
 
         // 鉴权
-        if (currentUser.getRole() <= DEFAULT_USER) {
+        if (StpUtil.hasRole("ROLE_MEMBER")) {
             throw new BusinessException(ErrorCodeEnum.NO_AUTH, "权限不足");
         }
         // 权限足够，可以修改
