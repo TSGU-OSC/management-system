@@ -1,6 +1,7 @@
 import axios from 'axios'
 import store from '@/store'
 import router from "@/router";
+import mockRequest from '@/mock'
 
 //const baseURL="localhost:8088/api"
 
@@ -49,5 +50,6 @@ service.interceptors.response.use(response => {
   }
 )
 
+const mockService = config => mockRequest(config)
 
-export default service
+export default process.env.USE_MOCK === 'true' ? mockService : service

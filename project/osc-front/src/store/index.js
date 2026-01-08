@@ -5,8 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    token: sessionStorage.getItem("token"),
-    user: JSON.parse(sessionStorage.getItem("user"))
+    token: sessionStorage.getItem("token") || '',
+    user: JSON.parse(sessionStorage.getItem("user")) || { id: 1, code: 'U0001', name: '演示用户', gender: '1', province: '北京', city: '北京', phone: '13800000000', duty: '1', department: '1', role: 1, status: '0', avator: '' }
   },
   mutations: {
     // set
