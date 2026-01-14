@@ -4,9 +4,10 @@
     <el-header class="home-header">
       <div class="header-left">
         <div class="logo-container">
-          <img src="../assets/img/iconmax.jpg" class="logo-img" />
+          <!-- <img src="../assets/img/iconmax.jpg" class="logo-img" /> -->
+          <img src="../assets/new-icon/HSD-Light.png" class="logo-img">
         </div>
-        <div class="title-container">开源鸿蒙社团成员管理系统</div>
+        <div class="title-container">天津中德开源鸿蒙社管理系统</div>
       </div>
       
       <div class="header-right">
@@ -30,7 +31,7 @@
     <!-- 主体 -->
     <el-container>
       <!-- 侧边栏 -->
-      <el-aside width="13%">
+      <el-aside>
         <el-menu :default-active="$route.path" router text-color="black" active-text-color="red">
           <el-menu-item v-for="(item, i) in this.navList" :key="i" :index="item.name">
             <i :class="item.icon"></i>
@@ -42,6 +43,14 @@
       <el-main>
         <!--路由占位符-->
         <router-view></router-view>
+        <!-- 用于检测主要区域内容占据不全整个屏幕原因的测试 -->
+        <!-- <div style="background: #409EFF; height: 100%; width: 100%; display: flex;">
+          <div style="flex: 3; background: #67C23A;">主内容区模拟 (75%)</div>
+          <div style="flex: 1; background: #E6A23C; display: flex; flex-direction: column;">
+            <div style="flex: 1; background: #F56C6C;">右侧上部 (50%)</div>
+            <div style="flex: 1; background: #909399;">右侧下部 (50%)</div>
+          </div>
+        </div> -->
       </el-main>
     </el-container>
     
@@ -54,6 +63,7 @@ import defaultAvatar from "@/assets/img/avator.jpg";
 
 export default {
   name: "Home",
+  // 数据
   data() {
     return {
       avatorUrl: this.$store.state.user.avator === '' ? defaultAvatar : "/api/file/download?fileName=" + this.$store.state.user.avator,
@@ -63,27 +73,39 @@ export default {
     }
   },
 
+  // 生命周期：挂载
   created() {
-    if(this.$store.state.user.role!=0){
-      this.navList = [
+    // 权限区分
+    // 角色 role: 0-普通成员, 1-管理员, 2-超级管理员
+    const userRole = this.$store.state.user.role;
+    
+    // 基础菜单（所有用户可见）
+    const baseNav = [
       { name: "/index", title: "首页", icon: "el-icon-s-home" },
       { name: "/myPage", title: "个人", icon: "el-icon-setting" },
-      { name: "/user", title: "用户管理", icon: "el-icon-s-custom" },
-      // {name: "/dictionary", title: "字典管理", icon: "el-icon-bank-card"},
-      { name: "/announcement", title: "公告管理", icon: "el-icon-s-comment" },
       { name: "/screen", title: "成员展板", icon: "el-icon-monitor" },
+    ];
+
+    // 管理员菜单（管理员及以上可见）
+    const adminNav = [
+      { name: "/user", title: "用户管理", icon: "el-icon-s-custom" },
+      { name: "/dictionary", title: "字典管理", icon: "el-icon-bank-card" },
+      { name: "/announcement", title: "公告管理", icon: "el-icon-s-comment" },
       { name: "/audit", title: "成员审核", icon: "el-icon-bell" },
     ];
-  }else{
-    this.navList = [
-      { name: "/index", title: "首页", icon: "el-icon-s-home" },
-      { name: "/myPage", title: "个人", icon: "el-icon-setting" },
-      { name: "/user", title: "用户管理", icon: "el-icon-s-custom" },
-      // {name: "/dictionary", title: "字典管理", icon: "el-icon-bank-card"},
-      { name: "/announcement", title: "公告管理", icon: "el-icon-s-comment" },
-      { name: "/screen", title: "成员展板", icon: "el-icon-monitor" },
+
+    // 普通用户可见菜单
+    const userNav = [
+      { name: "/announcement", title: "公告查看", icon: "el-icon-s-comment" }, 
     ];
-  }
+
+    if (userRole > 0) {
+      // 管理员及以上权限
+      this.navList = [...baseNav, ...adminNav];
+    } else {
+      // 普通成员权限
+      this.navList = [...baseNav, ...userNav];
+    }
   
   },
   watch: {
@@ -92,26 +114,34 @@ export default {
       this.$forceUpdate();// 更新数据
     },
     "$store.state.user.role"(newVal) {
-      if(this.$store.state.user.role!=0){
-      this.navList = [
-      { name: "/index", title: "首页", icon: "el-icon-s-home" },
-      { name: "/myPage", title: "个人", icon: "el-icon-setting" },
-      { name: "/user", title: "用户管理", icon: "el-icon-s-custom" },
-      // {name: "/dictionary", title: "字典管理", icon: "el-icon-bank-card"},
-      { name: "/announcement", title: "公告管理", icon: "el-icon-s-comment" },
-      { name: "/screen", title: "成员展板", icon: "el-icon-monitor" },
-      { name: "/audit", title: "成员审核", icon: "el-icon-bell" },
-    ];
-  }else{
-    this.navList = [
-      { name: "/index", title: "首页", icon: "el-icon-s-home" },
-      { name: "/myPage", title: "个人", icon: "el-icon-setting" },
-      { name: "/user", title: "用户管理", icon: "el-icon-s-custom" },
-      // {name: "/dictionary", title: "字典管理", icon: "el-icon-bank-card"},
-      { name: "/announcement", title: "公告管理", icon: "el-icon-s-comment" },
-      { name: "/screen", title: "成员展板", icon: "el-icon-monitor" },
-    ];
-  }
+      // 角色 role: 0-普通成员, 1-管理员, 2-超级管理员
+      const userRole = newVal;
+      
+      // 基础菜单（所有用户可见）
+      const baseNav = [
+        { name: "/index", title: "首页", icon: "el-icon-s-home" },
+        { name: "/myPage", title: "个人", icon: "el-icon-setting" },
+        { name: "/screen", title: "成员展板", icon: "el-icon-monitor" },
+      ];
+
+      // 管理员菜单（管理员及以上可见）
+      const adminNav = [
+        { name: "/user", title: "用户管理", icon: "el-icon-s-custom" },
+        { name: "/dictionary", title: "字典管理", icon: "el-icon-bank-card" },
+        { name: "/announcement", title: "公告管理", icon: "el-icon-s-comment" },
+        { name: "/audit", title: "成员审核", icon: "el-icon-bell" },
+      ];
+
+      // 普通用户可见菜单
+      const userNav = [
+        { name: "/announcement", title: "公告查看", icon: "el-icon-s-comment" }, 
+      ];
+
+      if (userRole > 0) {
+        this.navList = [...baseNav, ...adminNav];
+      } else {
+        this.navList = [...baseNav, ...userNav];
+      }
     }
   },
   mounted() {
@@ -174,6 +204,61 @@ export default {
 </script>
 
 <style scoped>
+/* 最外层整个容器占满整个屏幕高度 */
+.home-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+/* 侧边栏 + 主要内容区域自动撑满剩余高度 */
+.home-container > .el-container {  
+  flex: 1 !important;
+  min-height: 0 !important;
+  /* overflow: hidden !important; */
+}
+
+/* 侧边栏和主要内容区域在水平方向自动填充 */
+.home-container .el-aside, .home-container .el-main {
+  height: 100% !important;
+}
+
+/* 具体设置侧边栏和主要内容区域 */
+/* 侧边栏：固定最小宽度，允许滚动 */
+.home-container .el-aside {
+  width: auto !important;
+  min-width: 180px !important;
+  max-width: 250px !important;
+  border-right: 1px solid #e6e6e6;
+  /* overflow-x: hidden;
+  overflow-y: auto; */
+}
+
+/* 主要内容区域：自动占据剩余宽度，并管理内部滚动 */
+.home-container .el-main {
+  /* padding: 20px; */
+  /* overflow-y: auto !important;  主要内容区域内部可以滚动 */
+  flex: 1 !important;  /* 占据侧边栏剩下的所有水平空间 */
+  min-width: 0 !important;  /* 允许在狭窄空间收缩 */
+}
+
+/* 确保菜单栏不会因为文字过长而破坏布局 */
+.home-container .el-menu {
+  border-right: none;
+  height: 100%;
+}
+
+.home-container .el-menu-item {
+  min-width: 0;
+}
+
+.home-container .el-menu-item > * {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* 整个头部容器：使用 flex 布局，左右分配空间 */
 .home-header {
   display: flex !important;
