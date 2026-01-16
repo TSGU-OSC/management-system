@@ -5,7 +5,8 @@
       <div class="header-left">
         <div class="logo-container">
           <!-- <img src="../assets/img/iconmax.jpg" class="logo-img" /> -->
-          <img src="../assets/new-icon/HSD-Light.png" class="logo-img">
+          <!-- <img src="../assets/new-icon/HSD-Light.png" class="logo-img"> -->
+          <img src="../assets/new-icon/HSD-Dark.png" class="logo-img" alt="Logo">
         </div>
         <div class="title-container">天津中德开源鸿蒙社管理系统</div>
       </div>
