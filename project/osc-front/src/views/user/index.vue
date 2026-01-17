@@ -3,12 +3,12 @@
         <div class="users-content-warpper">
             <div class="users-search">
                 <!-- 整个查询区域使用 el-row 实现左右分栏 -->
-                <el-row :gutter="20" type="flex" align="top">
+                <el-row :gutter="24" type="flex" align="top">
 
                     <!-- 左侧表单区：占据 18/24 = 75% -->
                     <el-col :span="18" class="search-left">
                         <!-- 第一行 -->
-                        <el-row :gutter="20" class="left-first-row">
+                        <el-row :gutter="24" class="left-first-row">
                             <el-col :span="8">
                                 <el-input placeholder="请输入成员姓名" clearable></el-input>
                             </el-col>
@@ -21,7 +21,7 @@
                         </el-row>
 
                         <!-- 第二行 -->
-                        <el-row :gutter="20" class="left-second-row">
+                        <el-row :gutter="24" class="left-second-row">
                             <el-col :span="8">
                                 <el-select placeholder="请选择部门" clearable style="width: 100%;">
                                     <el-option label="社长团" value="0"></el-option>
@@ -52,12 +52,12 @@
                     </el-col>
 
                     <!-- 右侧按钮区：占据 6/24 = 25% -->
-                    <el-col :span="6" class="right-buttom">
-                        <div class="buttom-group">
-                            <div class="up-bottom">
+                    <el-col :span="6" class="right-button">
+                        <div class="button-group">
+                            <div class="up-button">
                                 <el-button type="primary" icon="el-icon-search">查询</el-button>
                             </div>
-                            <div class="down-buttom">
+                            <div class="down-button">
                                 <el-button icon="el-icon-refresh">重置</el-button>
                             </div>
                             
@@ -243,7 +243,7 @@
 }
 
 /* 右侧按钮区域样式 */
-.users-search .right-bottom {
+.users-search .right-button {
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -252,12 +252,12 @@
 }
 
 /* 按钮组容器 */
-.users-seach .buttom-group {
+.users-search .button-group {
     width: 100%;
     max-width: 200px; /* 控制按钮的最大高度，避免在大屏幕上过宽 */
 }
 
-.buttom-group .up-bottom {
+.button-group .up-button {
     padding-bottom: 20px;
 }
 
@@ -277,7 +277,7 @@
         margin-top: 20px;
     }
 
-    .users-search .buttom-group {
+    .users-search .button-group {
         max-width: 100%;
     }
 }
