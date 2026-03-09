@@ -10,41 +10,89 @@
                         <!-- 第一行 -->
                         <el-row :gutter="24" class="left-first-row">
                             <el-col :span="8">
-                                <el-input placeholder="请输入成员姓名" clearable></el-input>
+                                <el-input 
+                                    placeholder="请输入成员姓名" 
+                                    v-model="queryInfo.name"
+                                    clearable
+                                    @clear="getUserList"
+                                    @keyup.native.enter="getUserList">
+                                </el-input>
                             </el-col>
                             <el-col :span="8">
-                                <el-input placeholder="请输入成员学号" clearable></el-input>
+                                <el-input 
+                                    placeholder="请输入成员学号"
+                                    v-model="queryInfo.code"
+                                    clearable
+                                    @clear="getUserList"
+                                    @keyup.native.enter="getUserList"></el-input>
                             </el-col>
                             <el-col :span="8">
-                                <el-input placeholder="请输入成员手机号" clearable></el-input>
+                                <el-input 
+                                    placeholder="请输入成员手机号" 
+                                    v-model="queryInfo.phone" 
+                                    clearable
+                                    @clear="getUserList"
+                                    @keyup.native.enter="getUserList"
+                                    ></el-input>
                             </el-col>
                         </el-row>
 
                         <!-- 第二行 -->
                         <el-row :gutter="24" class="left-second-row">
                             <el-col :span="8">
-                                <el-select placeholder="请选择部门" clearable style="width: 100%;">
-                                    <el-option label="社长团" value="0"></el-option>
-                                    <el-option label="技术部" value="1"></el-option>
-                                    <el-option label="宣传部" value="2"></el-option>
-                                    <el-option label="运营部" value="3"></el-option>
+                                <el-select 
+                                    placeholder="请选择部门" 
+                                    v-model="queryInfo.department"
+                                    clearable 
+                                    style="width: 100%;">
+                                        <el-option 
+                                            v-for="item in optionsDepartment" 
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                        </el-option>
+                                        <!-- <el-option label="社长团" value="0"></el-option>
+                                        <el-option label="技术部" value="1"></el-option>
+                                        <el-option label="宣传部" value="2"></el-option>
+                                        <el-option label="运营部" value="3"></el-option> 
+                                        <el-option label="社区成员" value="4"></el-option> -->
                                 </el-select>
                                 <!-- <el-input placeholder="请选择部门"></el-input> -->
                             </el-col>
 
                             <el-col :span="8">
-                                <el-select placeholder="请选择角色" clearable style="width: 100%;">
-                                    <el-option label="超管" value="0"></el-option>
-                                    <el-option label="管理员" value="1"></el-option>
-                                    <el-option label="普通成员" value="2"></el-option>
+                                <el-select 
+                                    placeholder="请选择角色" 
+                                    v-model="queryInfo.role"
+                                    clearable 
+                                    style="width: 100%;">
+                                        <el-option
+                                            v-for="item in optionsRole"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                        </el-option>
+                                        <!-- <el-option label="超管" value="0"></el-option>
+                                        <el-option label="管理员" value="1"></el-option>
+                                        <el-option label="普通成员" value="2"></el-option> -->
                                 </el-select>
                                 <!-- <el-input placeholder="请选择角色"></el-input> -->
                             </el-col>
 
                             <el-col :span="8">
-                                <el-select placeholder="请选择状态" clearable style="width: 100%;">
-                                    <el-option label="正常" value="0"></el-option>
-                                    <el-option label="离职" value="1"></el-option>
+                                <el-select 
+                                    placeholder="请选择状态"
+                                    v-model="queryInfo.status" 
+                                    clearable 
+                                    style="width: 100%;">
+                                        <el-option
+                                            v-for="item in optionsStatus"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                        </el-option>
+                                        <!-- <el-option label="正常" value="0"></el-option>
+                                        <el-option label="离职" value="1"></el-option> -->
                                 </el-select>
                                 <!-- <el-input placeholder="请选择状态"></el-input> -->
                             </el-col>
@@ -87,7 +135,47 @@
                     </el-col> -->
             </div>
 
-            <div class="users-showTabel">
+            <div class="users-showTable">
+                <div class="showTable-button-group">
+                    <!-- <div class="showTable-left-button"></div> -->
+                    <el-col :span="2.5" style="float: left;" class="showTable-left-button">
+                        <el-button type="primary" 
+                            v-if="this.$store.state.user.role !== 0" 
+                            icon="el-icon-plus"
+                            @click="addDialogVisible = true">
+                            添加用户
+                        </el-button>
+
+                        <el-dropdown v-if="this.$store.state.user.role !== 0">
+                            <el-button type="success" icon="el-icon-document">Excel
+                                <template>
+                                    <el-dropdown-menu>
+                                        <el-dropdown-item>
+                                            <el-upload 
+                                                action="/api/excel/input" 
+                                                accept=".xlsx,.xls" 
+                                                :show-file-list="false"
+                                                :on-success="uploadSuccess" 
+                                                :on-error="uploadError">
+                                            <el-button size="small" icon="el-icon-upload2">点击上传</el-button>
+                                            </el-upload>
+                                        </el-dropdown-item>
+                                        <el-dropdown-item>
+                                            <el-button size="small" icon="el-icon-download" @click="excelOutput">点击导出</el-button>
+                                        </el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </template>
+                            </el-button>
+                        </el-dropdown>
+                    </el-col>
+                    
+                    <el-col :span="2.5" style="float: right;" class="showTable-right-button">
+                        <el-button type="primary" icon="el-icon-refresh-right" @click="resetUserList">刷新</el-button>
+                    </el-col>
+                    
+                    <!-- <div class="showTable-right-button"></div> -->
+                </div>
+
                 <el-table :data="userList" border stripe>
                     <el-table-column prop="name" label="姓名" width="95"></el-table-column>
                     
@@ -201,11 +289,471 @@
 </template>
 
 <script>
+// 从@/api/user导入API函数，用于后端交互
+import { outputExcel, userAdd, userDelete, userList, userUpdate } from "@/api/user";
+// element-ui
+import row from "element-ui/packages/row";
+// 头像
+import defaultAvatar from "@/assets/img/avator.jpg";
+// element
+import { pcTextArr } from "element-china-area-data";
+// CSS
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+// 富文本编辑器组件引入
+import { quillEditor } from "vue-quill-editor";
 
+export default {
+  components: {
+    quillEditor  // 富文本编辑器组件
+  },
+  computed: {
+    row() {
+      return row
+    }
+  },
+  // 数据
+  data() {
+    return {
+      editorOption: {
+        modules: {
+          // 编辑器工具栏配置，包括加粗、斜体、标题等工具
+          toolbar: [
+            ['bold', 'italic', 'underline', 'strike'], // 加粗 斜体 下划线 删除线引用  
+            [{ header: 1 }, { header: 2 }], // 1、2 级标题
+            [{ indent: '-1' }, { indent: '+1' }], // 缩进
+            [{ direction: 'rtl' }], // 文本方向
+            [{ header: [1, 2, 3, 4, 5, 6] }], // 标题
+            [{ color: [] }, { background: [] }], // 字体颜色、字体背景颜色
+            // [{ font: ['songti'] }], // 字体种类
+            [{ align: [] }], // 对齐方式
+            ['clean'], // 清除文本格式
+          ]
+        },
+      },
+      optionsnative_place: pcTextArr,
+      // 编辑器-性别选项
+      optionsGender: [
+        {
+            value: '1',
+            label: '男'
+        }, 
+        {
+            value: '0',
+            label: '女'
+        }
+      ],
+      // 编辑器-职位选项
+      optionsDuty: [
+        {
+            value: '0',
+            label: '成员'
+        },
+        {
+            value: '1',
+            label: '副部长'
+        }, 
+        {
+            value: '2',
+            label: '部长'
+        }, 
+        {
+            value: '3',
+            label: '副社长'
+        }, 
+        {
+            value: '4',
+            label: '社长'
+        }
+      ],
+      // 编辑器-部门选项
+      optionsDepartment: [
+        {
+            value: '0',
+            label: '社长团'
+        },
+        {
+            value: '1',
+            label: '技术部'
+        },
+        {
+            value: '2',
+            label: '运营部'
+        },
+        {
+            value: '3',
+            label: '宣传部'
+        },
+        {
+            value: '4',
+            label: '社区成员'
+        }
+      ],
+      // 编辑器-角色选项
+      optionsRole: [{
+        value: '0',
+        label: '普通成员'
+      }, {
+        value: '1',
+        label: '管理员'
+      }, {
+        value: '2',
+        label: '超管'
+      }
+      ],
+      // 编辑器-账号状态选项
+      optionsStatus: [{
+        value: '0',
+        label: '正常'
+      }, {
+        value: '1',
+        label: '封禁'
+      }],
+      // 用户对象数组，用于表格显示
+      userList: [], 
+      // 当前页数
+      pageNumber: 1,
+      // 每页数目
+      pageSize: 5,
+      // 分页总数目
+      total: 0,
+      // 查询参数，包括所有搜索字段
+      queryInfo: {
+        // 用户查询区域：第一行
+        name: "",
+        code: "",
+        phone: "",
+
+        // 用户查询区域：第二行
+        department: "",
+        role: "",
+        status: "",
+
+        // gender: "",
+        // province: "",
+        // city: "",
+        // clazz: "",
+        // major: "",
+        // academy: "",
+        // duty: "",
+
+      },
+      // 控制添加用户对话框是否显示
+      addDialogVisible: false, 
+      // 控制修改用户信息对话框是否显示
+      editDialogVisible: false, 
+      // 控制查看用户信息对话框是否显示
+      seeDialogVisible: false, 
+      // 添加用户信息
+      userForm: {
+        // 表单展示区域：直接展示
+        name: "",
+        code: "",
+        phone: "",
+        department: "",
+        role: "",
+
+        // 表单展示区域：点击详情
+        gender: "",
+        clazz: "",
+        major: "",
+        academy: "",
+        city: "",
+        province: "",
+        duty: "",
+        status: "",
+        introduction: "",
+      },
+
+      // 修改用户信息
+      // 修改前用户信息
+      preEditForm: {
+        // 表单展示区域：直接展示
+        name: "",
+        code: "",
+        phone: "",
+        department: "",
+        role: "",
+        
+        // 表单展示区域：点击详情
+        gender: "",
+        clazz: "",
+        major: "",
+        academy: "",
+        city: "",
+        province: "",
+        duty: "",
+        status: "",
+        introduction: "",
+      },
+      // 修改后的用户信息
+      editForm: {
+        // 表单展示区域：直接展示
+        name: "",
+        code: "",
+        phone: "",
+        department: "",
+        role: "",
+
+        // 表单展示区域：点击详情
+        gender: "",
+        clazz: "",
+        major: "",
+        academy: "",    
+        city: "",
+        province: "",     
+        duty: "",
+        status: "",
+        introduction: "",
+      },
+      // 操作列宽度，根据用户角色动态调整
+      width: this.$store.state.user.role >= 1 ? 200 : 70
+    };
+
+  },
+  watch: {
+    "$store.state.user.role"(newVal) {
+      this.width=this.$store.state.user.role >= 1 ? 200 : 70
+      this.$forceUpdate();  // 强制更新视图
+    },
+  },
+
+  // 生命周期函数
+  created() {
+    // 获取用户信息
+    // 页面创建时立即获取用户列表
+    this.getUserList();
+  },
+  // 方法
+  methods: {
+    // 用户信息查看/编辑
+    //查看用户个人信息（打开查看对话框）
+    seeUserIntroduction(userinfo) {
+      this.seeDialogVisible = true;
+      // 将userinfo复制给editForm
+      this.editForm = { ...userinfo };
+      this.editForm.province = [this.editForm.province, this.editForm.city];
+      // 删除脏数据avator
+      delete this.editForm.avator;
+      // 将userinfo复制给preEditForm
+      this.preEditForm = { ...userinfo };
+      delete this.preEditForm.avator;
+      console.log(this.editForm)
+    },
+    // 监听 修改用户状态
+    showEditDialog(userinfo) {
+      this.editDialogVisible = true;
+      // 将userinfo复制给editForm
+      this.editForm = { ...userinfo };
+      this.editForm.province = [this.editForm.province, this.editForm.city];
+      // 删除脏数据avator
+      delete this.editForm.avator;
+      // 将userinfo复制给preEditForm
+      this.preEditForm = { ...userinfo };
+      delete this.preEditForm.avator;
+
+    },
+    // 提交用户编辑（同步更新到后端）
+    editUser() {
+      const place = this.editForm.province;
+      this.editForm.province = place[0];
+      this.editForm.city = place[1];
+      userUpdate(this.editForm)
+        .then((res) => {
+          if (res.data.code === 200) {
+            this.editDialogVisible = false;
+            this.seeDialogVisible = false;
+            this.getUserList();
+            this.$message({
+              message: "修改用户成功",
+              type: "success",
+            });
+          } else {
+            this.$message.error("修改用户失败:" + res.data.description);
+            // 重置修改信息表
+            this.editForm = { ...this.preEditForm }
+          }
+        })
+        .catch((err) => {
+          this.$message.error("修改用户异常");
+          console.loge(err);
+        });
+    },
+
+
+    // 用户列表操作
+    // 更新用户信息列表
+    resetUserList() {
+      // 清空查询信息
+      for (let key in this.queryInfo) {
+        this.queryInfo[key] = "";
+      }
+      this.pageNumber = 1;
+      // 获取用户信息
+      this.getUserList();
+    },
+    // 获取用户信息数组/列表
+    getUserList() {
+      // const place = this.queryInfo.province;
+      // this.queryInfo.province = place[0];
+      // this.queryInfo.city = place[1];
+      userList(this.queryInfo, this.pageNumber, this.pageSize)
+        .then((res) => {
+          console.log(res);
+          if (res.data.code === 200) {
+            this.total = res.data.data.total;
+            //用户列表
+            this.userList = res.data.data.list;
+            this.userList.forEach(item => {
+              let fileName = item.avator;
+              item.avator = fileName === '' ? defaultAvatar : "/api/file/download?fileName=" + fileName
+            })
+          } else {
+            this.$message.error(res.data.description);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    // 监听 当前页码值 改变的事件
+    handleCurrentChange(newPage) {
+      console.log(newPage)
+      this.pageNumber = newPage;
+      // 重新发起请求用户列表
+      this.getUserList();
+    },
+    // 监听 当前页大小 改变的事件
+    handleSizeChange(newPageSize) {
+      // 重新设置每页显示的条数
+      this.pageSize = newPageSize;
+      // 重新发起请求用户列表
+      this.getUserList();
+    },
+
+
+    // 用户增删操作
+    //添加用户
+    addUser() {
+      userAdd(this.userForm)
+        .then((res) => {
+          if (res.data.code === 200) {
+            this.addDialogVisible = false;
+            this.getUserList();
+            this.$message({
+              message: "添加用户成功",
+              type: "success",
+            });
+            // 清空添加用户信息表
+            for (let key in this.userForm) {
+              this.userForm[key] = "";
+            }
+          } else {
+            this.$message.error("添加用户失败:" + res.data.description);
+          }
+        })
+        .catch((err) => {
+          this.$message.error("添加用户异常,请正确填写字段！")
+          console.log(err);
+        });
+    },
+    // 取消添加用户
+    addDialogClosed() {
+      // 清空添加用户信息表
+      for (let key in this.userForm) {
+        this.userForm[key] = "";
+      }
+    },
+    // 根据ID删除对应的用户信息
+    async removeUserById(id) {
+      // 弹框 询问用户是否删除
+      const confirmResult = await this.$confirm(
+        "此操作将永久删除该用户, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      ).catch((err) => err);
+      // 如果用户确认删除，则返回值为字符串 confirm
+      // 如果用户取消删除，则返回值为字符串 cancel
+      if (confirmResult === "confirm") {
+        //删除用户
+        userDelete(id)
+          .then((res) => {
+            if (res.data.code === 200) {
+              this.getUserList();
+              this.$message({
+                message: "删除用户成功",
+                type: "success",
+              });
+            } else {
+              this.$message.error("删除用户失败" + res.data.description);
+            }
+          })
+          .catch((err) => {
+            this.$message.error("删除用户异常");
+            console.log(err);
+          });
+      }
+    },
+
+
+    // Excel 导入/导出
+    // 导入用户数据到Excel
+    excelOutput() {
+      outputExcel()
+        .then((res) => {
+          const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' }) // 构造一个blob对象来处理数据，并设置文件类型
+          const href = URL.createObjectURL(blob) //创建新的URL表示指定的blob对象
+          const a = document.createElement('a') //创建a标签
+          a.style.display = 'none'
+          a.href = href // 指定下载链接
+          a.download = 'userInfo' //指定下载文件名
+          a.click() //触发下载
+          URL.revokeObjectURL(a.href) //释放URL对象
+        })
+        .catch((err) => {
+          this.$message.error("Excel导出异常");
+          console.log(err);
+        });
+    },
+    // Excel导入成功回调
+    uploadSuccess(res) {
+      if (res.code === 200) {
+        this.$message.success("Excel导入成功")
+      } else {
+        this.$message.error("Excel导入异常: " + res.description);
+      }
+    },
+    // Excel导入失败回调
+    uploadError(err) {
+      this.$message.error("Excel导入异常");
+      console.log("Excel导入异常", err)
+    },
+
+
+    //查看用户信息
+    seeUser() {
+      this.seeDialogVisible = false;
+    }
+
+    // 富文本编辑器相关
+    // 编辑器失去焦点
+    // onEditorBlur()
+    // 编辑器获得焦点
+    // onEditorFocus()
+    // 编辑器准备就绪
+    // onEditorReady
+  },
+}
 </script>
 
 <style scoped>
-.user-main-container {
+/* 主容器 */
+.users-main-container {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -213,6 +761,7 @@
     box-sizing: border-box;
 }
 
+/* 正文容器 */
 .users-content-warpper {
     flex: 1;
     display: flex;
@@ -220,6 +769,7 @@
     min-height: 0;
 }
 
+/* 用户查询区域 */
 .users-search {
     background: #fff;
     padding: 20px;
@@ -229,13 +779,20 @@
     flex-shrink: 0;
 }
 
-/* 左侧查询区域样式 */
+/* 用户查询区域：左侧输入框和选择框样式 */
+.users-search .el-col {
+    /* padding-left: 20px; */
+    display: flex;
+    align-items: center;
+}
+
+/* 用户查询区域：左侧输入框和选择框样式 */
 .users-search .search-left {
     display: flex;
     flex-direction: column;
 }
 
-/* 查询框样式 */
+/* 用户查询区域：查询框样式 */
 .users-search .left-first-row, 
 .users-search .left-right-row {
     margin-bottom: 20px;
@@ -282,13 +839,8 @@
     }
 }
 
-.users-search .el-col {
-    /* padding-left: 20px; */
-    display: flex;
-    align-items: center;
-}
-
-.users-showTabel {
+/* 表单展示区域 */
+.users-showTable {
     flex: 1;
     background: #fff;
     padding: 20px;
@@ -297,4 +849,9 @@
     min-height: 0;
     overflow-y: auto;
 } 
+
+/* 表单展示区域：上层按钮样式*/
+.users-showTable .showTable-button-group {
+    margin-bottom: 55px;
+}
 </style>
